@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/10/17 13:58:30 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/10/24 20:42:31 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,22 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	char *line;
+	char	*line;
+	//char	*prompt;
 	
 	if (argc == 1)
 	{
-		// Ignorar argv y envp
+		// Ignorar argv
 		(void)argv;
-		(void)envp;
 
 		// Bucle que muestra prompt
 		while (1)
 		{
-			line = readline("alejandj@aleconst$ ");
+			get_prompt(envp);
+			line = readline("hola >");
 			if (!line)
 				break ;
-			
+				
 			add_history(line);
 		}
 	}

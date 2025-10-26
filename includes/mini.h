@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/10/17 13:00:58 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/10/24 20:46:05 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@
 # include <termios.h>
 # include <termcap.h>
 
-
+char	*get_home(char **env);
+char    *get_prompt(char **env);
 
 
 #endif

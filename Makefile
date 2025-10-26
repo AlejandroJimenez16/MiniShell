@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2025/10/17 14:21:33 by alejandj         ###   ########.fr        #
+#    Updated: 2025/10/24 19:46:21 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ CFLAGS = -Wall -Wextra -Werror -g -Iincludes
 LIBDIR = libft/
 OBJDIR = obj/
 
-SRC =	src/main.c	\
+SRC =	src/main.c			\
+		src/mini_utils.c	\
 
 OBJECTS = $(SRC:src/%.c=$(OBJDIR)/%.o)
 
