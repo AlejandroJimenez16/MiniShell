@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2025/10/24 19:46:21 by alejandj         ###   ########.fr        #
+#    Updated: 2025/10/31 17:50:11 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SRC =	src/main.c			\
 OBJECTS = $(SRC:src/%.c=$(OBJDIR)/%.o)
 
 # Library
-LIBFT = (LIBDIR)libft.a
+LIBFT = $(LIBDIR)libft.a
 
 all: $(NAME)
 

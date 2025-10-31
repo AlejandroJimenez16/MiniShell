@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 19:46:35 by alejandj          #+#    #+#             */
-/*   Updated: 2025/10/30 02:58:51 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/10/31 17:37:25 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,25 @@ char	*get_prompt(char **env)
 		ft_strlcat(temp, " ", ft_strlen(pwd) + 2);
 		return (temp);
 	}
+}
+
+char	**get_path_cmd(char **env)
+{
+	int		i;
+	char	**arr_path;
+
+	if (!env)
+		return (NULL);
+	i = 0;
+	arr_path = NULL;
+	while (env[i] != NULL)
+	{
+		if (ft_strncmp(env[i], "PATH=", 5) == 0)
+		{
+			arr_path = ft_split(env[i] + 5, ':');
+			break ;
+		}
+		i++;
+	}
+	return (arr_path);
 }
