@@ -12,16 +12,6 @@
 
 #include "../includes/mini.h"
 
-char	*create_path(char *base, char *cmd)
-{
-	char *temp;
-	char *full;
-
-	temp = ft_strjoin(base, "/");
-	full = ft_strjoin(temp, cmd);
-	return (full);
-}
-
 void	child_simple_cmd(t_mini *mini)
 {
 	int		arr_path_id;
@@ -38,7 +28,8 @@ void	child_simple_cmd(t_mini *mini)
 		arr_path_id = 0;
 		while (mini->arr_path && (mini->arr_path[arr_path_id] != NULL))
 		{
-			path = create_path(mini->arr_path[arr_path_id++], mini->cmd[0]);
+			path = mini->arr_path[arr_path_id++];
+			create_path(&path, mini->cmd[0]);
 			if (access(path, X_OK) == 0)
 				execve(path, mini->cmd, mini->env);
 		}
@@ -49,45 +40,42 @@ int	main(int argc, char **argv, char **env)
 {
 	t_mini	mini;
 
-	if (argc == 1)
+	if (argc != 1)
+		return (ft_putendl_fd("minishell: no args supported", 2), 1);
+	(void)argv;
+	mini.env = env;
+	mini.arr_path = get_path_cmd(env);
+	while (1)
 	{
-		// Ignorar argv
-		(void)argv;
-		mini.env = env;
-		mini.arr_path = get_path_cmd(env);
-
-		// Bucle que muestra prompt
-		while (1)
+		mini.prompt = get_prompt(env);
+		mini.line = readline(mini.prompt);
+		if (!mini.line)
+			return (ft_printf("exit\n"), 0);
+		add_history(mini.line);
+		if (ft_strchr(mini.line, '|'))
 		{
-			mini.prompt = get_prompt(env);
-			mini.line = readline(mini.prompt);
-			if (!mini.line) // Ctrl+D
-			{
-				ft_printf("exit\n");
-				exit(0);
-			}
-			add_history(mini.line);
-
-			mini.cmd = ft_split(mini.line, ' ');
-			if (!mini.cmd || !mini.cmd[0])
-				continue ;
-
-			if (ft_strncmp(mini.cmd[0], "cd", 3) == 0)
-			{
-				ft_cd(mini.cmd[1]);
-				//Limpiar mini.cmd con free_tab(mini.cmd);
-				continue ;
-			}
-
-			// Ejecucion comandos simples
-			child_simple_cmd(&mini);
-			
-			waitpid(mini.simple_cmd_process, NULL, 0);
+			printf("hola que tal");
+			ft_pipex_exec(mini.cmd, mini.env);
 		}
+		else
+		{
+			mini.cmd = ft_split(mini.line, ' ');
+			/*
+			if (!mini.cmd)
+			{
+				
+			}
+			*/
+			if (mini.cmd && mini.cmd[0] && ft_strncmp(mini.cmd[0], "cd", 3) == 0)
+				ft_cd(&mini);
+			else
+			{
+				child_simple_cmd(&mini);
+				waitpid(mini.simple_cmd_process, NULL, 0);
+			}
+			//free_tab(mini.cmd);
+		}
+		free(mini.line);
 	}
-	else
-	{
-		ft_putendl_fd("minishell: no args supported", 2);
-		return (1);
-	}
+	return (0);
 }

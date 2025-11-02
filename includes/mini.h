@@ -14,6 +14,7 @@
 #define MINISHELL_H
 
 # include "../libft/libft.h"
+# include "pipex_bonus.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdio.h>
@@ -42,6 +43,6 @@ typedef struct s_mini
 char	*get_home(char **env);
 char    *get_prompt(char **env);
 char	**get_path_cmd(char **env);
-int		ft_cd(char *path);
+int		ft_cd(t_mini *mini);
 
 #endif

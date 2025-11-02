@@ -49,17 +49,15 @@ char	*get_prompt(char **env)
 	pwd = getcwd(NULL, 0);
 	
 	// Si coincide el home con la ruta actual
-	if (ft_strncmp(home, pwd, ft_strlen(home)) == 0)
+	if (ft_strncmp(home, pwd, ft_strlen(home)) == 0 && (ft_strlen(pwd) == ft_strlen(home)))
 		return ("alejandj@aleconst~$ ");
 	// Si hay mas ruta aparte del home
-	else if (ft_strncmp(home, pwd, ft_strlen(home)) == 0
-		&& (ft_strlen(pwd) > ft_strlen(home)))
+	else if (ft_strncmp(home, pwd, ft_strlen(home)) == 0 && (ft_strlen(pwd) > ft_strlen(home)))
 	{
 		temp = malloc(ft_strlen(pwd) - ft_strlen(home) + 3);
 		if (!temp)
 			return (NULL);
 		temp[0] = '~';
-		//temp[1] = '\0';
 		ft_strlcat(temp, pwd + ft_strlen(home),
 			(ft_strlen(pwd) - ft_strlen(home)) + 3);
 		ft_strlcat(temp, "$ ", (ft_strlen(pwd) - ft_strlen(home)) + 3);

@@ -1,8 +1,9 @@
 #include "../includes/mini.h"
 
-int	ft_cd(char *path)
+int	ft_cd(t_mini *mini)
 {
 	char	cwd[1024];
+	char	*path = mini->cmd[1];
 
 	if (!path)
 	{
@@ -19,6 +20,5 @@ int	ft_cd(char *path)
 		perror("getcwd");
 		return (1);
 	}
-	printf("Directory changed to: %s\n", cwd); //test function, must erase
 	return (0);
 }

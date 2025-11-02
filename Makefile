@@ -21,9 +21,14 @@ CFLAGS = -Wall -Wextra -Werror -g -Iincludes
 LIBDIR = libft/
 OBJDIR = obj/
 
-SRC =	src/main.c				\
-		src/mini_utils.c		\
-		src/mini_functions.c	\
+SRC =	src/main.c							\
+		src/mini_utils.c					\
+		src/mini_functions.c				\
+		src/pipex/main_bonus.c				\
+		src/pipex/minishell_compatible.c	\
+		src/pipex/pipex_extra_bonus.c		\
+		src/pipex/pipex_heredoc_bonus.c		\
+		src/pipex/pipex_utils_bonus.c		
 
 OBJECTS = $(SRC:src/%.c=$(OBJDIR)/%.o)
 
