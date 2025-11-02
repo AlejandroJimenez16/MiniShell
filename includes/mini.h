@@ -42,5 +42,6 @@ typedef struct s_mini
 char	*get_home(char **env);
 char    *get_prompt(char **env);
 char	**get_path_cmd(char **env);
+int		ft_cd(char *path);
 
 #endif

@@ -68,15 +68,16 @@ int	main(int argc, char **argv, char **env)
 			}
 			add_history(mini.line);
 
-			// Implementar cd
-			/*
-			if (mini.line == "cd")
-			{
-				
-			}
-			*/
-		
 			mini.cmd = ft_split(mini.line, ' ');
+			if (!mini.cmd || !mini.cmd[0])
+				continue ;
+
+			if (ft_strncmp(mini.cmd[0], "cd", 3) == 0)
+			{
+				ft_cd(mini.cmd[1]);
+				//Limpiar mini.cmd con free_tab(mini.cmd);
+				continue ;
+			}
 
 			// Ejecucion comandos simples
 			child_simple_cmd(&mini);

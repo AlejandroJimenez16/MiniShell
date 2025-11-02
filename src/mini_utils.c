@@ -65,7 +65,7 @@ char	*get_prompt(char **env)
 		ft_strlcat(temp, "$ ", (ft_strlen(pwd) - ft_strlen(home)) + 3);
 		return (temp);
 	}
-	// No es ta en el home
+	// No esta en el home
 	else
 	{
 		temp = malloc(ft_strlen(pwd) + 2);

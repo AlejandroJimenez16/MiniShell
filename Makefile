@@ -21,8 +21,9 @@ CFLAGS = -Wall -Wextra -Werror -g -Iincludes
 LIBDIR = libft/
 OBJDIR = obj/
 
-SRC =	src/main.c			\
-		src/mini_utils.c	\
+SRC =	src/main.c				\
+		src/mini_utils.c		\
+		src/mini_functions.c	\
 
 OBJECTS = $(SRC:src/%.c=$(OBJDIR)/%.o)
 
