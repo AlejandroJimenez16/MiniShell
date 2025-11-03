@@ -3,17 +3,25 @@
 int	ft_cd(t_mini *mini)
 {
 	char	cwd[1024];
-	char	*path = mini->cmd[1];
+	char	*path;
 
+	path = mini->cmd[1];
 	if (!path)
 	{
-		fprintf(stderr, "cd: missing argument\n");
-		return (1);
+		path = get_home(mini->env);
+		if (chdir(path) != 0)
+		{
+			perror("cd");
+			return (1);
+		}
 	}
-	if (chdir(path) != 0)
+	else
 	{
-		perror("cd");
-		return (1);
+		if (chdir(path) != 0)
+		{
+			perror("cd");
+			return (1);
+		}
 	}
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 	{
