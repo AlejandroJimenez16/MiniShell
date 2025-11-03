@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 19:46:35 by alejandj          #+#    #+#             */
-/*   Updated: 2025/10/31 17:37:25 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/03 14:35:51 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,38 +39,34 @@ char	*get_prompt(char **env)
 	char	*home;
 	char	*pwd;
 	char	*temp;
+	int		full_size;
 
 	if (!env)
 		return (NULL);
-
-	// Obtengo ruta del home
 	home = get_home(env);
-	// Obtengo la ruta donde estoy
 	pwd = getcwd(NULL, 0);
-	
-	// Si coincide el home con la ruta actual
 	if (ft_strncmp(home, pwd, ft_strlen(home)) == 0 && (ft_strlen(pwd) == ft_strlen(home)))
-		return ("alejandj@aleconst~$ ");
-	// Si hay mas ruta aparte del home
+		return ("alejandj@aleconst:~$ ");
 	else if (ft_strncmp(home, pwd, ft_strlen(home)) == 0 && (ft_strlen(pwd) > ft_strlen(home)))
 	{
-		temp = malloc(ft_strlen(pwd) - ft_strlen(home) + 3);
+		full_size = ft_strlen("alejandj@aleconst:~") + (ft_strlen(pwd) - ft_strlen(home)) + 3;
+		temp = malloc(full_size);
 		if (!temp)
 			return (NULL);
-		temp[0] = '~';
-		ft_strlcat(temp, pwd + ft_strlen(home),
-			(ft_strlen(pwd) - ft_strlen(home)) + 3);
-		ft_strlcat(temp, "$ ", (ft_strlen(pwd) - ft_strlen(home)) + 3);
+		ft_strlcpy(temp, "alejandj@aleconst:~", ft_strlen("alejandj@aleconst:~") + 1);
+		ft_strlcat(temp, pwd + ft_strlen(home), full_size);
+		ft_strlcat(temp, "$ ", full_size);
 		return (temp);
 	}
-	// No esta en el home
 	else
 	{
-		temp = malloc(ft_strlen(pwd) + 2);
+		full_size = ft_strlen("alejandj@aleconst:") + ft_strlen(pwd) + 3;
+		temp = malloc(full_size);
 		if (!temp)
 			return (NULL);
-		ft_strlcpy(temp, pwd, ft_strlen(pwd) + 2);
-		ft_strlcat(temp, " ", ft_strlen(pwd) + 2);
+		ft_strlcpy(temp, "alejandj@aleconst:", ft_strlen("alejandj@aleconst:") + 1);
+		ft_strlcat(temp, pwd, full_size);
+		ft_strlcat(temp, "$ ", full_size);
 		return (temp);
 	}
 }

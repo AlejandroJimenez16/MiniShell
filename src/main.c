@@ -6,11 +6,21 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/10/31 20:00:53 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/03 14:00:12 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/mini.h"
+
+void	create_path(char **s1, char *s2)
+{
+	char	*new_string;
+
+	new_string = ft_strjoin(*s1, "/");
+	free(*s1);
+	*s1 = ft_strjoin(new_string, s2);
+	free(new_string);
+}
 
 void	child_simple_cmd(t_mini *mini)
 {
@@ -52,13 +62,17 @@ int	main(int argc, char **argv, char **env)
 		if (!mini.line)
 			return (ft_printf("exit\n"), 0);
 		add_history(mini.line);
+
+		// Pipex
+		/*
 		if (ft_strchr(mini.line, '|'))
 		{
 			printf("hola que tal");
 			ft_pipex_exec(mini.cmd, mini.env);
 		}
-		else
-		{
+		*/
+		//else
+		//{
 			mini.cmd = ft_split(mini.line, ' ');
 			/*
 			if (!mini.cmd)
@@ -74,7 +88,7 @@ int	main(int argc, char **argv, char **env)
 				waitpid(mini.simple_cmd_process, NULL, 0);
 			}
 			//free_tab(mini.cmd);
-		}
+		//}
 		free(mini.line);
 	}
 	return (0);
