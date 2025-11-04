@@ -37,8 +37,7 @@ typedef struct s_context
 }	t_context;
 
 int		ft_pipex_exec(char **argv, char **env);
-int		ft_pipex_loop(t_context *ctx);
-pid_t	child_procces(char *cmd, t_context *context);
+void	io_manager(int argc, char **argv, t_context *context);
 void	stderror_manager(char *message, int has_prerror, int exit_mode);
 void	create_path(char **s1, char *s2);
 void	redirect_io(t_context *context);

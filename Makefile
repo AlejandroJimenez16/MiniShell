@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2025/11/03 13:57:01 by alejandj         ###   ########.fr        #
+#    Updated: 2025/11/04 20:33:00 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,11 +24,12 @@ OBJDIR = obj/
 SRC =	src/main.c							\
 		src/mini_utils.c					\
 		src/mini_functions.c				\
-		#src/pipex/main_bonus.c				\
-		#src/pipex/minishell_compatible.c	\
-		#src/pipex/pipex_extra_bonus.c		\
-		#src/pipex/pipex_heredoc_bonus.c		\
-		#src/pipex/pipex_utils_bonus.c		\
+		src/pipex/main_bonus.c				\
+		src/pipex/minishell_compatible.c	\
+		src/pipex/pipex_extra_bonus.c		\
+		src/pipex/pipex_heredoc_bonus.c		\
+		src/pipex/pipex_utils_bonus.c		\
+		src/pipex/waaaaa.c					\
 
 OBJECTS = $(SRC:src/%.c=$(OBJDIR)/%.o)
 
@@ -37,11 +38,14 @@ LIBFT = $(LIBDIR)libft.a
 
 all: $(NAME)
 
-# Make executable
-$(NAME) : $(OBJECTS) $(LIBFT)
+# ---------------------------------------------------------------------------- #
+# 💥 RULES
+# ---------------------------------------------------------------------------- #
+
+# Create final executable
+$(NAME): $(OBJECTS) $(LIBFT)
 	@echo ""
-	@echo "\033[0;31m⚙️ COMPILANDO... 🚀\033[0m"
-	@echo ""
+	@echo "\033[0;31m⚙️  COMPILANDO... 🚀\033[0m"
 	$(CC) $(CFLAGS) $(OBJECTS) -L$(LIBDIR) -lft -lreadline -o $(NAME)
 	@echo ""
 	@echo "✅ \033[0;32mMINISHELL COMPILADA!!!\033[0m"
@@ -51,24 +55,24 @@ $(NAME) : $(OBJECTS) $(LIBFT)
 $(LIBFT):
 	@$(MAKE) -C $(LIBDIR) all
 
-# Rule create .o in the directory obj
+# Rule to compile every .c to .o, creating subfolders in obj/ as needed
 $(OBJDIR)/%.o: src/%.c
-	@mkdir -p $(OBJDIR)
+	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-# Clean object and mode markers
+# ---------------------------------------------------------------------------- #
+# 🧹 CLEANING
+# ---------------------------------------------------------------------------- #
 clean:
 	@$(MAKE) -C $(LIBDIR) clean
-	rm -rf $(OBJECTS)
+	@rm -rf $(OBJDIR)
 	@echo "🧹 \033[0;32mObject files removed successfully! 🗑️\033[0m"
 
-# Full clean
 fclean: clean
 	@$(MAKE) -C $(LIBDIR) fclean
-	rm -rf $(NAME)
+	@rm -f $(NAME)
 	@echo "🚀 \033[0;32mExecutable $(NAME) has been removed! 👋\033[0m"
 
-# Rebuild everything
 re: fclean all
 
 .PHONY: all clean fclean re
