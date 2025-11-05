@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/03 14:35:00 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/05 15:01:52 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_mini
 	char	**cmd;
 	char	**arr_path;
 	pid_t	simple_cmd_process;
+	int		last_status;
 }			t_mini;
 
 // Obtain vars env
@@ -50,7 +51,13 @@ char	*get_home(char **env);
 char    *get_prompt(char **env);
 char	**get_path_cmd(char **env);
 
-// Builtins
+// Built-ins
 int		ft_cd(t_mini *mini);
+
+// Execution
+void	execute_simple_commands(t_mini *mini);
+
+// Print errors
+void	print_cmd_error(char *cmd, char *error);
 
 #endif

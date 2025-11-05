@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 19:46:35 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/03 14:35:51 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/05 14:46:53 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,11 @@ char	**get_path_cmd(char **env)
 		i++;
 	}
 	return (arr_path);
+}
+
+void	print_cmd_error(char *cmd, char *error)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(error, 2);
 }

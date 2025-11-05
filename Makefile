@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2025/11/04 20:33:00 by alejandj         ###   ########.fr        #
+#    Updated: 2025/11/05 14:27:02 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ OBJDIR = obj/
 SRC =	src/main.c							\
 		src/mini_utils.c					\
 		src/mini_functions.c				\
+		src/execution.c						\
 		src/pipex/main_bonus.c				\
 		src/pipex/minishell_compatible.c	\
 		src/pipex/pipex_extra_bonus.c		\

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/03 18:30:55 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/05 15:02:18 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 void	child_simple_cmd(t_mini *mini)
 {
-	int		arr_path_id;
-	char	*path;
-
 	mini->simple_cmd_process = fork();
 	if (mini->simple_cmd_process < 0)
 	{
@@ -24,21 +21,13 @@ void	child_simple_cmd(t_mini *mini)
 		return ;
 	}
 	else if (mini->simple_cmd_process == 0)
-	{
-		arr_path_id = 0;
-		while (mini->arr_path && (mini->arr_path[arr_path_id] != NULL))
-		{
-			path = mini->arr_path[arr_path_id++];
-			create_path(&path, mini->cmd[0]);
-			if (access(path, X_OK) == 0)
-				execve(path, mini->cmd, mini->env);
-		}
-	}
+		execute_simple_commands(mini);
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	t_mini	mini;
+	int		status;
 
 	if (argc != 1)
 		return (ft_putendl_fd("minishell: no args supported", 2), 1);
@@ -49,33 +38,38 @@ int	main(int argc, char **argv, char **env)
 	{
 		mini.prompt = get_prompt(env);
 		mini.line = readline(mini.prompt);
+		free(mini.prompt);
 		if (!mini.line)
 			return (ft_printf("exit\n"), 0);
 		add_history(mini.line);
 
+		/*
 		if (ft_strchr(mini.line, '|'))
 		{
 			printf("hola que tal");
 			ft_pipex_exec(mini.cmd, mini.env);
 		}
-		else
-		{
+		*/
+		//else
+		//{
 			mini.cmd = ft_split(mini.line, ' ');
-			/*
 			if (!mini.cmd)
 			{
-				
+				ft_free_wa(mini.arr_path);
+				free(mini.line);
+				clear_history();
+				return (1);
 			}
-			*/
 			if (mini.cmd && mini.cmd[0] && ft_strncmp(mini.cmd[0], "cd", 3) == 0)
 				ft_cd(&mini);
 			else
 			{
 				child_simple_cmd(&mini);
-				waitpid(mini.simple_cmd_process, NULL, 0);
+				waitpid(mini.simple_cmd_process, &status, 0);
+				mini.last_status = WEXITSTATUS(status);
 			}
 			free_tab(mini.cmd);
-		}
+		//}
 		free(mini.line);
 	}
 	return (0);
