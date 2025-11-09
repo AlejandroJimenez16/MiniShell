@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 14:07:26 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/06 14:10:45 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/07 15:18:58 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,20 @@
 
 void	ft_env(char **env)
 {
-	int	i;
+	char	**arr;
+	int		i;
 
 	if (!env || !env[0])
 		return ;
 	i = 0;
 	while (env[i] != NULL)
 	{
-		printf("%s\n", env[i]);
+		arr = ft_split(env[i], '=');
+		if (!arr)
+			return ;
+		if (arr[1] != NULL)
+			printf("%s\n", env[i]);
+		ft_free_wa(arr);
 		i++;
 	}
 }

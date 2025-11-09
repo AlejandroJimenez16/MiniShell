@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/06 14:13:34 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/07 15:33:00 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ int	handle_builtin(t_mini *mini)
 		else if (ft_strncmp(mini->cmd[0], "pwd", 3) == 0)
 		{
 			ft_pwd();
+			return (1);
+		}
+		else if (ft_strncmp(mini->cmd[0], "export", 6) == 0)
+		{
+			ft_export(mini);
 			return (1);
 		}
 		else if (ft_strncmp(mini->cmd[0], "env", 3) == 0)
@@ -56,10 +61,10 @@ int	main(int argc, char **argv, char **env)
 		return (ft_putendl_fd("minishell: no args supported", 2), 1);
 	(void)argv;
 	mini.env = env;
-	mini.arr_path = get_path_cmd(env);
+	mini.arr_path = get_path_cmd(mini.env);
 	while (1)
 	{
-		mini.prompt = get_prompt(env);
+		mini.prompt = get_prompt(mini.env);
 		mini.line = readline(mini.prompt);
 		if (!mini.line)
 			return (ft_printf("exit\n"), 0);
