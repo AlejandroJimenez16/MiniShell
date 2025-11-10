@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/09 01:08:20 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/09 01:12:31 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/10 19:37:30 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,20 @@ int		get_len_var(char *str)
 		i++;
 	}
 	return (i);
+}
+
+char	*build_clean_var(char *var, char *value, int len_value)
+{
+	char	*value_clean;
+	char	*full;
+	
+	value_clean = ft_substr(value, 1, len_value - 2);
+	full = malloc(ft_strlen(var) + 1 + ft_strlen(value_clean) + 1);
+	if (!full)
+		return (NULL);
+	ft_strlcpy(full, var, ft_strlen(var) + 1 + ft_strlen(value_clean) + 1);
+	ft_strlcat(full, "=", ft_strlen(var) + 1 + ft_strlen(value_clean) + 1);
+	ft_strlcat(full, value_clean, ft_strlen(var) + 1 + ft_strlen(value_clean) + 1);
+	free(value_clean);
+	return (full);
 }
