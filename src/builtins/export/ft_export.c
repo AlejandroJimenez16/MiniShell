@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 14:11:36 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/10 19:24:30 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/10 20:11:26 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,21 +129,15 @@ void	manage_env_vars(t_mini *mini, char **arr)
 			if (ft_strncmp(arr[i], mini->env[j], get_len_var(arr[i])) == 0 &&
 					get_len_var(arr[i]) == get_len_var(mini->env[j]))
 			{
-				free(mini->env[j]);
 				// Si tiene valor
 				if (eq)
 				{
+					free(mini->env[j]);
 					full = manage_has_value(arr[i], eq);
 					mini->env[j] = full;
-					found = 1;
-					break ;
 				}
-				else
-				{
-					mini->env[j] = ft_strdup(arr[i]);
-					found = 1;
-					break ;
-				}
+				found = 1;
+				break ;
 			}
 			j++;
 		}
