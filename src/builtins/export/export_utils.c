@@ -6,13 +6,13 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/09 01:08:20 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/10 19:37:30 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/10 20:34:41 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/mini.h"
 
-int		get_num_vars_env(char **env)
+int	get_num_vars_env(char **env)
 {
 	int	i;
 
@@ -22,7 +22,7 @@ int		get_num_vars_env(char **env)
 	return (i);
 }
 
-int		get_len_var(char *str)
+int	get_len_var(char *str)
 {
 	int	i;
 
@@ -30,7 +30,7 @@ int		get_len_var(char *str)
 	while (str[i])
 	{
 		if (str[i] == '=')
-			break;
+			break ;
 		i++;
 	}
 	return (i);
@@ -40,14 +40,64 @@ char	*build_clean_var(char *var, char *value, int len_value)
 {
 	char	*value_clean;
 	char	*full;
-	
+
 	value_clean = ft_substr(value, 1, len_value - 2);
 	full = malloc(ft_strlen(var) + 1 + ft_strlen(value_clean) + 1);
 	if (!full)
 		return (NULL);
 	ft_strlcpy(full, var, ft_strlen(var) + 1 + ft_strlen(value_clean) + 1);
 	ft_strlcat(full, "=", ft_strlen(var) + 1 + ft_strlen(value_clean) + 1);
-	ft_strlcat(full, value_clean, ft_strlen(var) + 1 + ft_strlen(value_clean) + 1);
+	ft_strlcat(full, value_clean,
+		ft_strlen(var) + 1 + ft_strlen(value_clean) + 1);
 	free(value_clean);
 	return (full);
+}
+
+void	print_full_env(char **env)
+{
+	t_env	e_env;
+	int		i;
+	char	**arr;
+	char	*eq;
+
+	i = 0;
+	while (env[i] != NULL)
+	{
+		eq = ft_strchr(env[i], '=');
+		arr = ft_split(env[i], '=');
+		if (!arr)
+			return ;
+		e_env.var = arr[0];
+		e_env.value = arr[1];
+		if (e_env.value)
+			printf("declare -x %s=\"%s\"\n", e_env.var, e_env.value);
+		else if (!e_env.value && eq)
+			printf("declare -x %s=\"\"\n", e_env.var);
+		else
+			printf("declare -x %s\n", e_env.var);
+		ft_free_wa(arr);
+		i++;
+	}
+}
+
+char	*manage_has_value(char *var_value, char *eq)
+{
+	t_env	e_env;
+	int		len;
+
+	e_env.var = ft_substr(var_value, 0, eq - var_value);
+	e_env.value = eq + 1;
+	len = ft_strlen(e_env.value);
+	if ((e_env.value[0] == '"' || e_env.value[0] == '\'')
+		&& (e_env.value[len - 1] == '"' || e_env.value[len - 1] == '\''))
+	{
+		e_env.full = build_clean_var(e_env.var, e_env.value, len);
+		return (e_env.full);
+	}
+	else
+	{
+		free(e_env.var);
+		e_env.full = ft_strdup(var_value);
+		return (e_env.full);
+	}
 }
