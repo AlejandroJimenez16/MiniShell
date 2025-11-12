@@ -6,18 +6,18 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/10 20:34:48 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/12 13:36:48 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-#define MINISHELL_H
+#ifndef MINI_H
+# define MINI_H
 
 // Colors
-#define RED   "\033[0;31m"
-#define GREEN "\033[0;32m"
-#define BLUE  "\033[0;34m"
-#define RESET "\033[0m"
+# define RED   "\033[0;31m"
+# define GREEN "\033[0;32m"
+# define BLUE  "\033[0;34m"
+# define RESET "\033[0m"
 
 # include "../libft/libft.h"
 # include "pipex_bonus.h"
@@ -55,7 +55,7 @@ typedef struct s_env
 
 // Obtain vars env
 char	*get_home(char **env);
-char    *get_prompt(char **env);
+char	*get_prompt(char **env);
 char	**get_path_cmd(char **env);
 
 // Built-ins
@@ -66,11 +66,11 @@ void	ft_export(t_mini *mini);
 void	ft_env(char **env);
 
 // Export utils
-int		get_num_vars_env(char **env);
 int		get_len_var(char *str);
 char	*build_clean_var(char *var, char *value, int len_value);
 void	print_full_env(char **env);
 char	*manage_has_value(char *var_value, char *eq);
+char	**dup_env(char **env, int *i);
 
 // Execution
 void	execute_simple_commands(t_mini *mini);

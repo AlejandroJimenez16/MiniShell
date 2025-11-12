@@ -6,21 +6,11 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/09 01:08:20 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/10 20:34:41 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/12 13:42:51 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/mini.h"
-
-int	get_num_vars_env(char **env)
-{
-	int	i;
-
-	i = 0;
-	while (env[i] != NULL)
-		i++;
-	return (i);
-}
 
 int	get_len_var(char *str)
 {
@@ -53,31 +43,62 @@ char	*build_clean_var(char *var, char *value, int len_value)
 	return (full);
 }
 
+void	sort_env(char **cpy_env)
+{
+	int		i;
+	int		sorted;
+	int		len;
+	char	*temp;
+
+	len = 0;
+	while (cpy_env[len])
+		len++;
+	sorted = 0;
+	while (sorted == 0)
+	{
+		sorted = 1;
+		i = 0;
+		while (i < len - 1)
+		{
+			if (ft_strncmp(cpy_env[i], cpy_env[i + 1], 1024) > 0)
+			{
+				temp = cpy_env[i];
+				cpy_env[i] = cpy_env[i + 1];
+				cpy_env[i + 1] = temp;
+				sorted = 0;
+			}
+			i++;
+		}
+	}
+}
+
 void	print_full_env(char **env)
 {
-	t_env	e_env;
 	int		i;
 	char	**arr;
 	char	*eq;
+	char	**cpy_env;
 
+	cpy_env = dup_env(env, &i);
+	cpy_env[i] = NULL;
+	sort_env(cpy_env);
 	i = 0;
-	while (env[i] != NULL)
+	while (cpy_env[i] != NULL)
 	{
-		eq = ft_strchr(env[i], '=');
-		arr = ft_split(env[i], '=');
+		eq = ft_strchr(cpy_env[i], '=');
+		arr = ft_split(cpy_env[i], '=');
 		if (!arr)
 			return ;
-		e_env.var = arr[0];
-		e_env.value = arr[1];
-		if (e_env.value)
-			printf("declare -x %s=\"%s\"\n", e_env.var, e_env.value);
-		else if (!e_env.value && eq)
-			printf("declare -x %s=\"\"\n", e_env.var);
+		if (arr[1])
+			printf("declare -x %s=\"%s\"\n",arr[0], arr[1]);
+		else if (!arr[1] && eq)
+			printf("declare -x %s=\"\"\n", arr[0]);
 		else
-			printf("declare -x %s\n", e_env.var);
+			printf("declare -x %s\n", arr[0]);
 		ft_free_wa(arr);
 		i++;
 	}
+	ft_free_wa(cpy_env);
 }
 
 char	*manage_has_value(char *var_value, char *eq)
