@@ -6,31 +6,11 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 14:11:36 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/13 14:08:11 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/14 19:06:55 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/mini.h"
-
-char	**dup_env(char **env, int *i)
-{
-	int		num_vars;
-	char	**new_env;
-
-	num_vars = 0;
-	while (env[num_vars] != NULL)
-		num_vars++;
-	new_env = malloc((num_vars + 2) * sizeof(char *));
-	if (!new_env)
-		return (NULL);
-	*i = 0;
-	while (env[*i])
-	{
-		new_env[*i] = ft_strdup(env[*i]);
-		(*i)++;
-	}
-	return (new_env);
-}
 
 char	**add_env_var(char **env, char *var_value, char *eq)
 {
@@ -96,6 +76,18 @@ void	manage_env_vars(t_mini *mini, char *var_value)
 		mini->env = add_env_var(mini->env, var_value, eq);
 }
 
+void	process_export_var(t_mini *mini, char *var_value)
+{
+	char	*var_value_clean;
+
+	var_value_clean = remove_quotes(var_value, ft_strlen(var_value));
+	if (!parse_export(var_value_clean))
+		printf("minishell: export: '%s': not a valid identifier\n", var_value);
+	else
+		manage_env_vars(mini, var_value_clean);
+	free(var_value_clean);
+}
+
 void	ft_export(t_mini *mini)
 {
 	char	**arr;
@@ -115,11 +107,7 @@ void	ft_export(t_mini *mini)
 	i = 1;
 	while (arr[i])
 	{
-		if (!parse_export(arr[i]))
-			printf("minishell: export: '%s%s\n", arr[i],
-				"': not a valid identifier");
-		else
-			manage_env_vars(mini, arr[i]);
+		process_export_var(mini, arr[i]);
 		i++;
 	}
 	ft_free_wa(arr);

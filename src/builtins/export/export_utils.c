@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/09 01:08:20 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/13 13:55:27 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/14 19:07:08 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,26 @@ void	sort_env(char **cpy_env)
 			i++;
 		}
 	}
+}
+
+char	**dup_env(char **env, int *i)
+{
+	int		num_vars;
+	char	**new_env;
+
+	num_vars = 0;
+	while (env[num_vars] != NULL)
+		num_vars++;
+	new_env = malloc((num_vars + 2) * sizeof(char *));
+	if (!new_env)
+		return (NULL);
+	*i = 0;
+	while (env[*i])
+	{
+		new_env[*i] = ft_strdup(env[*i]);
+		(*i)++;
+	}
+	return (new_env);
 }
 
 void	print_full_env(char **env)

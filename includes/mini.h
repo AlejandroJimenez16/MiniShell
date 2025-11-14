@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/13 13:51:10 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/14 18:28:12 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int		ft_echo(t_mini *mini);
 int		ft_cd(t_mini *mini);
 int		ft_pwd(void);
 void	ft_export(t_mini *mini);
+void	ft_unset(t_mini *mini);
 void	ft_env(char **env);
 
 // Export utils
@@ -72,6 +73,7 @@ char	*manage_has_value(char *var_value, char *eq);
 char	**dup_env(char **env, int *i);
 // Export parse
 int		parse_export(char *var_value);
+char	*remove_quotes(char *value, int len_value);
 char	*build_clean_var(char *var, char *value, int len_value);
 
 // Execution

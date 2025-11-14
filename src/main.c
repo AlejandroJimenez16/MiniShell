@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/10 19:31:16 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/13 19:45:57 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ int	handle_builtin(t_mini *mini)
 		else if (ft_strncmp(mini->cmd[0], "export", 6) == 0)
 		{
 			ft_export(mini);
+			return (1);
+		}
+		else if (ft_strncmp(mini->cmd[0], "unset", 5) == 0)
+		{
+			ft_unset(mini);
 			return (1);
 		}
 		else if (ft_strncmp(mini->cmd[0], "env", 3) == 0)
