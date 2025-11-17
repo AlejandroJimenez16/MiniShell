@@ -36,8 +36,7 @@ typedef struct s_context
 	int		pipe2_io[2];
 }	t_context;
 
-int		ft_pipex_exec(char **argv, char **env);
-void	io_manager(int argc, char **argv, t_context *context);
+int		pipex(int argc, char **argv, char **env, int mode);
 void	stderror_manager(char *message, int has_prerror, int exit_mode);
 void	create_path(char **s1, char *s2);
 void	redirect_io(t_context *context);
@@ -49,9 +48,15 @@ void	sync_pipes(t_context *context);
 int		here_doc(char *delimiter);
 void	close_all(t_context *context);
 void	manage_line(char *delimiter, char *line, int n_line);
-int		ft_pipex_loop(t_context *ctx);
-int		ft_tablen(char **tab);
-void	free_tab(char **tab);
 void	*ft_free_wa(char **word_arr);
+
+//Parser for integration with minishell
+int		detect_mode(char *line);
+char	**extract_commands(char *line);
+char	*extract_outfile(char *line);
+char	*extract_word_after(char *line, char *key);
+int		count_items(char **cmds);
+char	**parse_line(char *line);
+int		execute_pipex(int argc, char **argv, char **env);
 
 #endif

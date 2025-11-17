@@ -32,11 +32,13 @@ SRC =	src/main.c							\
 		src/builtins/ft_unset.c				\
 		src/builtins/ft_env.c				\
 		src/pipex/main_bonus.c				\
-		src/pipex/minishell_compatible.c	\
 		src/pipex/pipex_extra_bonus.c		\
 		src/pipex/pipex_heredoc_bonus.c		\
 		src/pipex/pipex_utils_bonus.c		\
 		src/pipex/waaaaa.c					\
+		src/parser/parser_pipex.c			\
+		src/parser/parser_pipex_utils.c		\
+		src/pipex/pipex_minishell.c		
 
 OBJECTS = $(SRC:src/%.c=$(OBJDIR)/%.o)
 

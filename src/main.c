@@ -75,15 +75,15 @@ int	main(int argc, char **argv, char **env)
 			return (ft_printf("exit\n"), 0);
 		add_history(mini.line);
 
-		/*
+		
 		if (ft_strchr(mini.line, '|'))
 		{
-			printf("hola que tal");
-			ft_pipex_exec(mini.cmd, mini.env);
+			char **parsed_argv = parse_line(mini.line);
+			execute_pipex(count_items(parsed_argv), parsed_argv, mini.env);
+			ft_free_wa(parsed_argv);
 		}
-		*/
-		//else
-		//{
+		else
+		{
 			mini.cmd = ft_split(mini.line, ' ');
 			if (!mini.cmd)
 			{
@@ -98,8 +98,8 @@ int	main(int argc, char **argv, char **env)
 				waitpid(mini.simple_cmd_process, &status, 0);
 				mini.last_status = WEXITSTATUS(status);
 			}
-			free_tab(mini.cmd);
-		//}
+			ft_free_wa(mini.cmd);
+		}
 		free(mini.line);
 	}
 	free(mini.prompt);

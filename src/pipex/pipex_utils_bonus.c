@@ -63,7 +63,8 @@ void	redirect_io(t_context *context)
 		if (access(context->argv[1], F_OK | R_OK) == -1
 			&& ft_strncmp(context->argv[1], "here_doc", 8) != 0)
 			stderror_manager(context->argv[1], 0, 1);
-		dup2(context->io[0], STDIN_FILENO);
+		if (context->io[0] != 1)
+			dup2(context->io[0], STDIN_FILENO);
 		dup2(context->pipe_io[1], STDOUT_FILENO);
 	}
 	else if (context->order == context->argc - 2)
@@ -74,7 +75,8 @@ void	redirect_io(t_context *context)
 			dup2(context->pipe2_io[0], STDIN_FILENO);
 		else
 			dup2(context->pipe_io[0], STDIN_FILENO);
-		dup2(context->io[1], STDOUT_FILENO);
+		if (context->io[1] != 1)
+			dup2(context->io[1], STDOUT_FILENO);
 	}
 	else
 		redirect_pipe(context);

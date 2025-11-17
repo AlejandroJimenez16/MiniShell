@@ -95,18 +95,19 @@ static pid_t	child_procces(char *cmd, t_context *context)
 	return (child_pid);
 }
 
-void	io_manager(int argc, char **argv, t_context *context)
+static void	io_manager(int argc, char **argv, t_context *context, int mode)
 {
-	if (argc <= 2)
+	if (mode == 0)
 	{
-		context->io[0] = STDIN_FILENO;
-		context->io[1] = open("outfile", O_RDWR | O_TRUNC | O_CREAT, 0644);
-		if (context->io[1] == -1)
-			stderror_manager("Error: Cannot create outfile", 1, 1);
-		context->order = 1;
-		return ;
+		context->io[0] = -1;
+		context->io[1] = -1;
 	}
-	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
+	else if (mode == 1)
+	{
+		context->io[0] = open(argv[1], O_RDONLY);
+		context->io[1] = open(argv[argc - 1], O_RDWR | O_TRUNC | O_CREAT, 0644);
+	}
+	else if (mode == 2)
 	{
 		if (argc < 6)
 			stderror_manager("Error: At least 6 arguments are expected", 1, 1);
@@ -116,22 +117,29 @@ void	io_manager(int argc, char **argv, t_context *context)
 		context->order = 2;
 		return ;
 	}
-	context->io[0] = open(argv[1], O_RDONLY);
-	context->io[1] = open(argv[argc - 1], O_RDWR | O_TRUNC | O_CREAT, 0644);
 	context->order = 1;
 }
 
-int	ft_pipex_loop(t_context *ctx)
+int	pipex(int argc, char **argv, char **env, int mode)
 {
-	pid_t	last_pid;
+	t_context	context;
+	pid_t		last_pid;
 
-	ctx->order = 1;
-	while (++ctx->order < ctx->argc - 1)
+	if (argc < 3)
+		return (write(2, "Error: At least 2 arguments are expected\n", 41), 1);
+	io_manager(argc, argv, &context, mode);
+	context.env = env;
+	context.argc = argc;
+	context.argv = argv;
+	context.cmd_order = 0;
+	if (pipe(context.pipe_io) == -1 || pipe(context.pipe2_io) == -1)
+		stderror_manager("Error: Pipe failed", 1, 1);
+	while (++context.order < argc - 1)
 	{
-		sync_pipes(ctx);
-		last_pid = child_procces(ctx->argv[ctx->order], ctx);
-		ctx->cmd_order++;
+		sync_pipes(&context);
+		last_pid = child_procces(argv[context.order], &context);
+		context.cmd_order += 1;
 	}
-	close_all(ctx);
-	return (get_last_status(last_pid, ctx->argc, ctx->argv));
+	close_all(&context);
+	return (get_last_status(last_pid, argc, argv));
 }
