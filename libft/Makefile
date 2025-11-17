@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/22 12:50:32 by alejandj          #+#    #+#              #
-#    Updated: 2025/08/27 13:26:46 by alejandj         ###   ########.fr        #
+#    Updated: 2025/11/18 00:08:08 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRC =	ft_isalpha.c		\
 		ft_strjoin.c		\
 		ft_strtrim.c		\
 		ft_split.c			\
+		ft_split_tokens.c	\
 		ft_itoa.c			\
 		ft_strmapi.c		\
 		ft_striteri.c		\

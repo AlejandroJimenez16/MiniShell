@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/13 19:45:57 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/18 00:09:26 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	main(int argc, char **argv, char **env)
 		}
 		else
 		{
-			mini.cmd = ft_split(mini.line, ' ');
+			mini.cmd = ft_split_tokens(mini.line);
 			if (!mini.cmd)
 			{
 				ft_free_wa(mini.arr_path);
