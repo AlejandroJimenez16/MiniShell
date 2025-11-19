@@ -6,26 +6,26 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 13:45:09 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/17 19:00:13 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/19 16:34:20 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/mini.h"
 
-static void	manage_quotes(char *s, int *i, int *in_word, int *count)
+void	has_quotes(char *s, int *in_word, int *count, int *i)
 {
 	char	quote;
 
-	(*count)++;
-	quote = s[*i];
-	(*i)++;
+	if (!*in_word)
+	{
+		*in_word = 1;
+		(*count)++;
+	}
+	quote = s[(*i)++];
 	while (s[*i] && (s[*i] != quote))
 		(*i)++;
 	if (s[*i] == quote)
-	{
-		*in_word = 1;
 		(*i)++;
-	}
 }
 
 static int	count_tokens(char *s)
@@ -39,13 +39,13 @@ static int	count_tokens(char *s)
 	i = 0;
 	while (s[i])
 	{
-		if (s[i] == ' ')
-			in_word = 0;
-		else if (s[i] == '\'' || s[i] == '\"')
+		if (s[i] == '\'' || s[i] == '\"')
 		{
-			manage_quotes(s, &i, &in_word, &count);
+			has_quotes(s, &in_word, &count, &i);
 			continue ;
 		}
+		if (s[i] == ' ')
+			in_word = 0;
 		else if (!in_word)
 		{
 			in_word = 1;
@@ -58,31 +58,29 @@ static int	count_tokens(char *s)
 
 static char	*build_word(char *str, int *i)
 {
-	int		start;
-	int		end;
+	char	buffer[4096];
+	int		j;
 	char	quote;
 
+	j = 0;
 	while (str[*i] && (str[*i] == ' ' || str[*i] == '\t' || str[*i] == '\n'))
 		(*i)++;
-	if (str[*i] == '\'' || str[*i] == '\"')
+	while (str[*i] && (str[*i] != ' ' && str[*i] != '\t' && str[*i] != '\n'))
 	{
-		quote = str[*i];
-		(*i)++;
-		start = *i;
-		while (str[*i] && (str[*i] != quote))
+		if (str[*i] == '\'' || str[*i] == '\"')
+		{
+			quote = str[*i];
 			(*i)++;
-		end = *i;
-		(*i) += (str[*i] == quote);
+			while (str[*i] && (str[*i] != quote))
+				buffer[j++] = str[(*i)++];
+			if (str[*i] == quote)
+				(*i)++;
+		}
+		else
+			buffer[j++] = str[(*i)++];
 	}
-	else
-	{
-		start = *i;
-		while (str[*i] && str[*i] != ' ' && str[*i] != '\t' && str[*i] != '\n'
-			&& str[*i] != '\'' && str[*i] != '\"')
-			(*i)++;
-		end = *i;
-	}
-	return (ft_substr(str, start, end - start));
+	buffer[j] = '\0';
+	return (ft_strdup(buffer));
 }
 
 char	**ft_split_tokens(char *str)
