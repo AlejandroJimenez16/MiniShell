@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 14:11:36 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/19 16:35:32 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/19 16:58:20 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,25 +90,19 @@ void	process_export_var(t_mini *mini, char *var_value)
 
 void	ft_export(t_mini *mini)
 {
-	char	**arr;
 	int		i;
 
 	if (!mini->env || !mini->env[0])
 		return ;
-	arr = ft_split_tokens(mini->line);
-	if (!arr)
-		return ;
-	if (!arr[1])
+	if (!mini->cmd[1])
 	{
 		print_full_env(mini->env);
-		ft_free_wa(arr);
 		return ;
 	}
 	i = 1;
-	while (arr[i])
+	while (mini->cmd[i])
 	{
-		process_export_var(mini, arr[i]);
+		process_export_var(mini, mini->cmd[i]);
 		i++;
 	}
-	ft_free_wa(arr);
 }

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 19:40:22 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/15 19:31:01 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/19 17:02:20 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,19 +81,15 @@ void	unset_var(t_mini *mini, char *var)
 
 void	ft_unset(t_mini *mini)
 {
-	char	**arr;
 	char	*var;
 	int		i;
 
 	if (!mini->env || !mini->env[0])
 		return ;
-	arr = ft_split(mini->line, ' ');
-	if (!arr)
-		return ;
 	i = 1;
-	while (arr[i])
+	while (mini->cmd[i])
 	{
-		var = remove_quotes(arr[i], ft_strlen(arr[i]));
+		var = remove_quotes(mini->cmd[i], ft_strlen(mini->cmd[i]));
 		if (var)
 		{
 			if (!ft_strchr(var, '='))
@@ -102,5 +98,4 @@ void	ft_unset(t_mini *mini)
 		}
 		i++;
 	}
-	ft_free_wa(arr);
 }
