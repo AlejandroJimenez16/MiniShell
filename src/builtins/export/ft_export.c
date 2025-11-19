@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 14:11:36 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/14 19:06:55 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/19 16:35:32 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	ft_export(t_mini *mini)
 
 	if (!mini->env || !mini->env[0])
 		return ;
-	arr = ft_split(mini->line, ' ');
+	arr = ft_split_tokens(mini->line);
 	if (!arr)
 		return ;
 	if (!arr[1])

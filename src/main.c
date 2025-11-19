@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/18 00:09:26 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/18 18:15:10 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	main(int argc, char **argv, char **env)
 			return (ft_printf("exit\n"), 0);
 		add_history(mini.line);
 
-		
+		// Pipex
 		if (ft_strchr(mini.line, '|'))
 		{
 			char **parsed_argv = parse_line(mini.line);
