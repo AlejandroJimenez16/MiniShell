@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/19 17:14:45 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/20 18:30:41 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct s_mini
 	char	**cmd;
 	char	**arr_path;
 	pid_t	simple_cmd_process;
-	int		last_status;
+	int		exit_code;
 }			t_mini;
 
 typedef struct s_env
@@ -61,7 +61,7 @@ char	**get_path_cmd(char **env);
 // Built-ins
 void	ft_echo(char **cmd);
 int		ft_cd(t_mini *mini);
-int		ft_pwd(void);
+int		ft_pwd(t_mini *mini);
 void	ft_export(t_mini *mini);
 void	ft_unset(t_mini *mini);
 void	ft_env(char **env);

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/19 17:14:13 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/20 18:36:58 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	handle_builtin(t_mini *mini)
 		}	
 		else if (ft_strncmp(mini->cmd[0], "pwd", 3) == 0)
 		{
-			ft_pwd();
+			ft_pwd(mini);
 			return (1);
 		}
 		else if (ft_strncmp(mini->cmd[0], "export", 6) == 0)
@@ -74,6 +74,7 @@ int	main(int argc, char **argv, char **env)
 	mini.arr_path = get_path_cmd(mini.env);
 	while (1)
 	{
+		mini.exit_code = 0;
 		mini.prompt = get_prompt(mini.env);
 		mini.line = readline(mini.prompt);
 		if (!mini.line)
@@ -101,7 +102,7 @@ int	main(int argc, char **argv, char **env)
 			{
 				child_simple_cmd(&mini);
 				waitpid(mini.simple_cmd_process, &status, 0);
-				mini.last_status = WEXITSTATUS(status);
+				mini.exit_code = WEXITSTATUS(status);
 			}
 			ft_free_wa(mini.cmd);
 		}
