@@ -6,14 +6,52 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 20:06:52 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/05 20:31:10 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/20 14:56:35 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/mini.h"
 
-int	ft_echo(t_mini *mini)
+int	has_n(char *arg)
 {
-	if (ft_strncmp(mini->cmd[1], "-n", 2) == 0)
-		ft_putstr(mini->cmd[2]);
+	int	i;
+
+	i = 1;
+	if (!arg || arg[0] != '-' || arg[1] == '\0')
+		return (0);
+	while (arg[i])
+	{
+		if (arg[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+void	ft_echo(char **cmd)
+{
+	int	i;
+	int	newline;
+
+	i = 1;
+	newline = 1;
+	if (!cmd[i])
+	{
+		printf("\n");
+		return ;
+	}
+	while (cmd[i] && has_n(cmd[i]))
+	{
+		newline = 0;
+		i++;
+	}
+	while (cmd[i])
+	{
+		printf("%s", cmd[i]);
+		if (cmd[i + 1])
+			printf(" ");
+		i++;
+	}
+	if (newline)
+		printf("\n");
 }

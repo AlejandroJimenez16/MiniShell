@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/14 18:28:12 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/19 17:14:45 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*get_prompt(char **env);
 char	**get_path_cmd(char **env);
 
 // Built-ins
-int		ft_echo(t_mini *mini);
+void	ft_echo(char **cmd);
 int		ft_cd(t_mini *mini);
 int		ft_pwd(void);
 void	ft_export(t_mini *mini);
