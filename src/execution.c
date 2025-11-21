@@ -6,13 +6,13 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 14:27:04 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/05 19:22:38 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/21 20:20:23 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/mini.h"
 
-void	execute_absolute_path(t_mini *mini)
+static void	execute_absolute_path(t_mini *mini)
 {
 	if (access(mini->cmd[0], F_OK) != 0)
 	{
@@ -32,7 +32,7 @@ void	execute_absolute_path(t_mini *mini)
 	}
 }
 
-void	manage_error_msg(t_mini *mini, int permission)
+static void	manage_error_msg(t_mini *mini, int permission)
 {
 	if (permission)
 	{
@@ -46,7 +46,7 @@ void	manage_error_msg(t_mini *mini, int permission)
 	}
 }
 
-void	execute_from_path(t_mini *mini)
+static void	execute_from_path(t_mini *mini)
 {
 	int		permission;
 	int		i;
@@ -70,7 +70,7 @@ void	execute_from_path(t_mini *mini)
 	manage_error_msg(mini, permission);
 }
 
-void	execute_simple_commands(t_mini *mini)
+static void	execute_simple_commands(t_mini *mini)
 {
 	if (!mini->cmd || !mini->cmd[0] || !mini->cmd[0][0])
 	{
@@ -83,4 +83,17 @@ void	execute_simple_commands(t_mini *mini)
 		execute_absolute_path(mini);
 	else
 		execute_from_path(mini);
+}
+
+void	child_simple_cmd(t_mini *mini)
+{
+	mini->simple_cmd_process = fork();
+	if (mini->simple_cmd_process < 0)
+	{
+		perror("fork");
+		mini->exit_code = 1;
+		return ;
+	}
+	else if (mini->simple_cmd_process == 0)
+		execute_simple_commands(mini);
 }

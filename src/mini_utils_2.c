@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   mini_utils_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/05 20:38:09 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/21 18:14:44 by alejandj         ###   ########.fr       */
+/*   Created: 2025/11/21 19:43:51 by alejandj          #+#    #+#             */
+/*   Updated: 2025/11/21 19:45:53 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/mini.h"
+#include "../includes/mini.h"
 
-void	ft_pwd(t_mini *mini)
+void	print_cmd_error(char *cmd, char *error)
 {
-	char	*pwd;
-
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-	{
-		perror("minishell: pwd");
-		mini->exit_code = 1;
-		return ;
-	}
-	printf("%s\n", pwd);
-	free(pwd);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(error, 2);
 }

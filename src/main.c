@@ -6,71 +6,55 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/21 13:37:42 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/21 20:20:18 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/mini.h"
 
-int	handle_builtin(t_mini *mini)
+static void	handle_simple_commands(t_mini *mini)
 {
-	if (mini->cmd && mini->cmd[0])
+	int		status;
+	
+	mini->cmd = ft_split_tokens(mini->line);
+	if (!mini->cmd)
 	{
-		if (ft_strncmp(mini->cmd[0], "echo", 4) == 0)
-		{
-			ft_echo(mini->cmd);
-			return (1);
-		}
-		if (ft_strncmp(mini->cmd[0], "cd", 3) == 0)
-		{
-			ft_cd(mini);
-			return (1);
-		}	
-		else if (ft_strncmp(mini->cmd[0], "pwd", 3) == 0)
-		{
-			ft_pwd(mini);
-			return (1);
-		}
-		else if (ft_strncmp(mini->cmd[0], "export", 6) == 0)
-		{
-			ft_export(mini);
-			return (1);
-		}
-		else if (ft_strncmp(mini->cmd[0], "unset", 5) == 0)
-		{
-			ft_unset(mini);
-			return (1);
-		}
-		else if (ft_strncmp(mini->cmd[0], "env", 3) == 0)
-		{
-			ft_env(mini->env);
-			return (1);
-		}
-		else if (ft_strncmp(mini->cmd[0], "exit", 4) == 0)
-		{
-			ft_exit(mini);
-			return (1);
-		}
-	}
-	return (0);
-}
-
-void	child_simple_cmd(t_mini *mini)
-{
-	mini->simple_cmd_process = fork();
-	if (mini->simple_cmd_process < 0)
-	{
-		perror("fork");
+		ft_free_wa(mini->arr_path);
+		free(mini->line);
+		clear_history();
 		return ;
 	}
-	else if (mini->simple_cmd_process == 0)
-		execute_simple_commands(mini);
+	if (!is_builtin(mini->cmd))
+	{
+		child_simple_cmd(mini);
+		waitpid(mini->simple_cmd_process, &status, 0);
+		mini->exit_code = WEXITSTATUS(status);
+	}
+	else
+		exec_builtins(mini);
+	ft_free_wa(mini->cmd);
+}
+
+static void	handle_line(t_mini *mini)
+{
+	char	**parsed_argv;
+
+	if (!mini->line || *mini->line == '\0')
+		return ;
+	if (ft_strchr(mini->line, '|'))
+	{
+		printf("Pipex\n");
+		parsed_argv = parse_line(mini->line);
+		execute_pipex(count_items(parsed_argv), parsed_argv, mini->env);
+		ft_free_wa(parsed_argv);
+	}
+	else
+		handle_simple_commands(mini);
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	t_mini	mini;
-	int		status;
 
 	if (argc != 1)
 		return (ft_putendl_fd("minishell: no args supported", 2), 1);
@@ -85,32 +69,7 @@ int	main(int argc, char **argv, char **env)
 		if (!mini.line)
 			return (ft_printf("exit\n"), 0);
 		add_history(mini.line);
-
-		// Pipex
-		if (ft_strchr(mini.line, '|'))
-		{
-			char **parsed_argv = parse_line(mini.line);
-			execute_pipex(count_items(parsed_argv), parsed_argv, mini.env);
-			ft_free_wa(parsed_argv);
-		}
-		else
-		{
-			mini.cmd = ft_split_tokens(mini.line);
-			if (!mini.cmd)
-			{
-				ft_free_wa(mini.arr_path);
-				free(mini.line);
-				clear_history();
-				return (1);
-			}
-			if (!handle_builtin(&mini))
-			{
-				child_simple_cmd(&mini);
-				waitpid(mini.simple_cmd_process, &status, 0);
-				mini.exit_code = WEXITSTATUS(status);
-			}
-			ft_free_wa(mini.cmd);
-		}
+		handle_line(&mini);
 		free(mini.line);
 	}
 	free(mini.prompt);

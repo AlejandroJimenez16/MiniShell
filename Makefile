@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2025/11/21 12:45:39 by alejandj         ###   ########.fr        #
+#    Updated: 2025/11/21 19:43:39 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,10 @@ LIBDIR = libft/
 OBJDIR = obj/
 
 SRC =	src/main.c							\
-		src/mini_utils.c					\
+		src/mini_utils_1.c					\
+		src/mini_utils_2.c					\
 		src/execution.c						\
+		src/builtins/builtins_main.c		\
 		src/builtins/ft_echo.c				\
 		src/builtins/ft_cd.c				\
 		src/builtins/ft_pwd.c				\
