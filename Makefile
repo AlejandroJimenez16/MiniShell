@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2025/11/19 17:16:06 by alejandj         ###   ########.fr        #
+#    Updated: 2025/11/21 12:45:39 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ SRC =	src/main.c							\
 		src/builtins/export/parse.c			\
 		src/builtins/ft_unset.c				\
 		src/builtins/ft_env.c				\
+		src/builtins/ft_exit.c				\
 		src/pipex/main_bonus.c				\
 		src/pipex/pipex_extra_bonus.c		\
 		src/pipex/pipex_heredoc_bonus.c		\
