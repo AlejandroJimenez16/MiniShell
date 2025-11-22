@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/21 20:20:18 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/22 22:36:38 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	handle_simple_commands(t_mini *mini)
 {
 	int		status;
 	
-	mini->cmd = ft_split_tokens(mini->line);
+	mini->cmd = split_tokens(mini->line);
 	if (!mini->cmd)
 	{
 		ft_free_wa(mini->arr_path);
@@ -24,6 +24,7 @@ static void	handle_simple_commands(t_mini *mini)
 		clear_history();
 		return ;
 	}
+	expand_vars(mini);
 	if (!is_builtin(mini->cmd))
 	{
 		child_simple_cmd(mini);
@@ -45,6 +46,8 @@ static void	handle_line(t_mini *mini)
 	{
 		printf("Pipex\n");
 		parsed_argv = parse_line(mini->line);
+		if (!parsed_argv)
+			return ;
 		execute_pipex(count_items(parsed_argv), parsed_argv, mini->env);
 		ft_free_wa(parsed_argv);
 	}
@@ -63,7 +66,6 @@ int	main(int argc, char **argv, char **env)
 	mini.arr_path = get_path_cmd(mini.env);
 	while (1)
 	{
-		mini.exit_code = 0;
 		mini.prompt = get_prompt(mini.env);
 		mini.line = readline(mini.prompt);
 		if (!mini.line)

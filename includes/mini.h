@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/21 20:20:46 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/22 22:08:21 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,10 @@ char	**dup_env(char **env, int *i);
 int		parse_export(char *var_value);
 char	*remove_quotes(char *value, int len_value);
 char	*build_clean_var(char *var, char *value, int len_value);
+
+// Parser
+char	**split_tokens(char *str);
+void	expand_vars(t_mini *mini);
 
 // Execution
 void	child_simple_cmd(t_mini *mini);

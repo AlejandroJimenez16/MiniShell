@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2025/11/21 19:43:39 by alejandj         ###   ########.fr        #
+#    Updated: 2025/11/22 22:21:57 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,13 +35,15 @@ SRC =	src/main.c							\
 		src/builtins/ft_unset.c				\
 		src/builtins/ft_env.c				\
 		src/builtins/ft_exit.c				\
+		src/parser/parser_pipex.c			\
+		src/parser/parser_pipex_utils.c		\
+		src/parser/split_tokens.c			\
+		src/parser/expand_vars.c			\
 		src/pipex/main_bonus.c				\
 		src/pipex/pipex_extra_bonus.c		\
 		src/pipex/pipex_heredoc_bonus.c		\
 		src/pipex/pipex_utils_bonus.c		\
 		src/pipex/waaaaa.c					\
-		src/parser/parser_pipex.c			\
-		src/parser/parser_pipex_utils.c		\
 		src/pipex/pipex_minishell.c		
 
 OBJECTS = $(SRC:src/%.c=$(OBJDIR)/%.o)

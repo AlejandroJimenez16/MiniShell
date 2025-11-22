@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split_tokens.c                                  :+:      :+:    :+:   */
+/*   split_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 13:45:09 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/19 16:34:20 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/22 21:35:40 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/mini.h"
+#include "../../includes/mini.h"
 
-void	has_quotes(char *s, int *in_word, int *count, int *i)
+static void	has_quotes(char *s, int *in_word, int *count, int *i)
 {
 	char	quote;
 
@@ -83,7 +83,7 @@ static char	*build_word(char *str, int *i)
 	return (ft_strdup(buffer));
 }
 
-char	**ft_split_tokens(char *str)
+char	**split_tokens(char *str)
 {
 	char	**arr;
 	int		n_tokens;
