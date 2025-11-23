@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 13:45:09 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/22 21:35:40 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/23 21:51:17 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	has_quotes(char *s, int *in_word, int *count, int *i)
 		(*i)++;
 }
 
-static int	count_tokens(char *s)
+int	count_tokens(char *s)
 {
 	int		i;
 	int		in_word;
@@ -56,12 +56,21 @@ static int	count_tokens(char *s)
 	return (count);
 }
 
-static char	*build_word(char *str, int *i)
+static void	set_quote_type(char quote, t_token_info *t_info)
+{
+	if (quote == '\'')
+		t_info->type_quote = SINGLE_QUOTES;
+	else if (quote == '\"')
+		t_info->type_quote = DOUBLE_QUOTES;
+}
+
+static char	*build_word(char *str, int *i, t_token_info *t_info)
 {
 	char	buffer[4096];
 	int		j;
 	char	quote;
 
+	t_info->type_quote = NO_QUOTES;
 	j = 0;
 	while (str[*i] && (str[*i] == ' ' || str[*i] == '\t' || str[*i] == '\n'))
 		(*i)++;
@@ -70,6 +79,7 @@ static char	*build_word(char *str, int *i)
 		if (str[*i] == '\'' || str[*i] == '\"')
 		{
 			quote = str[*i];
+			set_quote_type(quote, t_info);
 			(*i)++;
 			while (str[*i] && (str[*i] != quote))
 				buffer[j++] = str[(*i)++];
@@ -79,11 +89,10 @@ static char	*build_word(char *str, int *i)
 		else
 			buffer[j++] = str[(*i)++];
 	}
-	buffer[j] = '\0';
-	return (ft_strdup(buffer));
+	return (buffer[j] = '\0', ft_strdup(buffer));
 }
 
-char	**split_tokens(char *str)
+char	**split_tokens(char *str, t_token_info **t_info)
 {
 	char	**arr;
 	int		n_tokens;
@@ -98,7 +107,7 @@ char	**split_tokens(char *str)
 	index = 0;
 	while (index < n_tokens)
 	{
-		arr[index] = build_word(str, &i);
+		arr[index] = build_word(str, &i, &(*t_info)[index]);
 		index++;
 	}
 	arr[index] = NULL;

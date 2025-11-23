@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/22 22:08:21 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/23 21:55:58 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # include <termios.h>
 # include <termcap.h>
 
+// Main structure
 typedef struct s_mini
 {
 	char	**env;
@@ -46,12 +47,26 @@ typedef struct s_mini
 	int		exit_code;
 }			t_mini;
 
+// Environment structure
 typedef struct s_env
 {
 	char	*var;
 	char	*value;
 	char	*full;
 }			t_env;
+
+// Info tokens structure
+typedef enum e_quote_type
+{
+    NO_QUOTES,
+    SINGLE_QUOTES,
+    DOUBLE_QUOTES
+} t_quote_type;
+
+typedef struct	s_token_info
+{
+	t_quote_type	type_quote;
+}					t_token_info;
 
 // Obtain vars env
 char	*get_home(char **env);
@@ -80,8 +95,9 @@ char	*remove_quotes(char *value, int len_value);
 char	*build_clean_var(char *var, char *value, int len_value);
 
 // Parser
-char	**split_tokens(char *str);
-void	expand_vars(t_mini *mini);
+int		count_tokens(char *s);
+char	**split_tokens(char *str, t_token_info **t_info);
+void	expand_vars(t_mini *mini, t_token_info *t_info);
 
 // Execution
 void	child_simple_cmd(t_mini *mini);
