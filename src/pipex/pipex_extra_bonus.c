@@ -54,7 +54,7 @@ void	redirect_pipe(t_context *context)
 
 void	sync_pipes(t_context *context)
 {
-	if (context->order > 3)
+	if (context->order > 3 || (context->mode == 0 && context->order > 2))
 	{
 		if (context->cmd_order % 2 == 0)
 		{

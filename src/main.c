@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/23 21:54:21 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/22 22:36:38 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,9 @@
 
 static void	handle_simple_commands(t_mini *mini)
 {
-	t_token_info	*t_info;
-	int				status;
+	int		status;
 	
-	t_info = malloc(count_tokens(mini->line) * sizeof(t_token_info));
-	if (!t_info)
-		return ;
-	mini->cmd = split_tokens(mini->line, &t_info);
+	mini->cmd = split_tokens(mini->line);
 	if (!mini->cmd)
 	{
 		ft_free_wa(mini->arr_path);
@@ -28,7 +24,7 @@ static void	handle_simple_commands(t_mini *mini)
 		clear_history();
 		return ;
 	}
-	expand_vars(mini, t_info);
+	expand_vars(mini);
 	if (!is_builtin(mini->cmd))
 	{
 		child_simple_cmd(mini);
@@ -48,7 +44,6 @@ static void	handle_line(t_mini *mini)
 		return ;
 	if (ft_strchr(mini->line, '|'))
 	{
-		printf("Pipex\n");
 		parsed_argv = parse_line(mini->line);
 		if (!parsed_argv)
 			return ;

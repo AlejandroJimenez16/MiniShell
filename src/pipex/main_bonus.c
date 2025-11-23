@@ -101,11 +101,13 @@ static void	io_manager(int argc, char **argv, t_context *context, int mode)
 	{
 		context->io[0] = -1;
 		context->io[1] = -1;
+		context->order = 0;
 	}
 	else if (mode == 1)
 	{
 		context->io[0] = open(argv[1], O_RDONLY);
 		context->io[1] = open(argv[argc - 1], O_RDWR | O_TRUNC | O_CREAT, 0644);
+		context->order = 1;
 	}
 	else if (mode == 2)
 	{
@@ -117,13 +119,13 @@ static void	io_manager(int argc, char **argv, t_context *context, int mode)
 		context->order = 2;
 		return ;
 	}
-	context->order = 1;
 }
 
 int	pipex(int argc, char **argv, char **env, int mode)
 {
 	t_context	context;
 	pid_t		last_pid;
+	int			limit;
 
 	if (argc < 3)
 		return (write(2, "Error: At least 2 arguments are expected\n", 41), 1);
@@ -132,9 +134,11 @@ int	pipex(int argc, char **argv, char **env, int mode)
 	context.argc = argc;
 	context.argv = argv;
 	context.cmd_order = 0;
+	context.mode = mode;
 	if (pipe(context.pipe_io) == -1 || pipe(context.pipe2_io) == -1)
 		stderror_manager("Error: Pipe failed", 1, 1);
-	while (++context.order < argc - 1)
+	limit = get_limit(argc, mode);
+	while (++context.order < limit)
 	{
 		sync_pipes(&context);
 		last_pid = child_procces(argv[context.order], &context);
