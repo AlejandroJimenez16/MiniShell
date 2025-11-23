@@ -34,6 +34,7 @@ typedef struct s_context
 	int		cmd_order;
 	int		pipe_io[2];
 	int		pipe2_io[2];
+	int		mode;
 }	t_context;
 
 int		pipex(int argc, char **argv, char **env, int mode);
@@ -58,5 +59,7 @@ char	*extract_word_after(char *line, char *key);
 int		count_items(char **cmds);
 char	**parse_line(char *line);
 int		execute_pipex(int argc, char **argv, char **env);
+int		get_limit(int argc, int mode);
+void	continue_redirect_io(t_context *context);
 
 #endif
