@@ -44,7 +44,8 @@ SRC =	src/main.c							\
 		src/pipex/pipex_heredoc_bonus.c		\
 		src/pipex/pipex_utils_bonus.c		\
 		src/pipex/waaaaa.c					\
-		src/pipex/pipex_minishell.c		
+		src/pipex/pipex_minishell.c			\
+		src/pipex/pipex_minishell_utils.c
 
 OBJECTS = $(SRC:src/%.c=$(OBJDIR)/%.o)
 
