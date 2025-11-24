@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/23 21:55:58 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/24 12:35:36 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	ft_env(char **env);
 void	ft_exit(t_mini *mini);
 
 // Export utils
-int		get_len_var(char *str);
+size_t	get_len_var(char *str);
 void	print_full_env(char **env);
 char	*manage_has_value(char *var_value, char *eq);
 char	**dup_env(char **env, int *i);

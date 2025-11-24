@@ -6,15 +6,15 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/09 01:08:20 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/14 19:07:08 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/24 12:35:14 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/mini.h"
 
-int	get_len_var(char *str)
+size_t	get_len_var(char *str)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (str[i])
