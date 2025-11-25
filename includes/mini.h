@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/24 12:35:36 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/25 21:11:12 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,12 @@ typedef struct s_env
 // Info tokens structure
 typedef enum e_quote_type
 {
-    NO_QUOTES,
-    SINGLE_QUOTES,
-    DOUBLE_QUOTES
-} t_quote_type;
+	NO_QUOTES,
+	SINGLE_QUOTES,
+	DOUBLE_QUOTES
+}	t_quote_type;
 
-typedef struct	s_token_info
+typedef struct s_token_info
 {
 	t_quote_type	type_quote;
 }					t_token_info;
@@ -97,6 +97,9 @@ char	*build_clean_var(char *var, char *value, int len_value);
 // Parser
 int		count_tokens(char *s);
 char	**split_tokens(char *str, t_token_info **t_info);
+	// Expand vars
+int		get_len_expand_var(char *str);
+int		get_len_token(t_mini *mini, char *arg);
 void	expand_vars(t_mini *mini, t_token_info *t_info);
 
 // Execution

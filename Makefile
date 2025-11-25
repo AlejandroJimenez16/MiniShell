@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2025/11/22 22:21:57 by alejandj         ###   ########.fr        #
+#    Updated: 2025/11/25 21:10:51 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRC =	src/main.c							\
 		src/parser/parser_pipex_utils.c		\
 		src/parser/split_tokens.c			\
 		src/parser/expand_vars.c			\
+		src/parser/expand_vars_utils.c		\
 		src/pipex/main_bonus.c				\
 		src/pipex/pipex_extra_bonus.c		\
 		src/pipex/pipex_heredoc_bonus.c		\
