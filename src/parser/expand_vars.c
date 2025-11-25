@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/22 21:42:30 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/24 23:10:54 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/25 20:08:48 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ static int	get_len_token(t_mini *mini, char *arg)
 				free(var);
 				continue ;
 			}
+			count++;
+    		i++;
+    		continue;
 		}
 		else
 		{
@@ -82,9 +85,12 @@ static char	*expand_vars_in_token(t_mini *mini, char *arg)
 	int		i;
 	int		i_result;
 	int		len;
+	int		j;
+	char	*value;
+	char	*eq;
 
 	len = get_len_token(mini, arg);
-	result = malloc(len * sizeof(char));
+	result = malloc((len + 1) * sizeof(char));
 	if (!result)
 		return (NULL);
 	i = 0;
@@ -105,7 +111,29 @@ static char	*expand_vars_in_token(t_mini *mini, char *arg)
 			if (ft_isalpha(arg[i + 1]) || arg[i + 1] == '_')
 			{
 				char *var = ft_substr(arg, i + 1, get_len_expand_var(arg + i + 1));
-				printf("%s\n", var);
+				value = ft_strdup("");
+				j = 0;
+				while (mini->env[j])
+				{
+					if (ft_strncmp(mini->env[j], var, ft_strlen(var)) == 0
+						&& (ft_strlen(var) == get_len_var(mini->env[j])))
+					{
+						eq = ft_strchr(mini->env[j], '=');
+						free(value);
+						if (eq)
+							value = ft_strdup(eq + 1);
+						else
+							value = ft_strdup("");
+						break ;
+					}
+					j++;
+				}
+				ft_memcpy(result + i_result, value, ft_strlen(value));
+				i_result += ft_strlen(value);
+				i += ft_strlen(var) + 1;
+				free(value);
+				free(var);
+				continue ;
 			}
 		}
 		result[i_result++] = arg[i];
