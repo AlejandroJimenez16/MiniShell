@@ -6,13 +6,13 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 14:06:05 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/13 19:31:08 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/27 16:51:20 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/mini.h"
 
-int	count_quotes(char *value)
+static int	count_quotes(char *value)
 {
 	int	i;
 	int	count;
@@ -75,6 +75,26 @@ char	*build_clean_var(char *var, char *value, int len_value)
 	return (full);
 }
 
+static int	validate_vars(char *var, char *value)
+{
+	int	i;
+
+	if (!var || var[0] == '\0')
+		return (0);
+	if (!ft_isalpha(var[0]) && var[0] != '_')
+		return (0);
+	i = 1;
+	while (var[i])
+	{
+		if (!ft_isalnum(var[i]) && var[i] != '_')
+			return (0);
+		i++;
+	}
+	if (value && (value[0] == '='))
+		return (0);
+	return (1);
+}
+
 int	parse_export(char *var_value)
 {
 	t_env	v_env;
@@ -93,11 +113,7 @@ int	parse_export(char *var_value)
 		v_env.var = ft_strdup(var_value);
 		v_env.value = NULL;
 	}
-	if (!v_env.var || v_env.var[0] == '\0')
-		return (0);
-	if (!ft_isalpha(v_env.var[0]) && v_env.var[0] != '_')
-		return (0);
-	if (v_env.value && (v_env.value[0] == '='))
+	if (!validate_vars(v_env.var, v_env.value))
 		return (0);
 	return (1);
 }
