@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/24 12:19:06 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/28 12:58:25 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,12 @@ static void	handle_simple_commands(t_mini *mini)
 	}
 	else
 		exec_builtins(mini);
+	if (mini->cmd && mini->cmd[0])
+	{
+    	if (mini->last_command)
+        	free(mini->last_command);
+    	mini->last_command = ft_strdup(mini->cmd[count_tokens(mini->line) - 1]);
+	}
 	ft_free_wa(mini->cmd);
 }
 
@@ -68,6 +74,7 @@ int	main(int argc, char **argv, char **env)
 	mini.env = env;
 	mini.arr_path = get_path_cmd(mini.env);
 	mini.exit_code = 0;
+	mini.last_command = NULL;
 	while (1)
 	{
 		mini.prompt = get_prompt(mini.env);

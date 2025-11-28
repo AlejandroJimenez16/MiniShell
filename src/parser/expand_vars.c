@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/22 21:42:30 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/25 21:52:46 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/28 13:12:32 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,21 @@ static int	handle_exit_code_copy(t_mini *mini, char *result, int *i)
 	return (index);
 }
 
-static char	*get_env_value(char *env_entry)
+static int	handle_last_command_copy(t_mini *mini, char *result, int *i)
 {
-	char	*eq;
-	char	*value;
+	char	*last_command;
+	int		index;
 
-	eq = ft_strchr(env_entry, '=');
-	if (eq)
-		value = ft_strdup(eq + 1);
-	else
-		value = ft_strdup("");
-	return (value);
+	last_command = mini->last_command;
+	if (!mini->last_command)
+	{
+		*i += 2;
+		return (0);
+	}
+	ft_memcpy(result, last_command, ft_strlen(last_command));
+	index = ft_strlen(last_command);
+	*i += 2;
+	return (index);
 }
 
 static int	handle_env_var_copy(t_mini *mini, char *arg, int *i, char *result)
@@ -83,13 +87,12 @@ static char	*expand_vars_in_token(t_mini *mini, char *arg)
 	{
 		if (arg[i] == '$' && arg[i + 1] == '?')
 			i_result += handle_exit_code_copy(mini, result + i_result, &i);
+		else if (arg[i] == '$' && arg[i + 1] == '_')
+			i_result += handle_last_command_copy(mini, result + i_result, &i);
 		else if (arg[i] == '$' && (ft_isalpha(arg[i + 1]) || arg[i + 1] == '_'))
 			i_result += handle_env_var_copy(mini, arg, &i, result + i_result);
 		else
-		{
-			result[i_result++] = arg[i];
-			i++;
-		}
+			result[i_result++] = arg[i++];
 	}
 	result[i_result] = '\0';
 	return (result);

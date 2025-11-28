@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/25 21:11:12 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/28 12:35:24 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_mini
 	char	**arr_path;
 	pid_t	simple_cmd_process;
 	int		exit_code;
+	char	*last_command;
 }			t_mini;
 
 // Environment structure
@@ -99,6 +100,7 @@ int		count_tokens(char *s);
 char	**split_tokens(char *str, t_token_info **t_info);
 	// Expand vars
 int		get_len_expand_var(char *str);
+char	*get_env_value(char *env_entry);
 int		get_len_token(t_mini *mini, char *arg);
 void	expand_vars(t_mini *mini, t_token_info *t_info);
 
