@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/28 12:58:25 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/28 19:05:35 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ int	main(int argc, char **argv, char **env)
 		return (ft_putendl_fd("minishell: no args supported", 2), 1);
 	(void)argv;
 	mini.env = env;
-	mini.arr_path = get_path_cmd(mini.env);
 	mini.exit_code = 0;
 	mini.last_command = NULL;
 	while (1)

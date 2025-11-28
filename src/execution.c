@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 14:27:04 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/21 20:20:23 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/28 19:45:18 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,14 @@ static void	execute_absolute_path(t_mini *mini)
 	}
 }
 
-static void	manage_error_msg(t_mini *mini, int permission)
+static void	handle_cmd_error(t_mini *mini, int permission)
 {
-	if (permission)
+	if (!mini->arr_path || mini->arr_path[0] == NULL)
+	{
+		print_cmd_error(mini->cmd[0], ": No such file or directory\n");
+		exit(127);
+	}
+	else if (permission)
 	{
 		print_cmd_error(mini->cmd[0], ": Permission denied\n");
 		exit(126);
@@ -54,6 +59,7 @@ static void	execute_from_path(t_mini *mini)
 
 	i = 0;
 	permission = 0;
+	mini->arr_path = get_path_cmd(mini->env);
 	while (mini->arr_path && (mini->arr_path[i] != NULL))
 	{
 		path = ft_strdup(mini->arr_path[i++]);
@@ -67,7 +73,9 @@ static void	execute_from_path(t_mini *mini)
 		}
 		free(path);
 	}
-	manage_error_msg(mini, permission);
+	handle_cmd_error(mini, permission);
+	ft_free_wa(mini->arr_path);
+	mini->arr_path = NULL;
 }
 
 static void	execute_simple_commands(t_mini *mini)
