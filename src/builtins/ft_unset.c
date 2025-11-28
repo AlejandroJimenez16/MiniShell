@@ -6,13 +6,13 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 19:40:22 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/19 17:02:20 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/11/28 13:54:12 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/mini.h"
 
-int	find_var_env(char **env, char *var)
+static int	find_var_env(char **env, char *var)
 {
 	int	i;
 	int	len;
@@ -29,7 +29,7 @@ int	find_var_env(char **env, char *var)
 	return (0);
 }
 
-char	**init_new_env(char **env)
+static char	**init_new_env(char **env)
 {
 	int		num_vars;
 	char	**new_env;
@@ -37,13 +37,13 @@ char	**init_new_env(char **env)
 	num_vars = 0;
 	while (env[num_vars])
 		num_vars++;
-	new_env = malloc((num_vars) * sizeof(char *));
+	new_env = malloc(num_vars * sizeof(char *));
 	if (!new_env)
 		return (NULL);
 	return (new_env);
 }
 
-char	**build_new_env(char **env, char *var)
+static char	**build_new_env(char **env, char *var)
 {
 	char	**new_env;
 	int		i;
@@ -68,21 +68,33 @@ char	**build_new_env(char **env, char *var)
 	return (new_env);
 }
 
-void	unset_var(t_mini *mini, char *var)
+static char	**copy_env(char **env)
 {
-	char	**old_env;
+	int		i;
+	int		num_vars;
+	char	**new_env;
 
-	if (!find_var_env(mini->env, var))
-		return ;
-	old_env = mini->env;
-	mini->env = build_new_env(mini->env, var);
-	ft_free_wa(old_env);
+	num_vars = 0;
+	while (env[num_vars] != NULL)
+		num_vars++;
+	new_env = malloc((num_vars + 1) * sizeof(char *));
+	if (!new_env)
+		return (NULL);
+	i = 0;
+	while (env[i])
+	{
+		new_env[i] = ft_strdup(env[i]);
+		i++;
+	}
+	new_env[i] = NULL;
+	return (new_env);
 }
 
 void	ft_unset(t_mini *mini)
 {
 	char	*var;
 	int		i;
+	char	**old_env;
 
 	if (!mini->env || !mini->env[0])
 		return ;
@@ -93,7 +105,13 @@ void	ft_unset(t_mini *mini)
 		if (var)
 		{
 			if (!ft_strchr(var, '='))
-				unset_var(mini, var);
+			{
+				if (!find_var_env(mini->env, var))
+					return ;
+				old_env = copy_env(mini->env);
+				mini->env = build_new_env(mini->env, var);
+				ft_free_wa(old_env);
+			}
 			free(var);
 		}
 		i++;
