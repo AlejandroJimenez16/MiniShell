@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/28 19:05:35 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/01 14:17:12 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,39 @@ static void	handle_simple_commands(t_mini *mini)
 	ft_free_wa(mini->cmd);
 }
 
+static int	validate_line(char *line)
+{
+	int		i;
+	int		single_open;
+	int		double_open;
+
+	single_open = 0;
+	double_open = 0;
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '\'' && !double_open)
+			single_open = !single_open;
+		else if (line[i] == '\"' && !single_open)
+			double_open = !double_open;	
+		i++;
+	}
+	if (single_open || double_open)
+	{
+		ft_putendl_fd("minishell: syntax error: unclosed quotes", 2);
+		return (0);
+	}
+	return (1);
+}
+
 static void	handle_line(t_mini *mini)
 {
 	char	**parsed_argv;
 
 	if (!mini->line || *mini->line == '\0')
+		return ;
+
+	if (!validate_line(mini->line))
 		return ;
 	if (ft_strchr(mini->line, '|'))
 	{
