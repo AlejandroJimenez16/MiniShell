@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2025/11/28 12:33:12 by alejandj         ###   ########.fr        #
+#    Updated: 2025/12/02 13:35:38 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ LIBDIR = libft/
 OBJDIR = obj/
 
 SRC =	src/main.c							\
-		src/mini_utils_1.c					\
+		src/env_utils.c						\
+		src/prompt.c						\
 		src/mini_utils_2.c					\
 		src/execution.c						\
 		src/builtins/builtins_main.c		\
@@ -38,9 +39,10 @@ SRC =	src/main.c							\
 		src/parser/parser_pipex.c			\
 		src/parser/parser_pipex_utils.c		\
 		src/parser/split_tokens.c			\
-		src/parser/expand_vars.c			\
+		src/parser/split_tokens_utils.c		\
 		src/parser/calc_expanded_len.c		\
-		src/parser/expand_vars_utils.c	\
+		src/parser/expand_vars.c			\
+		src/parser/expand_vars_utils.c		\
 		src/pipex/main_bonus.c				\
 		src/pipex/pipex_extra_bonus.c		\
 		src/pipex/pipex_heredoc_bonus.c		\

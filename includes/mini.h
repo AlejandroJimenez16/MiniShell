@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/28 12:35:24 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/02 13:20:54 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,27 @@ typedef struct s_env
 	char	*full;
 }			t_env;
 
+// Cmd structure
+typedef enum e_token_type
+{
+	WORD,			// Palabra normal
+	PIPE,			// 		|
+	REDIR_IN,		// 		<
+	REDIR_OUT,		//		>
+	REDIR_APPEND,	//		>>
+	HEREDOC			//		<<
+}	t_token_type;
+
+typedef struct s_cmd
+{
+	char	**cmd;			// Comando + Argumento
+	char	*infile;		// "< file"
+	int		heredoc;		// "<<"
+	char	*delimeter;		// Delimitador heredoc
+	char	*outfile;		// "> file" / ">> file"
+	int		append;			// 1 si >>
+}			t_cmd;
+
 // Info tokens structure
 typedef enum e_quote_type
 {
@@ -67,6 +88,7 @@ typedef enum e_quote_type
 typedef struct s_token_info
 {
 	t_quote_type	type_quote;
+	t_token_type	type_token;
 }					t_token_info;
 
 // Obtain vars env
@@ -97,6 +119,8 @@ char	*build_clean_var(char *var, char *value, int len_value);
 
 // Parser
 int		count_tokens(char *s);
+void	set_token_type(char *token, t_token_info *t_info);
+void	set_quote_type(char quote, t_token_info *t_info);
 char	**split_tokens(char *str, t_token_info **t_info);
 	// Expand vars
 int		get_len_expand_var(char *str);
