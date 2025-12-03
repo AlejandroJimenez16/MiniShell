@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2025/12/02 13:35:38 by alejandj         ###   ########.fr        #
+#    Updated: 2025/12/03 20:29:35 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ SRC =	src/main.c							\
 		src/builtins/ft_exit.c				\
 		src/parser/parser_pipex.c			\
 		src/parser/parser_pipex_utils.c		\
+		src/parser/count_tokens.c			\
 		src/parser/split_tokens.c			\
 		src/parser/split_tokens_utils.c		\
 		src/parser/calc_expanded_len.c		\

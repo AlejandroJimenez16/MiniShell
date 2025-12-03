@@ -6,66 +6,88 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 13:45:09 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/03 20:17:10 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/03 21:37:31 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/mini.h"
 
-static	char	*build_word(char *str, int *i, t_token_info *t_info)
+static char	*handle_quotes(char *str, int *i, t_token_info *t_info)
+{
+	char	quote;
+	int		j;
+	char	buffer[1024];
+
+	j = 0;
+	quote = str[*i];
+	set_quote_type(quote, t_info);
+	(*i)++;
+	while (str[*i] && (str[*i] != quote))
+		buffer[j++] = str[(*i)++];
+	if (str[*i] == quote)
+		(*i)++;
+	buffer[j] = '\0';
+	return (ft_strdup(buffer));
+}
+
+static char	*handle_pipes(char *str, int *i)
+{
+	char	*token;
+
+	token = malloc(2);
+	if (!token)
+		return (NULL);
+	token[0] = str[*i];
+	token[1] = '\0';
+	(*i)++;
+	return (token);
+}
+
+static char	*handle_operators(char *str, int *i)
+{
+	char	*token;
+
+	if ((str[*i] == '<' && str[*i + 1] == '<')
+		|| (str[*i] == '>' && str[*i + 1] == '>'))
+	{
+		token = malloc(3);
+		if (!token)
+			return (NULL);
+		token[0] = str[*i];
+		token[1] = str[*i + 1];
+		token[2] = '\0';
+		(*i) += 2;
+		return (token);
+	}
+	token = malloc(2);
+	if (!token)
+		return (NULL);
+	token[0] = str[*i];
+	token[1] = '\0';
+	(*i)++;
+	return (token);
+}
+
+static	char	*build_token(char *str, int *i, t_token_info *t_info)
 {
 	char	buffer[1024];
 	int		j;
-	char	quote;
 
 	t_info->type_quote = NO_QUOTES;
-	j = 0;
-	
-	// Saltar espacios
 	while (str[*i] && (str[*i] == ' ' || str[*i] == '\t'))
 		(*i)++;
 	if (!str[*i])
 		return (NULL);
-	
-	// Comillas
 	if (str[*i] == '\'' || str[*i] == '"')
-	{
-		quote = str[*i];
-		set_quote_type(quote, t_info);
-		(*i)++;
-		while (str[*i] && (str[*i] != quote))
-			buffer[j++] = str[(*i)++];
-		if (str[*i] == quote)
-			(*i)++;
-		buffer[j] = '\0';
-        return ft_strdup(buffer);
-	}
-	// Redirecciones y Pipes
+		return (handle_quotes(str, i, t_info));
 	else if (str[*i] == '|')
-	{
-		buffer[0] = str[*i];
-		buffer[1] = '\0';
-		(*i)++;
-		return (ft_strdup(buffer));
-	}
+		return (handle_pipes(str, i));
 	else if (str[*i] == '<' || str[*i] == '>')
-	{
-		if ((str[*i] == '<' && str[*i + 1] == '<') || (str[*i] == '>' && str[*i + 1] == '>'))
-		{
-			buffer[0] = str[*i];
-			buffer[1] = str[*i + 1];
-			buffer[2] = '\0';
-			(*i) += 2;
-			return (ft_strdup(buffer));
-		}
-		buffer[0] = str[*i];
-		buffer[1] = '\0';
-		(*i)++;
-		return (ft_strdup(buffer));
-	}
+		return (handle_operators(str, i));
 	else
 	{
-		while (str[*i] && str[*i] != ' ' && str[*i] != '\t' 
+		j = 0;
+		while (str[*i] && str[*i] != ' ' && str[*i] != '\t'
 			&& str[*i] != '|' && str[*i] != '<' && str[*i] != '>')
 			buffer[j++] = str[(*i)++];
 		buffer[j] = '\0';
@@ -88,7 +110,7 @@ char	**split_tokens(char *str, t_token_info **t_info)
 	index = 0;
 	while (index < n_tokens)
 	{
-		arr[index] = build_word(str, &i, &(*t_info)[index]);
+		arr[index] = build_token(str, &i, &(*t_info)[index]);
 		set_token_type(arr[index], &(*t_info)[index]);
 		index++;
 	}
