@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/05 12:36:48 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/05 20:04:33 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,8 @@ int		get_len_expand_var(char *str);
 char	*get_env_value(char *env_entry);
 int		get_len_token(t_mini *mini, char *arg);
 void	expand_vars(t_mini *mini, t_token_info *t_info);
+	// Create cmd list
+t_list	*create_cmd_list(char *line, char **tokens, t_token_info *t_info);
 
 // Execution
 void	child_simple_cmd(t_mini *mini);
@@ -136,5 +138,6 @@ void	print_cmd_error(char *cmd, char *error);
 int		get_cmd_arr_size(char **tokens, t_token_info *t_info, int start);
 int		get_num_nodes(char *line, t_token_info *t_info);
 int		is_redir(int type);
+void    print_cmd_list(t_list *cmd_list);
 
 #endif
