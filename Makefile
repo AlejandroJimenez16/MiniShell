@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2025/12/03 20:29:35 by alejandj         ###   ########.fr        #
+#    Updated: 2025/12/05 13:54:53 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ OBJDIR = obj/
 SRC =	src/main.c							\
 		src/env_utils.c						\
 		src/prompt.c						\
-		src/mini_utils_2.c					\
+		src/mini_utils.c					\
 		src/execution.c						\
 		src/builtins/builtins_main.c		\
 		src/builtins/ft_echo.c				\

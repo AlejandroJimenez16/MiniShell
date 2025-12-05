@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/02 13:20:54 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/05 12:36:48 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_mini
 	char	**env;
 	char	*line;
 	char	*prompt;
-	char	**cmd;
+	t_list	*cmds;
 	char	**arr_path;
 	pid_t	simple_cmd_process;
 	int		exit_code;
@@ -131,7 +131,10 @@ void	expand_vars(t_mini *mini, t_token_info *t_info);
 // Execution
 void	child_simple_cmd(t_mini *mini);
 
-// Print errors
+// Mini_utils
 void	print_cmd_error(char *cmd, char *error);
+int		get_cmd_arr_size(char **tokens, t_token_info *t_info, int start);
+int		get_num_nodes(char *line, t_token_info *t_info);
+int		is_redir(int type);
 
 #endif

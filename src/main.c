@@ -6,12 +6,13 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/01 14:17:12 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/05 13:23:48 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/mini.h"
 
+/*
 static void	handle_simple_commands(t_mini *mini)
 {
 	t_token_info	*t_info;
@@ -90,6 +91,99 @@ static void	handle_line(t_mini *mini)
 	}
 	else
 		handle_simple_commands(mini);
+}
+*/
+
+void	add_arguments(char **cmd, char *token, int *cmd_index, int n_words)
+{
+	if (*cmd_index >= n_words)
+		return ;
+	cmd[*cmd_index] = ft_strdup(token);
+	(*cmd_index)++;
+	cmd[*cmd_index] = NULL;
+}
+
+static t_cmd	*create_node(char **tokens, t_token_info *t_info, int *i)
+{
+	t_cmd	*node;
+	int		n_words;
+	int		cmd_index;
+
+	node = malloc(sizeof(t_cmd));
+	
+	// Inicializar la estructura
+	node->cmd = NULL;
+	node->infile = NULL;
+	node->heredoc = 0;
+	node->delimeter = NULL;
+	node->outfile = NULL;
+	node->append = 0;
+
+	// Recorrer y asignar
+	n_words = get_cmd_arr_size(tokens, t_info, *i);
+	node->cmd = malloc((n_words + 1) * sizeof(char *));
+	cmd_index = 0;
+	
+	while (tokens[*i])
+	{
+		if (t_info[*i].type_token == PIPE)
+		{
+			(*i)++;
+			break ;
+		}
+		if (t_info[*i].type_token == WORD)
+		{
+			if (*i == 0 || !is_redir(t_info[*i - 1].type_token))
+				add_arguments(node->cmd, tokens[*i], &cmd_index, n_words);
+			else if (t_info[*i - 1].type_token == REDIR_IN)
+				node->infile = ft_strdup(tokens[*i]);
+			else if (t_info[*i - 1].type_token == REDIR_OUT)
+				node->outfile = ft_strdup(tokens[*i]);
+			else if (t_info[*i - 1].type_token == REDIR_APPEND)
+			{
+				node->append = 1;
+				node->outfile = ft_strdup(tokens[*i]);
+			}
+			else if (t_info[*i - 1].type_token == HEREDOC)
+			{
+				node->heredoc = 1;
+				node->delimeter = ft_strdup(tokens[*i]);
+			}
+		}
+		(*i)++;
+	}
+	return (node);
+}
+
+static void	handle_line(t_mini *mini)
+{
+	char			**tokens;
+	t_token_info	*t_info;
+	t_list			*cmd_list;
+	int				num_nodes;
+	int				i;
+	int				index;
+
+	// Inicializar token_info
+	t_info = malloc(count_tokens(mini->line) * sizeof(t_token_info));
+	if (!t_info)
+		return ;
+
+	// Crear array de tokens
+	tokens = split_tokens(mini->line, &t_info);
+	if (!tokens)
+		return ;
+
+	// Crear los nodos
+	cmd_list = NULL;
+	num_nodes = get_num_nodes(mini->line, t_info);
+	i = 0;
+	index = 0;
+	while (index < num_nodes)
+	{
+		ft_lstadd_back(&cmd_list, ft_lstnew(create_node(tokens, t_info, &i)));
+		index++;
+	}
 }
 
 int	main(int argc, char **argv, char **env)
