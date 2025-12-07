@@ -35,6 +35,8 @@
 # include <termios.h>
 # include <termcap.h>
 
+extern int g_sig_status;
+
 // Main structure
 typedef struct s_mini
 {
@@ -122,12 +124,14 @@ int		count_tokens(char *s);
 void	set_token_type(char *token, t_token_info *t_info);
 void	set_quote_type(char quote, t_token_info *t_info);
 char	**split_tokens(char *str, t_token_info **t_info);
-	// Expand vars
+
+// Expand vars
 int		get_len_expand_var(char *str);
 char	*get_env_value(char *env_entry);
 int		get_len_token(t_mini *mini, char *arg);
 void	expand_vars(t_mini *mini, t_token_info *t_info);
-	// Create cmd list
+
+// Create cmd list
 t_list	*create_cmd_list(char *line, char **tokens, t_token_info *t_info);
 
 // Execution
@@ -139,5 +143,9 @@ int		get_cmd_arr_size(char **tokens, t_token_info *t_info, int start);
 int		get_num_nodes(char *line, t_token_info *t_info);
 int		is_redir(int type);
 void    print_cmd_list(t_list *cmd_list);
+
+// Signals
+void	init_signals(void);
+void	setup_child_signals(void);
 
 #endif
