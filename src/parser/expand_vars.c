@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/22 21:42:30 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/28 13:12:32 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/08 18:54:43 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,20 +98,21 @@ static char	*expand_vars_in_token(t_mini *mini, char *arg)
 	return (result);
 }
 
-void	expand_vars(t_mini *mini, t_token_info *t_info)
+void	expand_vars(char **cmd, t_mini *mini, t_token_info *t_info, int start)
 {
 	int		i;
 	char	*temp;
 
 	i = 0;
-	while (mini->cmd[i])
+	while (cmd[i])
 	{
-		if (t_info[i].type_quote != SINGLE_QUOTES)
+		if (t_info[start].type_quote != SINGLE_QUOTES)
 		{
-			temp = mini->cmd[i];
-			mini->cmd[i] = expand_vars_in_token(mini, mini->cmd[i]);
+			temp = cmd[i];
+			cmd[i] = expand_vars_in_token(mini, cmd[i]);
 			free(temp);
 		}
+		start++;
 		i++;
 	}
 }

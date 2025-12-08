@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 13:56:44 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/05 21:39:43 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/08 18:57:01 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static t_cmd	*init_node(int n_words)
 	node->delimeter = NULL;
 	node->outfile = NULL;
 	node->append = 0;
+	node->index_start_cmd = 0;
 	node->cmd = malloc((n_words + 1) * sizeof(char *));
 	if (!node->cmd)
 	{
@@ -90,6 +91,8 @@ static t_cmd	*create_node(char **tokens, t_token_info *t_info, int *i)
 		if (t_info[*i].type_token == WORD)
 		{
 			prev_token = get_prev_token(t_info, *i);
+			if (cmd_index == 0 && (*i == 0 || !is_redir(prev_token)))
+				node->index_start_cmd = *i;
 			assign_token_to_node(node, tokens[*i], prev_token, &cmd_index);
 		}
 		(*i)++;

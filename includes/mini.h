@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/05 20:04:33 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/08 23:31:35 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct s_cmd
 	char	*delimeter;		// Delimitador heredoc
 	char	*outfile;		// "> file" / ">> file"
 	int		append;			// 1 si >>
+	int		index_start_cmd;
 }			t_cmd;
 
 // Info tokens structure
@@ -125,13 +126,13 @@ void	set_token_type(char *token, t_token_info *t_info);
 void	set_quote_type(char quote, t_token_info *t_info);
 char	**split_tokens(char *str, t_token_info **t_info);
 
-// Expand vars
+	// Expand vars
 int		get_len_expand_var(char *str);
 char	*get_env_value(char *env_entry);
 int		get_len_token(t_mini *mini, char *arg);
-void	expand_vars(t_mini *mini, t_token_info *t_info);
+void	expand_vars(char **cmd, t_mini *mini, t_token_info *t_info, int start);
 
-// Create cmd list
+	// Create cmd list
 t_list	*create_cmd_list(char *line, char **tokens, t_token_info *t_info);
 
 // Execution
