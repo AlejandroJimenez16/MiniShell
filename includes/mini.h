@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/08 23:31:35 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/11 22:32:24 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # include <termios.h>
 # include <termcap.h>
 
-extern int g_sig_status;
+extern int	g_sig_status;
 
 // Main structure
 typedef struct s_mini
@@ -61,22 +61,22 @@ typedef struct s_env
 // Cmd structure
 typedef enum e_token_type
 {
-	WORD,			// Palabra normal
-	PIPE,			// 		|
-	REDIR_IN,		// 		<
-	REDIR_OUT,		//		>
-	REDIR_APPEND,	//		>>
-	HEREDOC			//		<<
+	WORD,
+	PIPE,
+	REDIR_IN,
+	REDIR_OUT,
+	REDIR_APPEND,
+	HEREDOC
 }	t_token_type;
 
 typedef struct s_cmd
 {
-	char	**cmd;			// Comando + Argumento
-	char	*infile;		// "< file"
-	int		heredoc;		// "<<"
-	char	*delimeter;		// Delimitador heredoc
-	char	*outfile;		// "> file" / ">> file"
-	int		append;			// 1 si >>
+	char	**cmd;
+	char	*infile;
+	int		heredoc;
+	char	*delimeter;
+	char	*outfile;
+	int		append;
 	int		index_start_cmd;
 }			t_cmd;
 
@@ -93,6 +93,15 @@ typedef struct s_token_info
 	t_quote_type	type_quote;
 	t_token_type	type_token;
 }					t_token_info;
+
+typedef struct s_pipex
+{
+	int		pipefd[2];
+	int		prev_pipe_in;
+	int		fd_in;
+	int		fd_out;
+	pid_t	pid;
+}			t_pipex;
 
 // Obtain vars env
 char	*get_home(char **env);
@@ -143,7 +152,7 @@ void	print_cmd_error(char *cmd, char *error);
 int		get_cmd_arr_size(char **tokens, t_token_info *t_info, int start);
 int		get_num_nodes(char *line, t_token_info *t_info);
 int		is_redir(int type);
-void    print_cmd_list(t_list *cmd_list);
+void	print_cmd_list(t_list *cmd_list);
 
 // Signals
 void	init_signals(void);
