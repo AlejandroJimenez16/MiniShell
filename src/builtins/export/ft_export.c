@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 14:11:36 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/20 18:09:31 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/13 17:42:50 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,21 +93,21 @@ void	process_export_var(t_mini *mini, char *var_value)
 	free(var_value_clean);
 }
 
-void	ft_export(t_mini *mini)
+void	ft_export(char **cmd, t_mini *mini)
 {
 	int		i;
 
 	if (!mini->env || !mini->env[0])
 		return ;
-	if (!mini->cmd[1])
+	if (!cmd[1])
 	{
 		print_full_env(mini->env);
 		return ;
 	}
 	i = 1;
-	while (mini->cmd[i])
+	while (cmd[i])
 	{
-		process_export_var(mini, mini->cmd[i]);
+		process_export_var(mini, cmd[i]);
 		i++;
 	}
 }

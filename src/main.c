@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/11 22:42:57 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/13 18:53:44 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,18 @@ static void	init_pipex(t_pipex *pipex)
 
 static int	redirect_in(t_cmd *node, t_mini *mini, t_pipex *pipex)
 {
+	if (node->heredoc == 1)
+	{
+		pipex->fd_in = here_doc(node->delimeter);
+		if (pipex->fd_in < 0)
+		{
+			print_cmd_error(node->infile, ": Error opening infile");
+			mini->exit_code = 1;
+			return (1);
+		}
+		dup2(pipex->fd_in, STDIN_FILENO);
+		close(pipex->fd_in);
+	}
 	if (node->infile)
 	{
 		pipex->fd_in = open(node->infile, O_RDONLY);
@@ -82,6 +94,41 @@ static int	redirect_out(t_cmd *node, t_mini *mini, t_pipex *pipex)
 	return (0);
 }
 
+int	wait_for_children(pid_t last_pid)
+{
+	pid_t	pid;
+	int		status;
+	int		exit_code;
+
+	// Inicializamos con un valor por defecto (0 o el anterior)
+	exit_code = 0;
+	// Esperamos a CUALQUIER hijo (-1) hasta que no queden más.
+	while ((pid = wait(&status)) > 0)
+	{
+		// Solo nos interesa el exit_code del ÚLTIMO comando ejecutado
+		if (pid == last_pid)
+		{
+			if (WIFEXITED(status))
+				exit_code = WEXITSTATUS(status); // Terminó normal (exit, return, etc)
+			else if (WIFSIGNALED(status))
+			{
+				// Terminó por una señal (Ctrl+C, Kill, Segfault...)
+				exit_code = 128 + WTERMSIG(status);
+
+				// Si fue SIGQUIT (Ctrl+\) hay que imprimir esto según el subject
+				if (WTERMSIG(status) == SIGQUIT)
+					ft_putendl_fd("Quit (core dumped)", 2);
+				
+				// Si fue SIGINT (Ctrl+C) suele quedar bien un salto de línea extra
+				if (WTERMSIG(status) == SIGINT)
+					write(1, "\n", 1);
+			}
+		}
+	}
+	return (exit_code);
+}
+
+
 void	execute_commands(t_list *cmd_list, t_mini *mini)
 {
 	t_list	*current;
@@ -116,13 +163,22 @@ void	execute_commands(t_list *cmd_list, t_mini *mini)
 				exit(mini->exit_code);
 			if (redirect_out(node, mini, &pipex))
 				exit(mini->exit_code);
-			
-			// Ejecucion
-			
+			if (is_builtin(node->cmd))
+				exec_builtins(node->cmd, mini);
+			else
+				execute_simple_commands(node->cmd, mini);
+		}
+		else
+		{
+			if (pipex.prev_pipe_in != -1)
+                close(pipex.prev_pipe_in);
+            if (pipex.pipefd[1] != -1)
+                close(pipex.pipefd[1]);
 		}
 		pipex.prev_pipe_in = pipex.pipefd[0];
 		current = current->next;
 	}
+	mini->exit_code = wait_for_children(pipex.pid);
 }
 
 static void	handle_line(t_mini *mini)
@@ -143,7 +199,6 @@ static void	handle_line(t_mini *mini)
 
 	cmd_list = create_cmd_list(mini->line, tokens, t_info);
 	expand_cmd_list(cmd_list, mini, t_info);
-	print_cmd_list(cmd_list);
 	execute_commands(cmd_list, mini);
 }
 

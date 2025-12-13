@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/11 22:32:24 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/13 18:12:44 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ typedef struct s_mini
 	char	**env;
 	char	*line;
 	char	*prompt;
-	t_list	*cmds;
 	char	**arr_path;
-	pid_t	simple_cmd_process;
 	int		exit_code;
 	char	*last_command;
 }			t_mini;
@@ -110,14 +108,14 @@ char	**get_path_cmd(char **env);
 
 // Built-ins
 int		is_builtin(char **cmd);
-void	exec_builtins(t_mini *mini);
+void	exec_builtins(char **cmd, t_mini *mini);
 void	ft_echo(char **cmd);
-int		ft_cd(t_mini *mini);
+int		ft_cd(char **cmd, t_mini *mini);
 void	ft_pwd(t_mini *mini);
-void	ft_export(t_mini *mini);
-void	ft_unset(t_mini *mini);
+void	ft_export(char **cmd, t_mini *mini);
+void	ft_unset(char **cmd, t_mini *mini);
 void	ft_env(char **env);
-void	ft_exit(t_mini *mini);
+void	ft_exit(char **cmd, t_mini *mini);
 
 // Export utils
 size_t	get_len_var(char *str);
@@ -145,7 +143,7 @@ void	expand_vars(char **cmd, t_mini *mini, t_token_info *t_info, int start);
 t_list	*create_cmd_list(char *line, char **tokens, t_token_info *t_info);
 
 // Execution
-void	child_simple_cmd(t_mini *mini);
+void	execute_simple_commands(char **cmd, t_mini *mini);
 
 // Mini_utils
 void	print_cmd_error(char *cmd, char *error);

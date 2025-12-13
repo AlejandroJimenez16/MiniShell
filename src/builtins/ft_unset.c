@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 19:40:22 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/28 13:54:12 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/13 17:44:10 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static char	**copy_env(char **env)
 	return (new_env);
 }
 
-void	ft_unset(t_mini *mini)
+void	ft_unset(char **cmd, t_mini *mini)
 {
 	char	*var;
 	int		i;
@@ -99,9 +99,9 @@ void	ft_unset(t_mini *mini)
 	if (!mini->env || !mini->env[0])
 		return ;
 	i = 1;
-	while (mini->cmd[i])
+	while (cmd[i])
 	{
-		var = remove_quotes(mini->cmd[i], ft_strlen(mini->cmd[i]));
+		var = remove_quotes(cmd[i], ft_strlen(cmd[i]));
 		if (var)
 		{
 			if (!ft_strchr(var, '='))
