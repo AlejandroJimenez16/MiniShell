@@ -100,12 +100,10 @@ int	wait_for_children(pid_t last_pid)
 	int		status;
 	int		exit_code;
 
-	// Inicializamos con un valor por defecto (0 o el anterior)
 	exit_code = 0;
-	// Esperamos a CUALQUIER hijo (-1) hasta que no queden más.
-	while ((pid = wait(&status)) > 0)
+	pid = wait(&status);
+	while (pid > 0)
 	{
-		// Solo nos interesa el exit_code del ÚLTIMO comando ejecutado
 		if (pid == last_pid)
 		{
 			if (WIFEXITED(status))
@@ -114,11 +112,9 @@ int	wait_for_children(pid_t last_pid)
 			{
 				// Terminó por una señal (Ctrl+C, Kill, Segfault...)
 				exit_code = 128 + WTERMSIG(status);
-
 				// Si fue SIGQUIT (Ctrl+\) hay que imprimir esto según el subject
 				if (WTERMSIG(status) == SIGQUIT)
 					ft_putendl_fd("Quit (core dumped)", 2);
-				
 				// Si fue SIGINT (Ctrl+C) suele quedar bien un salto de línea extra
 				if (WTERMSIG(status) == SIGINT)
 					write(1, "\n", 1);
@@ -159,6 +155,7 @@ void	execute_commands(t_list *cmd_list, t_mini *mini)
 		}
 		else if (pipex.pid == 0)
 		{
+			setup_child_signals();
 			if (redirect_in(node, mini, &pipex))
 				exit(mini->exit_code);
 			if (redirect_out(node, mini, &pipex))
@@ -178,7 +175,9 @@ void	execute_commands(t_list *cmd_list, t_mini *mini)
 		pipex.prev_pipe_in = pipex.pipefd[0];
 		current = current->next;
 	}
+	signal(SIGINT, SIG_IGN);
 	mini->exit_code = wait_for_children(pipex.pid);
+	init_signals();
 }
 
 static void	handle_line(t_mini *mini)
@@ -212,8 +211,14 @@ int	main(int argc, char **argv, char **env)
 	mini.env = env;
 	mini.exit_code = 0;
 	mini.last_command = NULL;
+	init_signals();
 	while (1)
 	{
+		if (g_sig_status != 0)
+		{
+			mini.exit_code = g_sig_status;
+			g_sig_status = 0;
+		}
 		mini.prompt = get_prompt(mini.env);
 		mini.line = readline(mini.prompt);
 		if (!mini.line)
@@ -222,6 +227,5 @@ int	main(int argc, char **argv, char **env)
 		handle_line(&mini);
 		free(mini.line);
 	}
-	free(mini.prompt);
-	return (0);
+	return (free(mini.prompt), 0);
 }
