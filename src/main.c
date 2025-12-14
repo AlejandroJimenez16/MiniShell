@@ -120,6 +120,7 @@ int	wait_for_children(pid_t last_pid)
 					write(1, "\n", 1);
 			}
 		}
+		pid = wait(&status);
 	}
 	return (exit_code);
 }
@@ -147,6 +148,7 @@ void	execute_commands(t_list *cmd_list, t_mini *mini)
 			}
 		}
 		pipex.pid = fork();
+		signal(SIGINT, SIG_IGN);
 		if (pipex.pid < 0)
 		{
 			ft_putstr_fd("minishell: fork: Error creating process", 2);
@@ -175,7 +177,6 @@ void	execute_commands(t_list *cmd_list, t_mini *mini)
 		pipex.prev_pipe_in = pipex.pipefd[0];
 		current = current->next;
 	}
-	signal(SIGINT, SIG_IGN);
 	mini->exit_code = wait_for_children(pipex.pid);
 	init_signals();
 }
