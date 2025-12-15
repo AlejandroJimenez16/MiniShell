@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 18:01:10 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/13 17:46:20 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/15 20:57:34 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	is_builtin(char **cmd)
 	return (0);	
 }
 
-void	exec_builtins(char **cmd, t_mini *mini)
+int	exec_builtins(char **cmd, t_mini *mini)
 {
 	if (ft_strncmp(cmd[0], "echo", 4) == 0)
 		ft_echo(cmd);
@@ -49,4 +49,5 @@ void	exec_builtins(char **cmd, t_mini *mini)
 		ft_env(mini->env);
 	else if (ft_strncmp(cmd[0], "exit", 4) == 0)
 		ft_exit(cmd, mini);
+	return (mini->exit_code);
 }

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/13 18:12:44 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/15 20:57:25 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef enum e_token_type
 typedef struct s_cmd
 {
 	char	**cmd;
+	int		cmd_size;
 	char	*infile;
 	int		heredoc;
 	char	*delimeter;
@@ -108,7 +109,7 @@ char	**get_path_cmd(char **env);
 
 // Built-ins
 int		is_builtin(char **cmd);
-void	exec_builtins(char **cmd, t_mini *mini);
+int		exec_builtins(char **cmd, t_mini *mini);
 void	ft_echo(char **cmd);
 int		ft_cd(char **cmd, t_mini *mini);
 void	ft_pwd(t_mini *mini);

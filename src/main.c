@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/13 18:53:44 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/15 21:23:23 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	redirect_in(t_cmd *node, t_mini *mini, t_pipex *pipex)
 		dup2(pipex->fd_in, STDIN_FILENO);
 		close(pipex->fd_in);
 	}
-	if (node->infile)
+	else if (node->infile)
 	{
 		pipex->fd_in = open(node->infile, O_RDONLY);
 		if (pipex->fd_in < 0)
@@ -163,7 +163,7 @@ void	execute_commands(t_list *cmd_list, t_mini *mini)
 			if (redirect_out(node, mini, &pipex))
 				exit(mini->exit_code);
 			if (is_builtin(node->cmd))
-				exec_builtins(node->cmd, mini);
+				exit(exec_builtins(node->cmd, mini));
 			else
 				execute_simple_commands(node->cmd, mini);
 		}
@@ -177,6 +177,9 @@ void	execute_commands(t_list *cmd_list, t_mini *mini)
 		pipex.prev_pipe_in = pipex.pipefd[0];
 		current = current->next;
 	}
+	if (mini->last_command)
+		free(mini->last_command);
+	mini->last_command = ft_strdup(node->cmd[node->cmd_size - 1]);
 	mini->exit_code = wait_for_children(pipex.pid);
 	init_signals();
 }
@@ -211,7 +214,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	mini.env = env;
 	mini.exit_code = 0;
-	mini.last_command = NULL;
+	mini.last_command = ft_strdup("./minishell");
 	init_signals();
 	while (1)
 	{
