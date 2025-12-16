@@ -6,25 +6,11 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/16 20:20:15 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/16 21:47:59 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/mini.h"
-
-static void	expand_cmd_list(t_list *cmd_list, t_mini *mini, t_token_info *t_info)
-{
-	t_list	*current;
-	t_cmd	*node;
-
-	current = cmd_list;
-	while (current)
-	{
-		node = current->content;
-		expand_vars(node->cmd, mini, t_info, node->index_start_cmd);
-		current = current->next;
-	}
-}
 
 static void	init_pipex(t_pipex *pipex)
 {
@@ -125,7 +111,7 @@ int	wait_for_children(pid_t last_pid)
 	return (exit_code);
 }
 
-void	execute_commands(t_list *cmd_list, t_mini *mini)
+void	execute_commands(t_list *cmd_list, t_mini *mini, t_token_info *t_info)
 {
 	t_list	*current;
 	t_cmd	*node;
@@ -165,6 +151,7 @@ void	execute_commands(t_list *cmd_list, t_mini *mini)
 					exit(mini->exit_code);
 				if (redirect_out(node, mini, &pipex))
 					exit(mini->exit_code);
+				expand_vars(node->cmd, mini, t_info, node->index_start_cmd);
 				if (is_builtin(node->cmd))
 					exit(exec_builtins(node->cmd, mini));
 				else
@@ -205,8 +192,7 @@ static void	handle_line(t_mini *mini)
 		return ;
 
 	cmd_list = create_cmd_list(mini->line, tokens, t_info);
-	expand_cmd_list(cmd_list, mini, t_info);
-	execute_commands(cmd_list, mini);
+	execute_commands(cmd_list, mini, t_info);
 }
 
 int	main(int argc, char **argv, char **env)

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/28 12:19:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/28 12:37:36 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/16 22:09:23 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	get_len_expand_var(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] && (ft_isalpha(str[i]) || str[i] == '_'))
+	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 		i++;
 	return (i);
 }
