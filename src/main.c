@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/15 21:23:23 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/16 20:20:15 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ int	wait_for_children(pid_t last_pid)
 	return (exit_code);
 }
 
-
 void	execute_commands(t_list *cmd_list, t_mini *mini)
 {
 	t_list	*current;
@@ -147,32 +146,37 @@ void	execute_commands(t_list *cmd_list, t_mini *mini)
 				return ;
 			}
 		}
-		pipex.pid = fork();
-		signal(SIGINT, SIG_IGN);
-		if (pipex.pid < 0)
-		{
-			ft_putstr_fd("minishell: fork: Error creating process", 2);
-			mini->exit_code = 1;
-			return ;
-		}
-		else if (pipex.pid == 0)
-		{
-			setup_child_signals();
-			if (redirect_in(node, mini, &pipex))
-				exit(mini->exit_code);
-			if (redirect_out(node, mini, &pipex))
-				exit(mini->exit_code);
-			if (is_builtin(node->cmd))
-				exit(exec_builtins(node->cmd, mini));
-			else
-				execute_simple_commands(node->cmd, mini);
-		}
+		if (is_env_builtin(node->cmd) && pipex.prev_pipe_in == -1 && !current->next)
+			exec_env_builtins(node->cmd, mini);
 		else
 		{
-			if (pipex.prev_pipe_in != -1)
-                close(pipex.prev_pipe_in);
-            if (pipex.pipefd[1] != -1)
-                close(pipex.pipefd[1]);
+			pipex.pid = fork();
+			signal(SIGINT, SIG_IGN);
+			if (pipex.pid < 0)
+			{
+				ft_putstr_fd("minishell: fork: Error creating process", 2);
+				mini->exit_code = 1;
+				return ;
+			}
+			else if (pipex.pid == 0)
+			{
+				setup_child_signals();
+				if (redirect_in(node, mini, &pipex))
+					exit(mini->exit_code);
+				if (redirect_out(node, mini, &pipex))
+					exit(mini->exit_code);
+				if (is_builtin(node->cmd))
+					exit(exec_builtins(node->cmd, mini));
+				else
+					execute_simple_commands(node->cmd, mini);
+			}
+			else
+			{
+				if (pipex.prev_pipe_in != -1)
+                	close(pipex.prev_pipe_in);
+            	if (pipex.pipefd[1] != -1)
+                	close(pipex.pipefd[1]);
+			}
 		}
 		pipex.prev_pipe_in = pipex.pipefd[0];
 		current = current->next;

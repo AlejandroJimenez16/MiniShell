@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/15 20:57:25 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/16 20:03:19 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,9 @@ char	*get_prompt(char **env);
 char	**get_path_cmd(char **env);
 
 // Built-ins
+int		is_env_builtin(char **cmd);
 int		is_builtin(char **cmd);
+void	exec_env_builtins(char **cmd, t_mini *mini);
 int		exec_builtins(char **cmd, t_mini *mini);
 void	ft_echo(char **cmd);
 int		ft_cd(char **cmd, t_mini *mini);
