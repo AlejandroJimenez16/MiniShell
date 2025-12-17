@@ -6,29 +6,11 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 13:45:09 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/03 21:37:31 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/17 21:56:27 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/mini.h"
-
-static char	*handle_quotes(char *str, int *i, t_token_info *t_info)
-{
-	char	quote;
-	int		j;
-	char	buffer[1024];
-
-	j = 0;
-	quote = str[*i];
-	set_quote_type(quote, t_info);
-	(*i)++;
-	while (str[*i] && (str[*i] != quote))
-		buffer[j++] = str[(*i)++];
-	if (str[*i] == quote)
-		(*i)++;
-	buffer[j] = '\0';
-	return (ft_strdup(buffer));
-}
 
 static char	*handle_pipes(char *str, int *i)
 {
@@ -68,31 +50,46 @@ static char	*handle_operators(char *str, int *i)
 	return (token);
 }
 
-static	char	*build_token(char *str, int *i, t_token_info *t_info)
+static char	*handle_words(char *str, int *i, t_token_info *t_info)
 {
 	char	buffer[1024];
+	char	quote;
 	int		j;
 
+	j = 0;
+	while (str[*i] && str[*i] != ' ' && str[*i] != '\t'
+		&& str[*i] != '|' && str[*i] != '<' && str[*i] != '>')
+	{
+		if (str[*i] == '\'' || str[*i] == '"')
+		{
+			quote = str[*i];
+			set_quote_type(quote, t_info);
+			(*i)++;
+			while (str[*i] && (str[*i] != quote))
+				buffer[j++] = str[(*i)++];
+			if (str[*i] == quote)
+				(*i)++;
+		}
+		else
+			buffer[j++] = str[(*i)++];
+	}
+	buffer[j] = '\0';
+	return (ft_strdup(buffer));
+}
+
+static	char	*build_token(char *str, int *i, t_token_info *t_info)
+{
 	t_info->type_quote = NO_QUOTES;
 	while (str[*i] && (str[*i] == ' ' || str[*i] == '\t'))
 		(*i)++;
 	if (!str[*i])
 		return (NULL);
-	if (str[*i] == '\'' || str[*i] == '"')
-		return (handle_quotes(str, i, t_info));
-	else if (str[*i] == '|')
+	if (str[*i] == '|')
 		return (handle_pipes(str, i));
 	else if (str[*i] == '<' || str[*i] == '>')
 		return (handle_operators(str, i));
 	else
-	{
-		j = 0;
-		while (str[*i] && str[*i] != ' ' && str[*i] != '\t'
-			&& str[*i] != '|' && str[*i] != '<' && str[*i] != '>')
-			buffer[j++] = str[(*i)++];
-		buffer[j] = '\0';
-		return (ft_strdup(buffer));
-	}
+		return (handle_words(str, i, t_info));
 }
 
 char	**split_tokens(char *str, t_token_info **t_info)
