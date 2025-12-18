@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/18 12:59:13 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/18 13:40:18 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ t_list	*create_cmd_list(char *line, char **tokens, t_token_info *t_info);
 int		redirect_in(t_cmd *node, t_mini *mini, t_pipex *pipex);
 int		redirect_out(t_cmd *node, t_mini *mini, t_pipex *pipex);
 void	execute_simple_commands(char **cmd, t_mini *mini);
+void	execute_commands(t_list *cmd_list, t_mini *mini, t_token_info *t_info);
 
 // Mini_utils
 void	print_cmd_error(char *cmd, char *error);

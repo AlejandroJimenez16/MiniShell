@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 18:01:10 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/18 12:58:58 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/18 13:41:37 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	is_builtin(char **cmd)
 	if (ft_strncmp(cmd[0], "echo", 4) == 0)
 		return (1);
 	else if (ft_strncmp(cmd[0], "cd", 3) == 0)
-		return (1);	
+		return (1);
 	else if (ft_strncmp(cmd[0], "pwd", 3) == 0)
 		return (1);
 	else if (ft_strncmp(cmd[0], "export", 6) == 0)
@@ -58,7 +58,7 @@ int	is_builtin(char **cmd)
 		return (1);
 	else if (ft_strncmp(cmd[0], "exit", 4) == 0)
 		return (1);
-	return (0);	
+	return (0);
 }
 
 int	exec_builtins(char **cmd, t_mini *mini)

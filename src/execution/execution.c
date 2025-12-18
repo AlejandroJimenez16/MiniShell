@@ -5,90 +5,119 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/05 14:27:04 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/18 11:45:47 by alejandj         ###   ########.fr       */
+/*   Created: 2025/12/18 13:38:17 by alejandj          #+#    #+#             */
+/*   Updated: 2025/12/18 13:49:07 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/mini.h"
 
-static void	execute_absolute_path(char **cmd, t_mini *mini)
+static void	init_pipex(t_pipex *pipex)
 {
-	if (access(cmd[0], F_OK) != 0)
-	{
-		print_cmd_error(cmd[0], ": command not found\n");
-		exit(127);
-	}
-	else if (access(cmd[0], X_OK) != 0)
-	{
-		print_cmd_error(cmd[0], ": Permission denied\n");
-		exit(126);
-	}
-	else
-	{
-		execve(cmd[0], cmd, mini->env);
-		print_cmd_error(cmd[0], ": Exec format error\n");
-		exit(126);
-	}
+	pipex->pipefd[0] = -1;
+	pipex->pipefd[1] = -1;
+	pipex->fd_in = -1;
+	pipex->fd_out = -1;
+	pipex->pid = -1;
 }
 
-static void	handle_cmd_error(char **cmd, t_mini *mini, int permission)
+static int	wait_for_children(pid_t last_pid)
 {
-	if (!mini->arr_path || mini->arr_path[0] == NULL)
-	{
-		print_cmd_error(cmd[0], ": No such file or directory\n");
-		exit(127);
-	}
-	else if (permission)
-	{
-		print_cmd_error(cmd[0], ": Permission denied\n");
-		exit(126);
-	}
-	else
-	{
-		print_cmd_error(cmd[0], ": command not found\n");
-		exit(127);
-	}
-}
+	pid_t	pid;
+	int		status;
+	int		exit_code;
 
-static void	execute_from_path(char **cmd, t_mini *mini)
-{
-	int		permission;
-	int		i;
-	char	*path;
-
-	i = 0;
-	permission = 0;
-	mini->arr_path = get_path_cmd(mini->env);
-	while (mini->arr_path && (mini->arr_path[i] != NULL))
+	exit_code = 0;
+	pid = wait(&status);
+	while (pid > 0)
 	{
-		path = ft_strdup(mini->arr_path[i++]);
-		create_path(&path, cmd[0]);
-		if (access(path, F_OK) == 0)
+		if (pid == last_pid)
 		{
-			if (access(path, X_OK) == 0)
-				execve(path, cmd, mini->env);
-			else
-				permission = 1;
+			if (WIFEXITED(status))
+				exit_code = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+			{
+				exit_code = 128 + WTERMSIG(status);
+				if (WTERMSIG(status) == SIGQUIT)
+					ft_putendl_fd("Quit (core dumped)", 2);
+				if (WTERMSIG(status) == SIGINT)
+					write(1, "\n", 1);
+			}
 		}
-		free(path);
+		pid = wait(&status);
 	}
-	handle_cmd_error(cmd, mini, permission);
-	ft_free_wa(mini->arr_path);
-	mini->arr_path = NULL;
+	return (exit_code);
 }
 
-void	execute_simple_commands(char **cmd, t_mini *mini)
+void	execute_commands(t_list *cmd_list, t_mini *mini, t_token_info *t_info)
 {
-	if (!cmd || !cmd[0] || !cmd[0][0])
+	t_list	*current;
+	t_cmd	*node;
+	t_pipex	pipex;
+
+	pipex.prev_pipe_in = -1;
+	current = cmd_list;
+	while (current)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd("", 2);
-		ft_putstr_fd(": command not found\n", 2);
-		exit(127);
+		node = current->content;
+		expand_vars(node->cmd, mini, t_info, node->index_start_cmd);
+		init_pipex(&pipex);
+		if (current->next)
+		{
+			if (pipe(pipex.pipefd) != 0)
+			{
+				ft_putendl_fd("minishell: pipe: Error creating pipe", 2);
+				mini->exit_code = 1;
+				return ;
+			}
+		}
+		if (is_env_builtin(node->cmd) && pipex.prev_pipe_in == -1
+			&& !current->next)
+		{
+			mini->exit_code = exec_env_builtins(node->cmd, mini);
+			if (mini->last_command)
+				free(mini->last_command);
+			if (node->cmd_size > 0)
+				mini->last_command = ft_strdup(node->cmd[node->cmd_size - 1]);
+		}
+		else
+		{
+			pipex.pid = fork();
+			signal(SIGINT, SIG_IGN);
+			if (pipex.pid < 0)
+			{
+				ft_putstr_fd("minishell: fork: Error creating process", 2);
+				mini->exit_code = 1;
+				return ;
+			}
+			else if (pipex.pid == 0)
+			{
+				setup_child_signals();
+				if (redirect_in(node, mini, &pipex))
+					exit(mini->exit_code);
+				if (redirect_out(node, mini, &pipex))
+					exit(mini->exit_code);
+				if (is_builtin(node->cmd))
+					exit(exec_builtins(node->cmd, mini));
+				else
+					execute_simple_commands(node->cmd, mini);
+			}
+			else
+			{
+				if (pipex.prev_pipe_in != -1)
+					close(pipex.prev_pipe_in);
+				if (pipex.pipefd[1] != -1)
+					close(pipex.pipefd[1]);
+				if (mini->last_command)
+					free(mini->last_command);
+				if (node->cmd_size > 0)
+					mini->last_command = ft_strdup
+						(node->cmd[node->cmd_size - 1]);
+				mini->exit_code = wait_for_children(pipex.pid);
+			}
+		}
+		pipex.prev_pipe_in = pipex.pipefd[0];
+		current = current->next;
 	}
-	else if (cmd[0][0] == '.' || cmd[0][0] == '/')
-		execute_absolute_path(cmd, mini);
-	else
-		execute_from_path(cmd, mini);
+	init_signals();
 }

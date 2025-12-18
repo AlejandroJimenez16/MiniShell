@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2025/12/18 11:52:38 by alejandj         ###   ########.fr        #
+#    Updated: 2025/12/18 13:40:47 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,8 +35,9 @@ SRC =	src/main.c							\
 		src/builtins/ft_unset.c				\
 		src/builtins/ft_env.c				\
 		src/builtins/ft_exit.c				\
-		src/execution/execution.c			\
+		src/execution/exec_simple_cmd.c		\
 		src/execution/redirection.c			\
+		src/execution/execution.c			\
 		src/parser/parser_pipex.c			\
 		src/parser/parser_pipex_utils.c		\
 		src/parser/count_tokens.c			\
