@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2025/12/05 13:57:16 by alejandj         ###   ########.fr        #
+#    Updated: 2025/12/18 11:52:38 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,6 @@ SRC =	src/main.c							\
 		src/env_utils.c						\
 		src/prompt.c						\
 		src/mini_utils.c					\
-		src/execution.c						\
 		src/builtins/builtins_main.c		\
 		src/builtins/ft_echo.c				\
 		src/builtins/ft_cd.c				\
@@ -36,6 +35,8 @@ SRC =	src/main.c							\
 		src/builtins/ft_unset.c				\
 		src/builtins/ft_env.c				\
 		src/builtins/ft_exit.c				\
+		src/execution/execution.c			\
+		src/execution/redirection.c			\
 		src/parser/parser_pipex.c			\
 		src/parser/parser_pipex_utils.c		\
 		src/parser/count_tokens.c			\

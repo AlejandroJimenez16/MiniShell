@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 18:01:10 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/16 20:00:39 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/18 12:58:58 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	is_env_builtin(char **cmd)
 	return (0);
 }
 
-void	exec_env_builtins(char **cmd, t_mini *mini)
+int	exec_env_builtins(char **cmd, t_mini *mini)
 {
 	if (ft_strncmp(cmd[0], "export", 6) == 0)
 		ft_export(cmd, mini);
@@ -37,6 +37,7 @@ void	exec_env_builtins(char **cmd, t_mini *mini)
 		ft_cd(cmd, mini);
 	else if (ft_strncmp(cmd[0], "exit", 4) == 0)
 		ft_exit(cmd, mini);
+	return (mini->exit_code);
 }
 
 int	is_builtin(char **cmd)

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/18 01:20:42 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/18 13:21:15 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,65 +19,6 @@ static void	init_pipex(t_pipex *pipex)
 	pipex->fd_in = -1;
 	pipex->fd_out = -1;
 	pipex->pid = -1;
-}
-
-static int	redirect_in(t_cmd *node, t_mini *mini, t_pipex *pipex)
-{
-	if (node->heredoc == 1)
-	{
-		pipex->fd_in = here_doc(node->delimeter);
-		if (pipex->fd_in < 0)
-		{
-			print_cmd_error(node->infile, ": Error opening infile");
-			mini->exit_code = 1;
-			return (1);
-		}
-		dup2(pipex->fd_in, STDIN_FILENO);
-		close(pipex->fd_in);
-	}
-	else if (node->infile)
-	{
-		pipex->fd_in = open(node->infile, O_RDONLY);
-		if (pipex->fd_in < 0)
-		{
-			print_cmd_error(node->infile, ": Error opening infile");
-			mini->exit_code = 1;
-			return (1);
-		}
-		dup2(pipex->fd_in, STDIN_FILENO);
-		close(pipex->fd_in);
-	}
-	else if (pipex->prev_pipe_in != -1)
-	{
-		dup2(pipex->prev_pipe_in, STDIN_FILENO);
-		close(pipex->prev_pipe_in);
-	}
-	return (0);
-}
-
-static int	redirect_out(t_cmd *node, t_mini *mini, t_pipex *pipex)
-{
-	if (node->outfile)
-	{
-		if (node->append)
-			pipex->fd_out = open(node->outfile, O_CREAT | O_WRONLY | O_APPEND, 0644);
-		else
-			pipex->fd_out = open(node->outfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (pipex->fd_out < 0)
-		{
-			print_cmd_error(node->outfile, ": Error opening outfile");
-			mini->exit_code = 1;
-			return (1);
-		}
-		dup2(pipex->fd_out, STDOUT_FILENO);
-		close(pipex->fd_out);
-	}
-	else if (pipex->pipefd[1] != -1)
-	{
-		dup2(pipex->pipefd[1], STDOUT_FILENO);
-		close(pipex->pipefd[1]);
-	}
-	return (0);
 }
 
 int	wait_for_children(pid_t last_pid)
@@ -93,15 +34,12 @@ int	wait_for_children(pid_t last_pid)
 		if (pid == last_pid)
 		{
 			if (WIFEXITED(status))
-				exit_code = WEXITSTATUS(status); // Terminó normal (exit, return, etc)
+				exit_code = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
 			{
-				// Terminó por una señal (Ctrl+C, Kill, Segfault...)
 				exit_code = 128 + WTERMSIG(status);
-				// Si fue SIGQUIT (Ctrl+\) hay que imprimir esto según el subject
 				if (WTERMSIG(status) == SIGQUIT)
 					ft_putendl_fd("Quit (core dumped)", 2);
-				// Si fue SIGINT (Ctrl+C) suele quedar bien un salto de línea extra
 				if (WTERMSIG(status) == SIGINT)
 					write(1, "\n", 1);
 			}
@@ -135,7 +73,7 @@ void	execute_commands(t_list *cmd_list, t_mini *mini, t_token_info *t_info)
 		}
 		if (is_env_builtin(node->cmd) && pipex.prev_pipe_in == -1 && !current->next)
 		{
-			exec_env_builtins(node->cmd, mini);
+			mini->exit_code = exec_env_builtins(node->cmd, mini);
 			if (mini->last_command)
 				free(mini->last_command);
 			if (node->cmd_size > 0)
@@ -173,12 +111,12 @@ void	execute_commands(t_list *cmd_list, t_mini *mini, t_token_info *t_info)
 					free(mini->last_command);
 				if (node->cmd_size > 0)
 					mini->last_command = ft_strdup(node->cmd[node->cmd_size - 1]);
+				mini->exit_code = wait_for_children(pipex.pid);
 			}
 		}
 		pipex.prev_pipe_in = pipex.pipefd[0];
 		current = current->next;
 	}
-	mini->exit_code = wait_for_children(pipex.pid);
 	init_signals();
 }
 

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/16 20:03:19 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/18 12:59:13 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char	**get_path_cmd(char **env);
 // Built-ins
 int		is_env_builtin(char **cmd);
 int		is_builtin(char **cmd);
-void	exec_env_builtins(char **cmd, t_mini *mini);
+int		exec_env_builtins(char **cmd, t_mini *mini);
 int		exec_builtins(char **cmd, t_mini *mini);
 void	ft_echo(char **cmd);
 int		ft_cd(char **cmd, t_mini *mini);
@@ -146,6 +146,8 @@ void	expand_vars(char **cmd, t_mini *mini, t_token_info *t_info, int start);
 t_list	*create_cmd_list(char *line, char **tokens, t_token_info *t_info);
 
 // Execution
+int		redirect_in(t_cmd *node, t_mini *mini, t_pipex *pipex);
+int		redirect_out(t_cmd *node, t_mini *mini, t_pipex *pipex);
 void	execute_simple_commands(char **cmd, t_mini *mini);
 
 // Mini_utils

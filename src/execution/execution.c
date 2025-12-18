@@ -6,11 +6,11 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 14:27:04 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/13 18:10:17 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/18 11:45:47 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/mini.h"
+#include "../../includes/mini.h"
 
 static void	execute_absolute_path(char **cmd, t_mini *mini)
 {
