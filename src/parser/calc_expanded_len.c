@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 20:30:00 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/28 12:47:20 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/18 01:23:23 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,10 @@ int	get_len_token(t_mini *mini, char *arg)
 	{
 		if (arg[i] == '$' && arg[i + 1] == '?')
 			count += handle_exit_code_len(mini, &i);
-		else if (arg[i] == '$' && arg[i + 1] == '_')
+		else if (arg[i] == '$' && arg[i + 1] == '_'
+			&& !(ft_isalnum(arg[i + 2]) || arg[i + 2] == '_'))
 			count += handle_last_command_len(mini, &i);
-		else if (arg[i] == '$' && ft_isalpha(arg[i + 1]))
+		else if (arg[i] == '$' && (ft_isalpha(arg[i + 1]) || arg[i + 1] == '_'))
 			count += handle_env_var_len(mini, arg, &i);
 		else
 		{

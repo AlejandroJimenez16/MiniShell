@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/22 21:42:30 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/08 18:54:43 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/18 01:23:43 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ static char	*expand_vars_in_token(t_mini *mini, char *arg)
 	{
 		if (arg[i] == '$' && arg[i + 1] == '?')
 			i_result += handle_exit_code_copy(mini, result + i_result, &i);
-		else if (arg[i] == '$' && arg[i + 1] == '_')
+		else if (arg[i] == '$' && arg[i + 1] == '_'
+			&& !(ft_isalnum(arg[i + 2]) || arg[i + 2] == '_'))
 			i_result += handle_last_command_copy(mini, result + i_result, &i);
 		else if (arg[i] == '$' && (ft_isalpha(arg[i + 1]) || arg[i + 1] == '_'))
 			i_result += handle_env_var_copy(mini, arg, &i, result + i_result);

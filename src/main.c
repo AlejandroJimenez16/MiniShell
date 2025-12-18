@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/17 22:00:49 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/18 01:20:42 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ void	execute_commands(t_list *cmd_list, t_mini *mini, t_token_info *t_info)
 	while (current)
 	{
 		node = current->content;
+		expand_vars(node->cmd, mini, t_info, node->index_start_cmd);
 		init_pipex(&pipex);
 		if (current->next)
 		{
@@ -133,7 +134,13 @@ void	execute_commands(t_list *cmd_list, t_mini *mini, t_token_info *t_info)
 			}
 		}
 		if (is_env_builtin(node->cmd) && pipex.prev_pipe_in == -1 && !current->next)
+		{
 			exec_env_builtins(node->cmd, mini);
+			if (mini->last_command)
+				free(mini->last_command);
+			if (node->cmd_size > 0)
+				mini->last_command = ft_strdup(node->cmd[node->cmd_size - 1]);
+		}
 		else
 		{
 			pipex.pid = fork();
@@ -151,7 +158,6 @@ void	execute_commands(t_list *cmd_list, t_mini *mini, t_token_info *t_info)
 					exit(mini->exit_code);
 				if (redirect_out(node, mini, &pipex))
 					exit(mini->exit_code);
-				expand_vars(node->cmd, mini, t_info, node->index_start_cmd);
 				if (is_builtin(node->cmd))
 					exit(exec_builtins(node->cmd, mini));
 				else
@@ -163,14 +169,15 @@ void	execute_commands(t_list *cmd_list, t_mini *mini, t_token_info *t_info)
                 	close(pipex.prev_pipe_in);
             	if (pipex.pipefd[1] != -1)
                 	close(pipex.pipefd[1]);
+				if (mini->last_command)
+					free(mini->last_command);
+				if (node->cmd_size > 0)
+					mini->last_command = ft_strdup(node->cmd[node->cmd_size - 1]);
 			}
 		}
 		pipex.prev_pipe_in = pipex.pipefd[0];
 		current = current->next;
 	}
-	if (mini->last_command)
-		free(mini->last_command);
-	mini->last_command = ft_strdup(node->cmd[node->cmd_size - 1]);
 	mini->exit_code = wait_for_children(pipex.pid);
 	init_signals();
 }
