@@ -47,13 +47,8 @@ SRC =	src/main.c							\
 		src/parser/expand_vars.c			\
 		src/parser/expand_vars_utils.c		\
 		src/parser/create_cmd_list.c		\
-		src/pipex/main_bonus.c				\
-		src/pipex/pipex_extra_bonus.c		\
 		src/pipex/pipex_heredoc_bonus.c		\
-		src/pipex/pipex_utils_bonus.c		\
 		src/pipex/waaaaa.c					\
-		src/pipex/pipex_minishell.c			\
-		src/pipex/pipex_minishell_utils.c	\
 		src/signals/signals.c
 
 OBJECTS = $(SRC:src/%.c=$(OBJDIR)/%.o)

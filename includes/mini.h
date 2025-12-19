@@ -20,7 +20,6 @@
 # define RESET "\033[0m"
 
 # include "../libft/libft.h"
-# include "pipex_bonus.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdio.h>
@@ -136,13 +135,13 @@ void	set_token_type(char *token, t_token_info *t_info);
 void	set_quote_type(char quote, t_token_info *t_info);
 char	**split_tokens(char *str, t_token_info **t_info);
 
-	// Expand vars
+// Expand vars
 int		get_len_expand_var(char *str);
 char	*get_env_value(char *env_entry);
 int		get_len_token(t_mini *mini, char *arg);
 void	expand_vars(char **cmd, t_mini *mini, t_token_info *t_info, int start);
 
-	// Create cmd list
+// Create cmd list
 t_list	*create_cmd_list(char *line, char **tokens, t_token_info *t_info);
 
 // Execution
@@ -161,5 +160,19 @@ void	print_cmd_list(t_list *cmd_list);
 // Signals
 void	init_signals(void);
 void	setup_child_signals(void);
+
+// Heredoc
+int		here_doc(char *delimiter);
+
+// Parser for integration with minishell
+int		detect_mode(char *line);
+char	**extract_commands(char *line);
+char	*extract_outfile(char *line);
+char	*extract_word_after(char *line, char *key);
+int		count_items(char **cmds);
+char	**parse_line(char *line);
+
+//Utils
+void	*ft_free_wa(char **word_arr);
 
 #endif

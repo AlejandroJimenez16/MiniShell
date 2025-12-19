@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/pipex_bonus.h"
+#include "../../includes/mini.h"
 
 void	*ft_free_wa(char **word_arr)
 {
