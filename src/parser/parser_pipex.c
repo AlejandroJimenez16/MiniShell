@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 /* TODO Meter header */
-=======
->>>>>>> 3bf29d05174427f82771b4a8be92328049949f9c
 #include "../../includes/mini.h"
 
 int	count_items(char **cmds)
