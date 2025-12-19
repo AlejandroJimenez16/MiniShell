@@ -49,6 +49,7 @@ static int	wait_for_children(pid_t last_pid)
 	return (exit_code);
 }
 
+/* TODO 69 lineas!, emoticono calavera */
 void	execute_commands(t_list *cmd_list, t_mini *mini, t_token_info *t_info)
 {
 	t_list	*current;

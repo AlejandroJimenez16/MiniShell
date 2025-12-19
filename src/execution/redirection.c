@@ -18,11 +18,8 @@ int	redirect_in(t_cmd *node, t_mini *mini, t_pipex *pipex)
 	{
 		pipex->fd_in = here_doc(node->delimeter);
 		if (pipex->fd_in < 0)
-		{
-			print_cmd_error(node->infile, ": Error opening infile");
-			mini->exit_code = 1;
-			return (1);
-		}
+			return (print_cmd_error(node->infile, ": Error opening infile"),
+				mini->exit_code = 1, mini->exit_code);
 		dup2(pipex->fd_in, STDIN_FILENO);
 		close(pipex->fd_in);
 	}
@@ -30,11 +27,8 @@ int	redirect_in(t_cmd *node, t_mini *mini, t_pipex *pipex)
 	{
 		pipex->fd_in = open(node->infile, O_RDONLY);
 		if (pipex->fd_in < 0)
-		{
-			print_cmd_error(node->infile, ": Error opening infile");
-			mini->exit_code = 1;
-			return (1);
-		}
+			return (print_cmd_error(node->infile, ": Error opening infile"),
+				mini->exit_code = 1, mini->exit_code);
 		dup2(pipex->fd_in, STDIN_FILENO);
 		close(pipex->fd_in);
 	}
@@ -51,9 +45,11 @@ int	redirect_out(t_cmd *node, t_mini *mini, t_pipex *pipex)
 	if (node->outfile)
 	{
 		if (node->append)
-			pipex->fd_out = open(node->outfile, O_CREAT | O_WRONLY | O_APPEND, 0644);
+			pipex->fd_out = open(node->outfile, O_CREAT | O_WRONLY
+					| O_APPEND, 0644);
 		else
-			pipex->fd_out = open(node->outfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			pipex->fd_out = open(node->outfile, O_CREAT | O_WRONLY
+					| O_TRUNC, 0644);
 		if (pipex->fd_out < 0)
 		{
 			print_cmd_error(node->outfile, ": Error opening outfile");

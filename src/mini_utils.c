@@ -29,10 +29,10 @@ int	get_cmd_arr_size(char **tokens, t_token_info *t_info, int start)
 	while (tokens[i] && t_info[i].type_token != PIPE)
 	{
 		if (t_info[i].type_token == WORD)
-        {
-            if (i == 0 || !is_redir(t_info[i - 1].type_token))
-                count++;
-        }
+		{
+			if (i == 0 || !is_redir(t_info[i - 1].type_token))
+				count++;
+		}
 		i++;
 	}
 	return (count);
@@ -58,36 +58,38 @@ int	get_num_nodes(char *line, t_token_info *t_info)
 
 int	is_redir(int type)
 {
-	if (type == REDIR_IN || type == REDIR_OUT || type == REDIR_APPEND || type == HEREDOC)
+	if (type == REDIR_IN || type == REDIR_OUT
+		|| type == REDIR_APPEND || type == HEREDOC)
 		return (1);
 	return (0);
 }
 
+/* TODO Si es funcion de testeo marcamelo si no, arregla normi */
 void    print_cmd_list(t_list *cmd_list)
 {
-    t_list *tmp;
+	t_list	*tmp;
 
-    tmp = cmd_list;
+	tmp = cmd_list;
 
-    while (tmp)
-    {
-        t_cmd *node = tmp->content;
-        
-        printf("Cmd: ");
-         for (int i = 0; node->cmd[i]; i++)
-            printf("%s ", node->cmd[i]);
-        printf("\n");
+	while (tmp)
+	{
+		t_cmd *node = tmp->content;
+		
+		printf("Cmd: ");
+		for (int i = 0; node->cmd[i]; i++)
+			printf("%s ", node->cmd[i]);
+		printf("\n");
 
-        if (node->infile)
-            printf("infile: %s\n", node->infile);
-        if (node->heredoc)
-            printf("delimeter: %s\n", node->delimeter);
-        if (node->outfile)
-            printf("outfile: %s\n", node->outfile);
-         if (node->append)
-            printf("append: %d\n", node->append);
+		if (node->infile)
+			printf("infile: %s\n", node->infile);
+		if (node->heredoc)
+			printf("delimeter: %s\n", node->delimeter);
+		if (node->outfile)
+			printf("outfile: %s\n", node->outfile);
+		if (node->append)
+			printf("append: %d\n", node->append);
 
-        tmp = tmp->next;
-        printf("\n");
-    }
+		tmp = tmp->next;
+		printf("\n");
+	}
 }

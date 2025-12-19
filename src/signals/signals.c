@@ -1,9 +1,10 @@
+/* TODO Meter header */
 #include "../../includes/mini.h"
 
 /*
 ** Global variable that stores exit code when recieving a signal
 */
-int g_sig_status = 0;
+int	g_sig_status = 0;
 
 /*
 ** Handler for SIGINT (Ctrl+C) in prompt.
@@ -24,11 +25,12 @@ void	handle_sigint(int sig)
 
 /*
 ** Initialice signals for interaction mode (prompt)
+** Ignores Ctrl+\
 */
 void	init_signals(void)
 {
 	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN); // Ignore Ctrl+\ in prompt
+	signal(SIGQUIT, SIG_IGN);
 }
 
 /*
