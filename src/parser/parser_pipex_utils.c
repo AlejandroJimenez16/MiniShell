@@ -1,4 +1,4 @@
-#include "../../includes/pipex_bonus.h"
+#include "../../includes/mini.h"
 
 int	detect_mode(char *line)
 {
