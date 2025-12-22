@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:43:51 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/05 13:48:26 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/22 15:14:46 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,34 +62,4 @@ int	is_redir(int type)
 		|| type == REDIR_APPEND || type == HEREDOC)
 		return (1);
 	return (0);
-}
-
-/* TODO Si es funcion de testeo marcamelo si no, arregla normi */
-void    print_cmd_list(t_list *cmd_list)
-{
-	t_list	*tmp;
-
-	tmp = cmd_list;
-
-	while (tmp)
-	{
-		t_cmd *node = tmp->content;
-		
-		printf("Cmd: ");
-		for (int i = 0; node->cmd[i]; i++)
-			printf("%s ", node->cmd[i]);
-		printf("\n");
-
-		if (node->infile)
-			printf("infile: %s\n", node->infile);
-		if (node->heredoc)
-			printf("delimeter: %s\n", node->delimeter);
-		if (node->outfile)
-			printf("outfile: %s\n", node->outfile);
-		if (node->append)
-			printf("append: %d\n", node->append);
-
-		tmp = tmp->next;
-		printf("\n");
-	}
 }

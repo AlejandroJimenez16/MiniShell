@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2025/12/18 13:40:47 by alejandj         ###   ########.fr        #
+#    Updated: 2025/12/22 14:53:28 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,8 +38,6 @@ SRC =	src/main.c							\
 		src/execution/exec_simple_cmd.c		\
 		src/execution/redirection.c			\
 		src/execution/execution.c			\
-		src/parser/parser_pipex.c			\
-		src/parser/parser_pipex_utils.c		\
 		src/parser/count_tokens.c			\
 		src/parser/split_tokens.c			\
 		src/parser/split_tokens_utils.c		\
@@ -47,7 +45,8 @@ SRC =	src/main.c							\
 		src/parser/expand_vars.c			\
 		src/parser/expand_vars_utils.c		\
 		src/parser/create_cmd_list.c		\
-		src/pipex/pipex_heredoc_bonus.c		\
+		src/pipex/here_doc.c				\
+		src/pipex/pipex_utils.c				\
 		src/pipex/waaaaa.c					\
 		src/signals/signals.c
 

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/18 13:40:18 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/22 22:06:47 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,18 +144,24 @@ void	expand_vars(char **cmd, t_mini *mini, t_token_info *t_info, int start);
 // Create cmd list
 t_list	*create_cmd_list(char *line, char **tokens, t_token_info *t_info);
 
-// Execution
+// Redirections
 int		redirect_in(t_cmd *node, t_mini *mini, t_pipex *pipex);
 int		redirect_out(t_cmd *node, t_mini *mini, t_pipex *pipex);
+
+// Execution
+int		wait_for_children(pid_t last_pid);
 void	execute_simple_commands(char **cmd, t_mini *mini);
 void	execute_commands(t_list *cmd_list, t_mini *mini, t_token_info *t_info);
 
-// Mini_utils
+// Pipex utils
+void	init_pipex(t_pipex *pipex);
+int		create_pipe(t_pipex *pipex, t_mini *mini);
+
+// Mini utils
 void	print_cmd_error(char *cmd, char *error);
 int		get_cmd_arr_size(char **tokens, t_token_info *t_info, int start);
 int		get_num_nodes(char *line, t_token_info *t_info);
 int		is_redir(int type);
-void	print_cmd_list(t_list *cmd_list);
 
 // Signals
 void	init_signals(void);
@@ -163,14 +169,6 @@ void	setup_child_signals(void);
 
 // Heredoc
 int		here_doc(char *delimiter);
-
-// Parser for integration with minishell
-int		detect_mode(char *line);
-char	**extract_commands(char *line);
-char	*extract_outfile(char *line);
-char	*extract_word_after(char *line, char *key);
-int		count_items(char **cmds);
-char	**parse_line(char *line);
 
 //Utils
 void	*ft_free_wa(char **word_arr);

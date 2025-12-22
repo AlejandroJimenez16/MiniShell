@@ -6,22 +6,13 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 13:38:17 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/18 13:49:07 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/22 22:12:49 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/mini.h"
 
-static void	init_pipex(t_pipex *pipex)
-{
-	pipex->pipefd[0] = -1;
-	pipex->pipefd[1] = -1;
-	pipex->fd_in = -1;
-	pipex->fd_out = -1;
-	pipex->pid = -1;
-}
-
-static int	wait_for_children(pid_t last_pid)
+int	wait_for_children(pid_t last_pid)
 {
 	pid_t	pid;
 	int		status;
@@ -49,7 +40,62 @@ static int	wait_for_children(pid_t last_pid)
 	return (exit_code);
 }
 
-/* TODO 69 lineas!, emoticono calavera */
+static int	handle_child(t_cmd *node, t_mini *mini, t_pipex *pipex)
+{
+	setup_child_signals();
+	if (redirect_in(node, mini, pipex))
+		return (mini->exit_code);
+	if (redirect_out(node, mini, pipex))
+		return (mini->exit_code);
+	if (is_builtin(node->cmd))
+		return (exec_builtins(node->cmd, mini));
+	else
+		execute_simple_commands(node->cmd, mini);
+	return (mini->exit_code);
+}
+
+static void	handle_parent(t_pipex *pipex, t_mini *mini, t_cmd *node)
+{
+	if (pipex->prev_pipe_in != -1)
+		close(pipex->prev_pipe_in);
+	if (pipex->pipefd[1] != -1)
+		close(pipex->pipefd[1]);
+	if (mini->last_command)
+		free(mini->last_command);
+	if (node->cmd_size > 0)
+		mini->last_command = ft_strdup
+			(node->cmd[node->cmd_size - 1]);
+	mini->exit_code = wait_for_children(pipex->pid);
+}
+
+static int	manage_execution(t_cmd *node, t_pipex *pipex,
+		t_mini *mini, t_list *current)
+{
+	if (is_env_builtin(node->cmd) && pipex->prev_pipe_in == -1
+		&& !current->next)
+	{
+		mini->exit_code = exec_env_builtins(node->cmd, mini);
+		if (mini->last_command)
+			free(mini->last_command);
+		if (node->cmd_size > 0)
+			mini->last_command = ft_strdup(node->cmd[node->cmd_size - 1]);
+		return (0);
+	}
+	pipex->pid = fork();
+	signal(SIGINT, SIG_IGN);
+	if (pipex->pid < 0)
+	{
+		ft_putstr_fd("minishell: fork: Error creating process", 2);
+		mini->exit_code = 1;
+		return (1);
+	}
+	else if (pipex->pid == 0)
+		exit(handle_child(node, mini, pipex));
+	else
+		handle_parent(pipex, mini, node);
+	return (0);
+}
+
 void	execute_commands(t_list *cmd_list, t_mini *mini, t_token_info *t_info)
 {
 	t_list	*current;
@@ -63,60 +109,10 @@ void	execute_commands(t_list *cmd_list, t_mini *mini, t_token_info *t_info)
 		node = current->content;
 		expand_vars(node->cmd, mini, t_info, node->index_start_cmd);
 		init_pipex(&pipex);
-		if (current->next)
-		{
-			if (pipe(pipex.pipefd) != 0)
-			{
-				ft_putendl_fd("minishell: pipe: Error creating pipe", 2);
-				mini->exit_code = 1;
-				return ;
-			}
-		}
-		if (is_env_builtin(node->cmd) && pipex.prev_pipe_in == -1
-			&& !current->next)
-		{
-			mini->exit_code = exec_env_builtins(node->cmd, mini);
-			if (mini->last_command)
-				free(mini->last_command);
-			if (node->cmd_size > 0)
-				mini->last_command = ft_strdup(node->cmd[node->cmd_size - 1]);
-		}
-		else
-		{
-			pipex.pid = fork();
-			signal(SIGINT, SIG_IGN);
-			if (pipex.pid < 0)
-			{
-				ft_putstr_fd("minishell: fork: Error creating process", 2);
-				mini->exit_code = 1;
-				return ;
-			}
-			else if (pipex.pid == 0)
-			{
-				setup_child_signals();
-				if (redirect_in(node, mini, &pipex))
-					exit(mini->exit_code);
-				if (redirect_out(node, mini, &pipex))
-					exit(mini->exit_code);
-				if (is_builtin(node->cmd))
-					exit(exec_builtins(node->cmd, mini));
-				else
-					execute_simple_commands(node->cmd, mini);
-			}
-			else
-			{
-				if (pipex.prev_pipe_in != -1)
-					close(pipex.prev_pipe_in);
-				if (pipex.pipefd[1] != -1)
-					close(pipex.pipefd[1]);
-				if (mini->last_command)
-					free(mini->last_command);
-				if (node->cmd_size > 0)
-					mini->last_command = ft_strdup
-						(node->cmd[node->cmd_size - 1]);
-				mini->exit_code = wait_for_children(pipex.pid);
-			}
-		}
+		if (current->next && create_pipe(&pipex, mini))
+			return ;
+		if (manage_execution(node, &pipex, mini, current))
+			return ;
 		pipex.prev_pipe_in = pipex.pipefd[0];
 		current = current->next;
 	}

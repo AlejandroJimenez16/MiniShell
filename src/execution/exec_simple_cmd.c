@@ -1,16 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution.c                                        :+:      :+:    :+:   */
+/*   exec_simple_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 14:27:04 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/18 11:45:47 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/22 14:45:35 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/mini.h"
+
+static void	create_path(char **s1, char *s2)
+{
+	char	*new_string;
+
+	new_string = ft_strjoin(*s1, "/");
+	free(*s1);
+	*s1 = ft_strjoin(new_string, s2);
+	free(new_string);
+}
 
 static void	execute_absolute_path(char **cmd, t_mini *mini)
 {
