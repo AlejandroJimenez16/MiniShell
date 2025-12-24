@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 13:38:17 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/22 22:12:49 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/24 20:00:32 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,12 @@ static void	handle_parent(t_pipex *pipex, t_mini *mini, t_cmd *node)
 	if (pipex->pipefd[1] != -1)
 		close(pipex->pipefd[1]);
 	if (mini->last_command)
+	{
 		free(mini->last_command);
+		mini->last_command = NULL;
+	}
 	if (node->cmd_size > 0)
-		mini->last_command = ft_strdup
-			(node->cmd[node->cmd_size - 1]);
+		mini->last_command = ft_strdup(node->cmd[node->cmd_size - 1]);
 	mini->exit_code = wait_for_children(pipex->pid);
 }
 
@@ -76,7 +78,10 @@ static int	manage_execution(t_cmd *node, t_pipex *pipex,
 	{
 		mini->exit_code = exec_env_builtins(node->cmd, mini);
 		if (mini->last_command)
+		{
 			free(mini->last_command);
+			mini->last_command = NULL;
+		}
 		if (node->cmd_size > 0)
 			mini->last_command = ft_strdup(node->cmd[node->cmd_size - 1]);
 		return (0);
@@ -84,11 +89,8 @@ static int	manage_execution(t_cmd *node, t_pipex *pipex,
 	pipex->pid = fork();
 	signal(SIGINT, SIG_IGN);
 	if (pipex->pid < 0)
-	{
-		ft_putstr_fd("minishell: fork: Error creating process", 2);
-		mini->exit_code = 1;
-		return (1);
-	}
+		return (ft_putstr_fd("minishell: fork: Error creating process", 2),
+			mini->exit_code = 1, 1);
 	else if (pipex->pid == 0)
 		exit(handle_child(node, mini, pipex));
 	else

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 13:56:44 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/15 13:51:14 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/24 19:04:32 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,17 @@ static t_cmd	*init_node(int n_words)
 	node = malloc(sizeof(t_cmd));
 	if (!node)
 		return (NULL);
-	node->cmd = malloc((n_words + 1) * sizeof(char *));
-	if (!node->cmd)
+	if (n_words > 0)
 	{
-		free(node);
-		return (NULL);
+		node->cmd = malloc((n_words + 1) * sizeof(char *));
+		if (!node->cmd)
+		{
+			free(node);
+			return (NULL);
+		}
 	}
+	else
+		node->cmd = NULL;
 	node->cmd_size = n_words;
 	node->infile = NULL;
 	node->heredoc = 0;

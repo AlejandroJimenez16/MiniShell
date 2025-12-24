@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/22 21:42:30 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/18 01:23:43 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/24 19:23:14 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ void	expand_vars(char **cmd, t_mini *mini, t_token_info *t_info, int start)
 	int		i;
 	char	*temp;
 
+	if (!cmd || !cmd[0] || !cmd[0][0])
+		return ;
 	i = 0;
 	while (cmd[i])
 	{

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/22 22:06:47 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/25 00:33:58 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,8 @@ int		count_tokens(char *s);
 void	set_token_type(char *token, t_token_info *t_info);
 void	set_quote_type(char quote, t_token_info *t_info);
 char	**split_tokens(char *str, t_token_info **t_info);
+int		check_unclosed_quotes(char *line);
+int		check_invalid_tokens(t_token_info *t_info, t_mini *mini);
 
 // Expand vars
 int		get_len_expand_var(char *str);

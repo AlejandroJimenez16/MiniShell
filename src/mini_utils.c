@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:43:51 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/22 15:14:46 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/24 20:26:46 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	print_cmd_error(char *cmd, char *error)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd(error, 2);
+	ft_putendl_fd(error, 2);
 }
 
 int	get_cmd_arr_size(char **tokens, t_token_info *t_info, int start)

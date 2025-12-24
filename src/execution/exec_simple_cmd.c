@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 14:27:04 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/22 14:45:35 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/24 19:19:04 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,18 @@ static void	execute_absolute_path(char **cmd, t_mini *mini)
 {
 	if (access(cmd[0], F_OK) != 0)
 	{
-		print_cmd_error(cmd[0], ": command not found\n");
+		print_cmd_error(cmd[0], ": command not found");
 		exit(127);
 	}
 	else if (access(cmd[0], X_OK) != 0)
 	{
-		print_cmd_error(cmd[0], ": Permission denied\n");
+		print_cmd_error(cmd[0], ": Permission denied");
 		exit(126);
 	}
 	else
 	{
 		execve(cmd[0], cmd, mini->env);
-		print_cmd_error(cmd[0], ": Exec format error\n");
+		print_cmd_error(cmd[0], ": Exec format error");
 		exit(126);
 	}
 }
@@ -46,17 +46,17 @@ static void	handle_cmd_error(char **cmd, t_mini *mini, int permission)
 {
 	if (!mini->arr_path || mini->arr_path[0] == NULL)
 	{
-		print_cmd_error(cmd[0], ": No such file or directory\n");
+		print_cmd_error(cmd[0], ": No such file or directory");
 		exit(127);
 	}
 	else if (permission)
 	{
-		print_cmd_error(cmd[0], ": Permission denied\n");
+		print_cmd_error(cmd[0], ": Permission denied");
 		exit(126);
 	}
 	else
 	{
-		print_cmd_error(cmd[0], ": command not found\n");
+		print_cmd_error(cmd[0], ": command not found");
 		exit(127);
 	}
 }
@@ -91,12 +91,7 @@ static void	execute_from_path(char **cmd, t_mini *mini)
 void	execute_simple_commands(char **cmd, t_mini *mini)
 {
 	if (!cmd || !cmd[0] || !cmd[0][0])
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd("", 2);
-		ft_putstr_fd(": command not found\n", 2);
-		exit(127);
-	}
+		exit(0);
 	else if (cmd[0][0] == '.' || cmd[0][0] == '/')
 		execute_absolute_path(cmd, mini);
 	else
