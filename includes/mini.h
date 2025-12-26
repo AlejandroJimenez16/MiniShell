@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/25 00:33:58 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/26 19:03:49 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,8 @@ void	set_token_type(char *token, t_token_info *t_info);
 void	set_quote_type(char quote, t_token_info *t_info);
 char	**split_tokens(char *str, t_token_info **t_info);
 int		check_unclosed_quotes(char *line);
-int		check_invalid_tokens(t_token_info *t_info, t_mini *mini);
+int		check_invalid_tokens(t_token_info *t_info, t_mini *mini,
+			char **invalid, int *is_bonus);
 
 // Expand vars
 int		get_len_expand_var(char *str);
@@ -161,6 +162,7 @@ int		create_pipe(t_pipex *pipex, t_mini *mini);
 
 // Mini utils
 void	print_cmd_error(char *cmd, char *error);
+void	print_unexpected_error(t_mini *mini, int is_bonus, char *invalid);
 int		get_cmd_arr_size(char **tokens, t_token_info *t_info, int start);
 int		get_num_nodes(char *line, t_token_info *t_info);
 int		is_redir(int type);
