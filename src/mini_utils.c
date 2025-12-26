@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:43:51 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/26 19:03:31 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/26 20:46:21 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	print_unexpected_error(t_mini *mini, int is_bonus, char *invalid)
 		ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
 		ft_putstr_fd(invalid, 2);
 		ft_putendl_fd("'", 2);
-		mini->exit_code = 2;
 	}
+	mini->exit_code = 2;
 }
 
 int	get_cmd_arr_size(char **tokens, t_token_info *t_info, int start)
