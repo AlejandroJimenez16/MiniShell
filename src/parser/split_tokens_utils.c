@@ -14,15 +14,20 @@
 
 void	set_token_type(char *token, t_token_info *t_info)
 {
-	if (ft_strncmp(token, "<<", 2) == 0)
+	if (t_info->type_quote == DOUBLE_QUOTES)
+	{
+		t_info->type_token = WORD;
+		return ;
+	}
+	if (ft_strncmp(token, "<<", 3) == 0)
 		t_info->type_token = HEREDOC;
-	else if (ft_strncmp(token, ">>", 2) == 0)
+	else if (ft_strncmp(token, ">>", 3) == 0)
 		t_info->type_token = REDIR_APPEND;
-	else if (ft_strncmp(token, "<", 1) == 0)
+	else if (ft_strncmp(token, "<", 2) == 0)
 		t_info->type_token = REDIR_IN;
-	else if (ft_strncmp(token, ">", 1) == 0)
+	else if (ft_strncmp(token, ">", 2) == 0)
 		t_info->type_token = REDIR_OUT;
-	else if (ft_strncmp(token, "|", 1) == 0)
+	else if (ft_strncmp(token, "|", 2) == 0)
 		t_info->type_token = PIPE;
 	else
 		t_info->type_token = WORD;
