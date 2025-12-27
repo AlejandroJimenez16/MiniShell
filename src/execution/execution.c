@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 13:38:17 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/24 20:00:32 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/27 00:47:36 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static int	manage_execution(t_cmd *node, t_pipex *pipex,
 	if (is_env_builtin(node->cmd) && pipex->prev_pipe_in == -1
 		&& !current->next)
 	{
-		mini->exit_code = exec_env_builtins(node->cmd, mini);
+		exec_env_builtins(node->cmd, mini);
 		if (mini->last_command)
 		{
 			free(mini->last_command);
