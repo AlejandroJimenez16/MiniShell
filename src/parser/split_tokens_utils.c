@@ -14,7 +14,7 @@
 
 void	set_token_type(char *token, t_token_info *t_info)
 {
-	if (t_info->type_quote == DOUBLE_QUOTES)
+	if (t_info->type_quote != NO_QUOTES)
 	{
 		t_info->type_token = WORD;
 		return ;
