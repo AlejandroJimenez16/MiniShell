@@ -67,7 +67,6 @@ static void	handle_parent(t_pipex *pipex, t_mini *mini, t_cmd *node)
 	}
 	if (node->cmd_size > 0)
 		mini->last_command = ft_strdup(node->cmd[node->cmd_size - 1]);
-	mini->exit_code = wait_for_children(pipex->pid);
 }
 
 static int	manage_execution(t_cmd *node, t_pipex *pipex,
@@ -103,8 +102,10 @@ void	execute_commands(t_list *cmd_list, t_mini *mini, t_token_info *t_info)
 	t_list	*current;
 	t_cmd	*node;
 	t_pipex	pipex;
+	pid_t	last_pid;
 
 	pipex.prev_pipe_in = -1;
+	last_pid = -1;
 	current = cmd_list;
 	while (current)
 	{
@@ -115,8 +116,12 @@ void	execute_commands(t_list *cmd_list, t_mini *mini, t_token_info *t_info)
 			return ;
 		if (manage_execution(node, &pipex, mini, current))
 			return ;
+		if (pipex.pid != -1)
+			last_pid = pipex.pid;
 		pipex.prev_pipe_in = pipex.pipefd[0];
 		current = current->next;
 	}
+	if (last_pid != -1)
+		mini->exit_code = wait_for_children(last_pid);
 	init_signals();
 }
