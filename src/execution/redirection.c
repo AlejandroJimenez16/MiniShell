@@ -12,6 +12,40 @@
 
 #include "../../includes/mini.h"
 
+static int	check_infile_permissions(char *file, t_mini *mini)
+{
+	if (access(file, F_OK) != 0)
+	{
+		print_cmd_error(file, ": No such file or directory");
+		mini->exit_code = 127;
+		return (1);
+	}
+	if (access(file, R_OK) != 0)
+	{
+		print_cmd_error(file, ": Permission denied");
+		mini->exit_code = 126;
+		return (1);
+	}
+	return (0);
+}
+
+static int	check_outfile_permissions(char *file, t_mini *mini)
+{
+	if (access(file, F_OK) == 0 && access(file, W_OK) != 0)
+	{
+		print_cmd_error(file, ": Permission denied");
+		mini->exit_code = 126;
+		return (1);
+	}
+	return (0);
+}
+
+static void	redirect_prev_pipe_in(t_pipex *pipex)
+{
+	dup2(pipex->prev_pipe_in, STDIN_FILENO);
+	close(pipex->prev_pipe_in);
+}
+
 int	redirect_in(t_cmd *node, t_mini *mini, t_pipex *pipex)
 {
 	if (node->heredoc == 1)
@@ -25,6 +59,8 @@ int	redirect_in(t_cmd *node, t_mini *mini, t_pipex *pipex)
 	}
 	else if (node->infile)
 	{
+		if (check_infile_permissions(node->infile, mini))
+			return (mini->exit_code);
 		pipex->fd_in = open(node->infile, O_RDONLY);
 		if (pipex->fd_in < 0)
 			return (print_cmd_error(node->infile, ": Error opening infile"),
@@ -33,10 +69,7 @@ int	redirect_in(t_cmd *node, t_mini *mini, t_pipex *pipex)
 		close(pipex->fd_in);
 	}
 	else if (pipex->prev_pipe_in != -1)
-	{
-		dup2(pipex->prev_pipe_in, STDIN_FILENO);
-		close(pipex->prev_pipe_in);
-	}
+		redirect_prev_pipe_in(pipex);
 	return (0);
 }
 
@@ -44,6 +77,8 @@ int	redirect_out(t_cmd *node, t_mini *mini, t_pipex *pipex)
 {
 	if (node->outfile)
 	{
+		if (check_outfile_permissions(node->outfile, mini))
+			return (mini->exit_code);
 		if (node->append)
 			pipex->fd_out = open(node->outfile, O_CREAT | O_WRONLY
 					| O_APPEND, 0644);
