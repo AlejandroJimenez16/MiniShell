@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 13:38:17 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/27 00:47:36 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/27 22:47:06 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,7 @@ static int	manage_execution(t_cmd *node, t_pipex *pipex,
 {
 	if (is_env_builtin(node->cmd) && pipex->prev_pipe_in == -1
 		&& !current->next)
-	{
-		exec_env_builtins(node->cmd, mini);
-		if (mini->last_command)
-		{
-			free(mini->last_command);
-			mini->last_command = NULL;
-		}
-		if (node->cmd_size > 0)
-			mini->last_command = ft_strdup(node->cmd[node->cmd_size - 1]);
-		return (0);
-	}
+		return (exec_env_builtins_parent(node, mini, pipex));
 	pipex->pid = fork();
 	signal(SIGINT, SIG_IGN);
 	if (pipex->pid < 0)
