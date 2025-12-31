@@ -6,11 +6,28 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 19:40:22 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/30 20:13:40 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/31 17:28:06 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/mini.h"
+
+static int	find_var_env(char **env, char *var)
+{
+	int	i;
+	int	len;
+
+	len = ft_strlen(var);
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], var, ft_strlen(var)) == 0
+			&& (env[i][len] == '=' || env[i][len] == '\0'))
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 static char	**init_new_env(char **env)
 {
@@ -84,11 +101,20 @@ void	ft_unset(char **cmd, t_mini *mini)
 	i = 1;
 	while (cmd[i])
 	{
-		var = remove_quotes(cmd[i], ft_strlen(cmd[i]));
+		if ((cmd[i][0] == '"' && cmd[i][ft_strlen(cmd[i]) - 1] == '"')
+				|| (cmd[i][0] == '\'' && cmd[i][ft_strlen(cmd[i]) - 1] == '\''))
+			var = remove_quotes(cmd[i], ft_strlen(cmd[i]));
+		else
+			var = ft_strdup(cmd[i]);
 		if (var)
 		{
 			if (!ft_strchr(var, '='))
 			{
+				if (!find_var_env(mini->env, var))
+				{
+					i++;
+					continue ;
+				}
 				old_env = copy_env(mini->env);
 				mini->env = build_new_env(mini->env, var);
 				ft_free_wa(old_env);
