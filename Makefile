@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2025/12/24 20:25:10 by alejandj         ###   ########.fr        #
+#    Updated: 2025/12/30 19:57:10 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,7 @@ SRC =	src/main.c							\
 		src/parser/expand_vars_utils.c		\
 		src/parser/validate_line.c			\
 		src/parser/create_cmd_list.c		\
+		src/parser/remove_quotes.c			\
 		src/pipex/here_doc.c				\
 		src/pipex/pipex_utils.c				\
 		src/pipex/waaaaa.c					\

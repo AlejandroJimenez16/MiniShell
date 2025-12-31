@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 14:11:36 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/13 17:42:50 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/30 22:00:14 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,18 +70,19 @@ void	manage_env_vars(t_mini *mini, char *var_value)
 
 	found = 0;
 	eq = ft_strchr(var_value, '=');
+
+	// CAMBIAR POR SET_ENV
+	//----------------------
 	if (update_var(mini->env, var_value, eq))
 		found = 1;
 	if (!found)
 		mini->env = add_env_var(mini->env, var_value, eq);
+	//----------------------
 }
 
 void	process_export_var(t_mini *mini, char *var_value)
 {
-	char	*var_value_clean;
-
-	var_value_clean = remove_quotes(var_value, ft_strlen(var_value));
-	if (!parse_export(var_value_clean))
+	if (!parse_export(var_value))
 	{
 		ft_putstr_fd("minishell: export: '", 2);
 		ft_putstr_fd(var_value, 2);
@@ -89,8 +90,7 @@ void	process_export_var(t_mini *mini, char *var_value)
 		mini->exit_code = 1;
 	}
 	else
-		manage_env_vars(mini, var_value_clean);
-	free(var_value_clean);
+		manage_env_vars(mini, var_value);
 }
 
 void	ft_export(char **cmd, t_mini *mini)

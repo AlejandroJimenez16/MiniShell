@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/09 01:08:20 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/24 12:35:14 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/28 23:18:19 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,10 @@ void	print_full_env(char **env)
 		eq = ft_strchr(cpy_env[i], '=');
 		arr = ft_split(cpy_env[i], '=');
 		if (!arr)
-			return ;
+		{
+			ft_free_wa(cpy_env);
+			return ;	
+		}
 		if (arr[1])
 			printf("declare -x %s=\"%s\"\n", arr[0], arr[1]);
 		else if (!arr[1] && eq)

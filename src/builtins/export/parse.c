@@ -6,74 +6,11 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 14:06:05 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/27 16:51:20 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/30 19:51:46 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/mini.h"
-
-static int	count_quotes(char *value)
-{
-	int	i;
-	int	count;
-
-	count = 0;
-	i = 0;
-	while (value[i])
-	{
-		if (value[i] == '"' || value[i] == '\'')
-			count++;
-		i++;
-	}
-	return (count);
-}
-
-char	*remove_quotes(char *value, int len_value)
-{
-	char	*value_clean;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	value_clean = malloc(len_value - count_quotes(value) + 1);
-	if (!value_clean)
-		return (NULL);
-	while (value[i])
-	{
-		if (value[i] != '"' && value[i] != '\'')
-		{
-			value_clean[j] = value[i];
-			j++;
-		}
-		i++;
-	}
-	value_clean[j] = '\0';
-	return (value_clean);
-}
-
-char	*build_clean_var(char *var, char *value, int len_value)
-{
-	char	*value_clean;
-	char	*full;
-	int		full_len;
-
-	if (!var || !value)
-		return (NULL);
-	value_clean = remove_quotes(value, len_value);
-	full = malloc(ft_strlen(var) + 1 + ft_strlen(value_clean) + 1);
-	if (!full)
-	{
-		free(value_clean);
-		return (NULL);
-	}
-	full_len = ft_strlen(var) + 1 + ft_strlen(value_clean) + 1;
-	ft_strlcpy(full, var, full_len);
-	ft_strlcat(full, "=", full_len);
-	ft_strlcat(full, value_clean, full_len);
-	free(value_clean);
-	return (full);
-}
 
 static int	validate_vars(char *var, char *value)
 {

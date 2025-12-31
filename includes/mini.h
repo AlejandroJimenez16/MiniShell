@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/27 22:45:30 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/30 22:11:56 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,13 @@ typedef struct s_pipex
 	pid_t	pid;
 }			t_pipex;
 
-// Obtain vars env
-char	*get_home(char **env);
+// Obtain prompt
 char	*get_prompt(char **env);
+
+// Env utils
+char	*get_env(char *var, char **env);
+char 	*build_clean_var(char *var, char *value, int len_value);
+void	set_env(char *var, char *value, char **env);
 char	**get_path_cmd(char **env);
 
 // Built-ins
@@ -127,8 +131,6 @@ char	*manage_has_value(char *var_value, char *eq);
 char	**dup_env(char **env, int *i);
 // Export parse
 int		parse_export(char *var_value);
-char	*remove_quotes(char *value, int len_value);
-char	*build_clean_var(char *var, char *value, int len_value);
 
 // Parser
 int		count_tokens(char *s);
@@ -138,6 +140,7 @@ char	**split_tokens(char *str, t_token_info **t_info);
 int		check_unclosed_quotes(char *line);
 int		check_invalid_tokens(t_token_info *t_info, t_mini *mini,
 			char **invalid, int *is_bonus);
+char	*remove_quotes(char *value, int len_value);
 
 // Expand vars
 int		get_len_expand_var(char *str);

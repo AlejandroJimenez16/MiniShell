@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 19:46:35 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/28 23:14:38 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/29 01:10:52 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*get_prompt(char **env)
 		pwd = getcwd(NULL, 0);
 		return (prompt_without_env(pwd));
 	}
-	home = get_home(env);
+	home = get_env("HOME", env);
 	pwd = getcwd(NULL, 0);
 	if (ft_strncmp(home, pwd, ft_strlen(home)) == 0
 		&& (ft_strlen(pwd) == ft_strlen(home)))
@@ -81,7 +81,6 @@ char	*get_prompt(char **env)
 		prompt = prompt_inside_home(home, pwd);
 	else
 		prompt = prompt_outside_home(pwd);
-	free(home);
 	free(pwd);
 	return (prompt);
 }

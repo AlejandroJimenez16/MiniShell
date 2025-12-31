@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 19:34:56 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/13 17:41:32 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/29 01:12:13 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_cd(char **cmd, t_mini *mini)
 	path = cmd[1];
 	if (path == NULL)
 	{
-		path = get_home(mini->env);
+		path = get_env("HOME", mini->env);
 		if (!path)
 			return (ft_putendl_fd("minishell: cd: HOME not set", 2),
 				mini->exit_code = 1, 1);
