@@ -21,6 +21,33 @@ static void	init_mini(char **argv, char **env, t_mini *mini)
 	init_signals();
 }
 
+static void	free_redir(void *content)
+{
+	t_redir	*redir;
+
+	redir = (t_redir *)content;
+	if (redir)
+	{
+		if (redir->file)
+			free(redir->file);
+		free(redir);
+	}
+}
+
+static void	free_cmd_node(void *context)
+{
+	t_cmd	*node;
+
+	node = (t_cmd *)context;
+	if (!node)
+		return ;
+	if (node->cmd)
+		ft_free_wa(node->cmd);
+	if (node->redirs)
+		ft_lstclear(&node->redirs, free_redir);
+	free(node);
+}
+
 static void	handle_line(t_mini *mini)
 {
 	char			**tokens;
@@ -48,6 +75,9 @@ static void	handle_line(t_mini *mini)
 	}
 	cmd_list = create_cmd_list(mini->line, tokens, t_info);
 	execute_commands(cmd_list, mini, t_info);
+	ft_lstclear(&cmd_list, free_cmd_node);
+	free(t_info);
+	ft_free_wa(tokens);
 }
 
 int	main(int argc, char **argv, char **env)

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/02 18:26:39 by alejandj         ###   ########.fr       */
+/*   Updated: 2025/12/30 22:11:56 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # include <string.h>
 # include <termios.h>
 # include <termcap.h>
+# include <errno.h>
 
 extern int	g_sig_status;
 
@@ -66,15 +67,20 @@ typedef enum e_token_type
 	HEREDOC
 }	t_token_type;
 
+// List of redirections for s_cmd
+// @param type number from e_token_type (REDIR_IN, REDIR_OUT...)
+// @param file name of the file or the delimiter
+typedef struct s_redir
+{
+	int		type;
+	char	*file;
+}	t_redir;
+
 typedef struct s_cmd
 {
 	char	**cmd;
 	int		cmd_size;
-	char	*infile;
-	int		heredoc;
-	char	*delimeter;
-	char	*outfile;
-	int		append;
+	t_list	*redirs;
 	int		index_start_cmd;
 }			t_cmd;
 
@@ -147,8 +153,7 @@ void	expand_vars(char **cmd, t_mini *mini, t_token_info *t_info, int start);
 t_list	*create_cmd_list(char *line, char **tokens, t_token_info *t_info);
 
 // Redirections
-int		redirect_in(t_cmd *node, t_mini *mini, t_pipex *pipex);
-int		redirect_out(t_cmd *node, t_mini *mini, t_pipex *pipex);
+int		handle_redirections(t_cmd *node, t_pipex *pipex, t_mini *mini);
 
 // Execution
 int		wait_for_children(pid_t last_pid);

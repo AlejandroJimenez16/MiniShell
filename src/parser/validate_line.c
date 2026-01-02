@@ -105,6 +105,8 @@ int	check_invalid_tokens(t_token_info *t_info, t_mini *mini,
 
 	n_tokens = count_tokens(mini->line);
 	last = n_tokens - 1;
+	if (last < 0)
+		return (0);
 	if (n_tokens == 1)
 	{
 		if (t_info[0].type_token == PIPE)

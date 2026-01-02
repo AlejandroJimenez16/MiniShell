@@ -31,11 +31,7 @@ static t_cmd	*init_node(int n_words)
 	else
 		node->cmd = NULL;
 	node->cmd_size = n_words;
-	node->infile = NULL;
-	node->heredoc = 0;
-	node->delimeter = NULL;
-	node->outfile = NULL;
-	node->append = 0;
+	node->redirs = NULL;
 	node->index_start_cmd = 0;
 	return (node);
 }
@@ -43,19 +39,24 @@ static t_cmd	*init_node(int n_words)
 static void	assign_token_to_node(t_cmd *node, char *token,
 		int prev_token, int *cmd_index)
 {
-	if (prev_token == REDIR_IN)
-		node->infile = ft_strdup(token);
-	else if (prev_token == REDIR_OUT)
-		node->outfile = ft_strdup(token);
-	else if (prev_token == REDIR_APPEND)
+	t_redir	*redir;
+	t_list	*new_node;
+
+	if (is_redir(prev_token))
 	{
-		node->append = 1;
-		node->outfile = ft_strdup(token);
-	}
-	else if (prev_token == HEREDOC)
-	{
-		node->heredoc = 1;
-		node->delimeter = ft_strdup(token);
+		redir = malloc(sizeof(t_redir));
+		if (!redir)
+			return ;
+		redir->type = prev_token;
+		redir->file = ft_strdup(token);
+		new_node = ft_lstnew(redir);
+		if (!new_node)
+		{
+			free(redir->file);
+			free(redir);
+			return ;
+		}
+		ft_lstadd_back(&node->redirs, new_node);
 	}
 	else
 	{

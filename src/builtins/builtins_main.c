@@ -46,9 +46,7 @@ int	exec_env_builtins_parent(t_cmd *node, t_mini *mini, t_pipex *pipex)
 
 	save_stdin = dup(STDIN_FILENO);
 	save_stdout = dup(STDOUT_FILENO);
-	if (redirect_in(node, mini, pipex))
-		return (1);
-	if (redirect_out(node, mini, pipex))
+	if (handle_redirections(node, pipex, mini))
 		return (1);
 	exec_env_builtins(node->cmd, mini);
 	if (mini->last_command)

@@ -33,7 +33,7 @@ void	print_unexpected_error(t_mini *mini, int is_bonus, char *invalid)
 		ft_putstr_fd(invalid, 2);
 		ft_putendl_fd("'", 2);
 	}
-	mini->exit_code = 2;
+	mini->exit_code = 258;
 }
 
 int	get_cmd_arr_size(char **tokens, t_token_info *t_info, int start)

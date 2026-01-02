@@ -12,92 +12,108 @@
 
 #include "../../includes/mini.h"
 
-static int	check_infile_permissions(char *file, t_mini *mini)
+static void	check_errno_error(t_redir *redir, t_mini *mini)
 {
-	if (access(file, F_OK) != 0)
+	if (errno == ENOENT)
 	{
-		print_cmd_error(file, ": No such file or directory");
+		print_cmd_error(redir->file, ": No such file or directory");
 		mini->exit_code = 127;
-		return (1);
 	}
-	if (access(file, R_OK) != 0)
+	else if (errno == EACCES)
 	{
-		print_cmd_error(file, ": Permission denied");
+		print_cmd_error(redir->file, ": Permission denied");
 		mini->exit_code = 126;
-		return (1);
 	}
-	return (0);
+	else
+	{
+		perror(redir->file);
+		mini->exit_code = 1;
+	}
 }
 
-static int	check_outfile_permissions(char *file, t_mini *mini)
+static int	handle_infile(t_redir *redir, int *fd_in, t_mini *mini)
 {
-	if (access(file, F_OK) == 0 && access(file, W_OK) != 0)
+	if (*fd_in != -1)
+		close(*fd_in);
+	if (redir->type == HEREDOC)
+		*fd_in = here_doc(redir->file);
+	else
 	{
-		print_cmd_error(file, ": Permission denied");
-		mini->exit_code = 126;
-		return (1);
-	}
-	return (0);
-}
-
-static void	redirect_prev_pipe_in(t_pipex *pipex)
-{
-	dup2(pipex->prev_pipe_in, STDIN_FILENO);
-	close(pipex->prev_pipe_in);
-}
-
-int	redirect_in(t_cmd *node, t_mini *mini, t_pipex *pipex)
-{
-	if (node->heredoc == 1)
-	{
-		pipex->fd_in = here_doc(node->delimeter);
-		if (pipex->fd_in < 0)
-			return (print_cmd_error(node->infile, ": Error opening infile"),
-				mini->exit_code = 1, mini->exit_code);
-		dup2(pipex->fd_in, STDIN_FILENO);
-		close(pipex->fd_in);
-	}
-	else if (node->infile)
-	{
-		if (check_infile_permissions(node->infile, mini))
-			return (mini->exit_code);
-		pipex->fd_in = open(node->infile, O_RDONLY);
-		if (pipex->fd_in < 0)
-			return (print_cmd_error(node->infile, ": Error opening infile"),
-				mini->exit_code = 1, mini->exit_code);
-		dup2(pipex->fd_in, STDIN_FILENO);
-		close(pipex->fd_in);
-	}
-	else if (pipex->prev_pipe_in != -1)
-		redirect_prev_pipe_in(pipex);
-	return (0);
-}
-
-int	redirect_out(t_cmd *node, t_mini *mini, t_pipex *pipex)
-{
-	if (node->outfile)
-	{
-		if (check_outfile_permissions(node->outfile, mini))
-			return (mini->exit_code);
-		if (node->append)
-			pipex->fd_out = open(node->outfile, O_CREAT | O_WRONLY
-					| O_APPEND, 0644);
-		else
-			pipex->fd_out = open(node->outfile, O_CREAT | O_WRONLY
-					| O_TRUNC, 0644);
-		if (pipex->fd_out < 0)
+		*fd_in = open(redir->file, O_RDONLY);
+		if (*fd_in < 0)
 		{
-			print_cmd_error(node->outfile, ": Error opening outfile");
-			mini->exit_code = 1;
+			check_errno_error(redir, mini);
 			return (1);
 		}
-		dup2(pipex->fd_out, STDOUT_FILENO);
-		close(pipex->fd_out);
+	}
+	return (0);
+}
+
+static int	handle_outfile(t_redir *redir, int *fd_out, t_mini *mini)
+{
+	if (*fd_out != -1)
+		close(*fd_out);
+	if (redir->type == REDIR_APPEND)
+		*fd_out = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else
+		*fd_out = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (*fd_out < 0)
+	{
+		check_errno_error(redir, mini);
+		return (1);
+	}
+	return (0);
+}
+
+static void	handle_dup2(int *fd_in, int *fd_out, t_pipex *pipex)
+{
+	if (*fd_in != -1)
+	{
+		dup2(*fd_in, STDIN_FILENO);
+		close(*fd_in);
+	}
+	else if (pipex->prev_pipe_in != -1)
+	{
+		dup2(pipex->prev_pipe_in, STDIN_FILENO);
+		close(pipex->prev_pipe_in);
+	}
+	if (*fd_out != -1)
+	{
+		dup2(*fd_out, STDOUT_FILENO);
+		close(*fd_out);
 	}
 	else if (pipex->pipefd[1] != -1)
 	{
 		dup2(pipex->pipefd[1], STDOUT_FILENO);
 		close(pipex->pipefd[1]);
 	}
+}
+
+int	handle_redirections(t_cmd *node, t_pipex *pipex, t_mini *mini)
+{
+	t_list	*current;
+	t_redir	*redir;
+	int		fd_in;
+	int		fd_out;
+
+	fd_in = -1;
+	fd_out = -1;
+	current = node->redirs;
+	while (current)
+	{
+		redir = (t_redir *)current->content;
+		if (redir->type == REDIR_IN || redir->type == HEREDOC)
+		{
+			if (handle_infile(redir, &fd_in, mini))
+				return (1);
+		}
+		else if (redir->type == REDIR_OUT || redir->type == REDIR_APPEND)
+		{
+			if (handle_outfile(redir, &fd_out, mini))
+				return (1);
+		}
+		current = current->next;
+	}
+	handle_dup2(&fd_in, &fd_out, pipex);
 	return (0);
 }

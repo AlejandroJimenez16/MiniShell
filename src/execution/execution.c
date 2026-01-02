@@ -43,10 +43,8 @@ int	wait_for_children(pid_t last_pid)
 static int	handle_child(t_cmd *node, t_mini *mini, t_pipex *pipex)
 {
 	setup_child_signals();
-	if (redirect_in(node, mini, pipex))
-		return (mini->exit_code);
-	if (redirect_out(node, mini, pipex))
-		return (mini->exit_code);
+	if (handle_redirections(node, pipex, mini))
+		return (1);
 	if (is_builtin(node->cmd))
 		return (exec_builtins(node->cmd, mini));
 	else
