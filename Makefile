@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2025/12/30 19:57:10 by alejandj         ###   ########.fr        #
+#    Updated: 2026/01/02 15:09:32 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,16 +22,15 @@ LIBDIR = libft/
 OBJDIR = obj/
 
 SRC =	src/main.c							\
-		src/env_utils.c						\
+		src/env_utils_1.c					\
+		src/env_utils_2.c					\
 		src/prompt.c						\
 		src/mini_utils.c					\
 		src/builtins/builtins_main.c		\
 		src/builtins/ft_echo.c				\
 		src/builtins/ft_cd.c				\
 		src/builtins/ft_pwd.c				\
-		src/builtins/export/ft_export.c		\
-		src/builtins/export/export_utils.c	\
-		src/builtins/export/parse.c			\
+		src/builtins/ft_export.c			\
 		src/builtins/ft_unset.c				\
 		src/builtins/ft_env.c				\
 		src/builtins/ft_exit.c				\

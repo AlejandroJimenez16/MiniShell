@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/30 22:01:23 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/02 13:59:24 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	init_mini(char **argv, char **env, t_mini *mini)
 {
 	(void)argv;
-	mini->env = env;
+	mini->env = copy_env(env);
 	mini->exit_code = 0;
 	mini->last_command = ft_strdup("./minishell");
 	init_signals();

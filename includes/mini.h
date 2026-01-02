@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/30 22:11:56 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/02 18:26:39 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,12 @@ char	*get_prompt(char **env);
 
 // Env utils
 char	*get_env(char *var, char **env);
-char 	*build_clean_var(char *var, char *value, int len_value);
-void	set_env(char *var, char *value, char **env);
+void	set_env(t_mini *mini, char *var, char *value);
+size_t	get_len_var(char *str);
 char	**get_path_cmd(char **env);
+char	**copy_env(char **env);
+char	**dup_env_add(char **env, int *i);
+void	sort_env(char **cpy_env);
 
 // Built-ins
 int		is_env_builtin(char **cmd);
@@ -123,14 +126,6 @@ void	ft_export(char **cmd, t_mini *mini);
 void	ft_unset(char **cmd, t_mini *mini);
 void	ft_env(char **env);
 void	ft_exit(char **cmd, t_mini *mini);
-
-// Export utils
-size_t	get_len_var(char *str);
-void	print_full_env(char **env);
-char	*manage_has_value(char *var_value, char *eq);
-char	**dup_env(char **env, int *i);
-// Export parse
-int		parse_export(char *var_value);
 
 // Parser
 int		count_tokens(char *s);

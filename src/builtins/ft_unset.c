@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 19:40:22 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/31 17:28:06 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/02 13:53:15 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,28 +68,6 @@ static char	**build_new_env(char **env, char *var)
 	return (new_env);
 }
 
-static char	**copy_env(char **env)
-{
-	int		i;
-	int		num_vars;
-	char	**new_env;
-
-	num_vars = 0;
-	while (env[num_vars] != NULL)
-		num_vars++;
-	new_env = malloc((num_vars + 1) * sizeof(char *));
-	if (!new_env)
-		return (NULL);
-	i = 0;
-	while (env[i])
-	{
-		new_env[i] = ft_strdup(env[i]);
-		i++;
-	}
-	new_env[i] = NULL;
-	return (new_env);
-}
-
 void	ft_unset(char **cmd, t_mini *mini)
 {
 	char	*var;
@@ -115,7 +93,7 @@ void	ft_unset(char **cmd, t_mini *mini)
 					i++;
 					continue ;
 				}
-				old_env = copy_env(mini->env);
+				old_env = mini->env;
 				mini->env = build_new_env(mini->env, var);
 				ft_free_wa(old_env);
 			}
