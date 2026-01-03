@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 14:11:36 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/02 18:27:52 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/03 21:03:21 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,9 @@ static void	manage_env_vars(t_mini *mini, char *var_value)
 	}
 	else
 		set_env(mini, var, value);
+	free(var);
+	if (value)
+		free(value);
 }
 
 void	ft_export(char **cmd, t_mini *mini)

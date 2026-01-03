@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 13:00:08 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/02 18:25:12 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/03 20:55:15 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ static char	**add_var(char *var, char *value, char **env)
 		new_env[i] = build_normal_var(var, value);
 	else
 		new_env[i] = ft_strdup(var);
-	free(var);
 	new_env[i + 1] = NULL;
 	return (new_env);
 }
