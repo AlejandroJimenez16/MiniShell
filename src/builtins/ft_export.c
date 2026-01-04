@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 14:11:36 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/03 21:03:21 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/04 21:02:00 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,6 @@ void	ft_export(char **cmd, t_mini *mini)
 {
 	int		i;
 
-	if (!mini->env || !mini->env[0])
-		return ;
 	if (!cmd[1])
 	{
 		print_full_env(mini->env);

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/30 22:11:56 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/04 21:30:56 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_mini
 	char	**arr_path;
 	int		exit_code;
 	char	*last_command;
+	int		has_env;
 }			t_mini;
 
 // Environment structure
@@ -108,7 +109,7 @@ typedef struct s_pipex
 }			t_pipex;
 
 // Obtain prompt
-char	*get_prompt(char **env);
+char	*get_prompt(int has_env, char **env);
 
 // Env utils
 char	*get_env(char *var, char **env);
@@ -178,7 +179,9 @@ void	setup_child_signals(void);
 // Heredoc
 int		here_doc(char *delimiter);
 
-//Utils
+// Frees
 void	*ft_free_wa(char **word_arr);
+void	free_redir(void *content);
+void	free_cmd_node(void *context);
 
 #endif

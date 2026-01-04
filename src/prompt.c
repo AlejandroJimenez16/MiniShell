@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 19:46:35 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/29 01:10:52 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/04 20:59:53 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,13 @@ static	char	*prompt_without_env(char *pwd)
 	return (temp);
 }
 
-char	*get_prompt(char **env)
+char	*get_prompt(int has_env, char **env)
 {
 	char	*prompt;
 	char	*home;
 	char	*pwd;
 
-	if (!env || !env[0])
+	if (!has_env)
 	{
 		pwd = getcwd(NULL, 0);
 		return (prompt_without_env(pwd));

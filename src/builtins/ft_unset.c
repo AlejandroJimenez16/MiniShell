@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 19:40:22 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/02 13:53:15 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/04 21:16:22 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ void	ft_unset(char **cmd, t_mini *mini)
 	int		i;
 	char	**old_env;
 
-	if (!mini->env || !mini->env[0])
-		return ;
 	i = 1;
 	while (cmd[i])
 	{
