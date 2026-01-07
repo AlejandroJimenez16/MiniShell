@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/04 21:30:56 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/07 13:58:00 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,23 +68,6 @@ typedef enum e_token_type
 	HEREDOC
 }	t_token_type;
 
-// List of redirections for s_cmd
-// @param type number from e_token_type (REDIR_IN, REDIR_OUT...)
-// @param file name of the file or the delimiter
-typedef struct s_redir
-{
-	int		type;
-	char	*file;
-}	t_redir;
-
-typedef struct s_cmd
-{
-	char	**cmd;
-	int		cmd_size;
-	t_list	*redirs;
-	int		index_start_cmd;
-}			t_cmd;
-
 // Info tokens structure
 typedef enum e_quote_type
 {
@@ -92,6 +75,26 @@ typedef enum e_quote_type
 	SINGLE_QUOTES,
 	DOUBLE_QUOTES
 }	t_quote_type;
+
+// List of redirections for s_cmd
+// @param type number from e_token_type (REDIR_IN, REDIR_OUT...)
+// @param file name of the file or the delimiter
+// @param qyotes type of quote
+typedef struct s_redir
+{
+	int		type;
+	char	*file;
+	int		quote;
+}	t_redir;
+
+typedef struct s_cmd
+{
+	char			**cmd;
+	int				cmd_index;
+	t_quote_type	*cmd_quotes;
+	int				cmd_size;
+	t_list			*redirs;
+}			t_cmd;
 
 typedef struct s_token_info
 {
@@ -148,7 +151,7 @@ char	*remove_quotes(char *value, int len_value);
 int		get_len_expand_var(char *str);
 char	*get_env_value(char *env_entry);
 int		get_len_token(t_mini *mini, char *arg);
-void	expand_vars(char **cmd, t_mini *mini, t_token_info *t_info, int start);
+void	expand_vars(t_cmd *node, t_mini *mini);
 
 // Create cmd list
 t_list	*create_cmd_list(char *line, char **tokens, t_token_info *t_info);
@@ -159,7 +162,7 @@ int		handle_redirections(t_cmd *node, t_pipex *pipex, t_mini *mini);
 // Execution
 int		wait_for_children(pid_t last_pid);
 void	execute_simple_commands(char **cmd, t_mini *mini);
-void	execute_commands(t_list *cmd_list, t_mini *mini, t_token_info *t_info);
+void	execute_commands(t_list *cmd_list, t_mini *mini);
 
 // Pipex utils
 void	init_pipex(t_pipex *pipex);

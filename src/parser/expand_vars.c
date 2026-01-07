@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/22 21:42:30 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/24 19:23:14 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/07 14:20:44 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,23 +99,38 @@ static char	*expand_vars_in_token(t_mini *mini, char *arg)
 	return (result);
 }
 
-void	expand_vars(char **cmd, t_mini *mini, t_token_info *t_info, int start)
+void	expand_vars(t_cmd *node, t_mini *mini)
 {
+	t_list	*redir_lst;
+	t_redir	*redir;
 	int		i;
 	char	*temp;
 
-	if (!cmd || !cmd[0] || !cmd[0][0])
+	if (!node->cmd || !node->cmd[0] || !node->cmd[0][0])
 		return ;
-	i = 0;
-	while (cmd[i])
+
+	redir_lst = node->redirs;
+	while (redir_lst)
 	{
-		if (t_info[start].type_quote != SINGLE_QUOTES)
+		redir = (t_redir *)redir_lst->content;
+		if ((redir->type == REDIR_IN || redir->type == REDIR_OUT
+			|| redir->type == REDIR_APPEND) && redir->quote != SINGLE_QUOTES)
+    	{
+       		char *tmp = redir->file;
+        	redir->file = expand_vars_in_token(mini, redir->file);
+        	free(tmp);
+    	}
+		redir_lst = redir_lst->next;
+	}
+	i = 0;
+	while (node->cmd[i])
+	{
+		if (node->cmd_quotes[i] != SINGLE_QUOTES)
 		{
-			temp = cmd[i];
-			cmd[i] = expand_vars_in_token(mini, cmd[i]);
+			temp = node->cmd[i];
+			node->cmd[i] = expand_vars_in_token(mini, node->cmd[i]);
 			free(temp);
 		}
-		start++;
 		i++;
 	}
 }

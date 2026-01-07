@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 13:38:17 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/27 22:47:06 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/07 13:08:09 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static int	manage_execution(t_cmd *node, t_pipex *pipex,
 	return (0);
 }
 
-void	execute_commands(t_list *cmd_list, t_mini *mini, t_token_info *t_info)
+void	execute_commands(t_list *cmd_list, t_mini *mini)
 {
 	t_list	*current;
 	t_cmd	*node;
@@ -98,7 +98,6 @@ void	execute_commands(t_list *cmd_list, t_mini *mini, t_token_info *t_info)
 	while (current)
 	{
 		node = current->content;
-		expand_vars(node->cmd, mini, t_info, node->index_start_cmd);
 		init_pipex(&pipex);
 		if (current->next && create_pipe(&pipex, mini))
 			return ;
