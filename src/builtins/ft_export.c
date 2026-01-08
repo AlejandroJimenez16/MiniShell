@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 14:11:36 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/04 21:02:00 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/08 13:49:58 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 static void	print_full_env(char **env)
 {
 	int		i;
-	char	**arr;
+	char	*var;
+	char	*value;
 	char	*eq;
 	char	**new_env;
 
@@ -25,19 +26,15 @@ static void	print_full_env(char **env)
 	while (new_env[i] != NULL)
 	{
 		eq = ft_strchr(new_env[i], '=');
-		arr = ft_split(new_env[i], '=');
-		if (!arr)
-		{
-			ft_free_wa(new_env);
-			return ;
-		}
-		if (arr[1])
-			printf("declare -x %s=\"%s\"\n", arr[0], arr[1]);
-		else if (!arr[1] && eq)
-			printf("declare -x %s=\"\"\n", arr[0]);
+		var = ft_substr(new_env[i], 0, eq - new_env[i]);
+		value = eq + 1;
+		if (value)
+			printf("declare -x %s=\"%s\"\n", var, value);
+		else if (value && eq)
+			printf("declare -x %s=\"\"\n", var);
 		else
-			printf("declare -x %s\n", arr[0]);
-		ft_free_wa(arr);
+			printf("declare -x %s\n", var);
+		free(var);
 		i++;
 	}
 	ft_free_wa(new_env);

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/07 13:58:00 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/08 13:25:32 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,12 +148,21 @@ int		check_invalid_tokens(t_token_info *t_info, t_mini *mini,
 char	*remove_quotes(char *value, int len_value);
 
 // Expand vars
+int		handle_exit_code_copy(t_mini *mini, char *result, int *i);
+int		handle_last_command_copy(t_mini *mini, char *result, int *i);
+int		handle_env_var_copy(t_mini *mini, char *arg, int *i, char *result);
 int		get_len_expand_var(char *str);
 char	*get_env_value(char *env_entry);
 int		get_len_token(t_mini *mini, char *arg);
 void	expand_vars(t_cmd *node, t_mini *mini);
 
 // Create cmd list
+t_cmd	*init_node(int n_words);
+void	add_redir_to_node(t_cmd *node, int prev_token,
+			char *token, t_quote_type type_quote);
+void	assign_token_to_node(t_cmd *node, char *token,
+			t_token_info *t_info, int *i);
+int		get_prev_token(t_token_info *t_info, int i);
 t_list	*create_cmd_list(char *line, char **tokens, t_token_info *t_info);
 
 // Redirections

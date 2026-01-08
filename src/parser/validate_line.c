@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/24 20:14:22 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/26 20:23:26 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/07 18:05:47 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,15 +83,14 @@ static int	check_multiple_tokens(t_token_info *t_info, t_mini *mini,
 		if (check_bonus_tokens(mini->line, invalid))
 			return (*is_bonus = 1, 1);
 		if (t_info[i + 1].type_token == PIPE && is_redir(t_info[i].type_token))
-			return (*invalid = "|", 1);
+			return (*invalid = "newline", 1);
+		if (t_info[i].type_token == PIPE && is_redir(t_info[i + 1].type_token))
+			return (choose_redir(t_info[i + 1].type_token, invalid), 1);
 		if (t_info[i].type_token == PIPE && t_info[i + 1].type_token == PIPE)
 			return (*invalid = "|", 1);
 		if (is_redir(t_info[i].type_token)
 			&& is_redir(t_info[i + 1].type_token))
-		{
-			choose_redir(t_info[i + 1].type_token, invalid);
-			return (1);
-		}
+			return (choose_redir(t_info[i + 1].type_token, invalid), 1);
 		i++;
 	}
 	return (0);
@@ -107,13 +106,8 @@ int	check_invalid_tokens(t_token_info *t_info, t_mini *mini,
 	last = n_tokens - 1;
 	if (last < 0)
 		return (0);
-	if (n_tokens == 1)
-	{
-		if (t_info[0].type_token == PIPE)
-			return (*invalid = "|", 1);
-		if (is_redir(t_info[0].type_token))
-			return (*invalid = "newline", 1);
-	}
+	if (check_multiple_tokens(t_info, mini, invalid, is_bonus))
+		return (1);
 	if (t_info[0].type_token == PIPE)
 		return (*invalid = "|", 1);
 	if (t_info[last].type_token == PIPE || is_redir(t_info[last].type_token))
@@ -123,7 +117,5 @@ int	check_invalid_tokens(t_token_info *t_info, t_mini *mini,
 		else
 			return (*invalid = "newline", 1);
 	}
-	if (check_multiple_tokens(t_info, mini, invalid, is_bonus))
-		return (1);
 	return (0);
 }
