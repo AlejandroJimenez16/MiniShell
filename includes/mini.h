@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/08 20:19:52 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/08 21:14:26 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ void	set_env(t_mini *mini, char *var, char *value);
 size_t	get_len_var(char *str);
 char	**get_path_cmd(char **env);
 char	**copy_env(char **env);
-char	**dup_env_add(char **env, int *i);
 void	sort_env(char **cpy_env);
 
 // Built-ins

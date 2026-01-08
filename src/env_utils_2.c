@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 13:38:34 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/02 14:35:21 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/08 21:45:35 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,24 +69,23 @@ char	**copy_env(char **env)
 	return (new_env);
 }
 
-char	**dup_env_add(char **env, int *i)
+static void	compare_swap_vars(char **s1, char **s2, int *sorted)
 {
-	int		num_vars;
-	char	**new_env;
+	char	*var1;
+	char	*var2;
+	char	*temp;
 
-	num_vars = 0;
-	while (env[num_vars] != NULL)
-		num_vars++;
-	new_env = malloc((num_vars + 2) * sizeof(char *));
-	if (!new_env)
-		return (NULL);
-	*i = 0;
-	while (env[*i])
+	var1 = ft_substr(*s1, 0, ft_strchr(*s1, '=') - *s1);
+	var2 = ft_substr(*s2, 0, ft_strchr(*s2, '=') - *s2);
+	if (ft_strncmp(var1, var2, 1024) > 0)
 	{
-		new_env[*i] = ft_strdup(env[*i]);
-		(*i)++;
+		temp = *s1;
+		*s1 = *s2;
+		*s2 = temp;
+		*sorted = 0;
 	}
-	return (new_env);
+	free(var1);
+	free(var2);
 }
 
 void	sort_env(char **cpy_env)
@@ -94,7 +93,6 @@ void	sort_env(char **cpy_env)
 	int		i;
 	int		sorted;
 	int		len;
-	char	*temp;
 
 	len = 0;
 	while (cpy_env[len])
@@ -106,13 +104,7 @@ void	sort_env(char **cpy_env)
 		i = 0;
 		while (i < len - 1)
 		{
-			if (ft_strncmp(cpy_env[i], cpy_env[i + 1], 1024) > 0)
-			{
-				temp = cpy_env[i];
-				cpy_env[i] = cpy_env[i + 1];
-				cpy_env[i + 1] = temp;
-				sorted = 0;
-			}
+			compare_swap_vars(&cpy_env[i], &cpy_env[i + 1], &sorted);
 			i++;
 		}
 	}
