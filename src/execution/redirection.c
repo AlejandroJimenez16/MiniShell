@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:46:22 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/18 11:48:35 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/08 20:20:09 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	handle_infile(t_redir *redir, int *fd_in, t_mini *mini)
 	if (*fd_in != -1)
 		close(*fd_in);
 	if (redir->type == HEREDOC)
-		*fd_in = here_doc(redir->file);
+		*fd_in = here_doc(mini, redir->file, redir->quote);
 	else
 	{
 		*fd_in = open(redir->file, O_RDONLY);

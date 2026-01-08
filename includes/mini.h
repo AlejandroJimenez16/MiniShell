@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/08 13:25:32 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/08 20:19:52 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ int		handle_env_var_copy(t_mini *mini, char *arg, int *i, char *result);
 int		get_len_expand_var(char *str);
 char	*get_env_value(char *env_entry);
 int		get_len_token(t_mini *mini, char *arg);
+char	*expand_vars_in_token(t_mini *mini, char *arg);
 void	expand_vars(t_cmd *node, t_mini *mini);
 
 // Create cmd list
@@ -189,7 +190,7 @@ void	init_signals(void);
 void	setup_child_signals(void);
 
 // Heredoc
-int		here_doc(char *delimiter);
+int		here_doc(t_mini *mini, char *delimiter, int type_quote);
 
 // Frees
 void	*ft_free_wa(char **word_arr);

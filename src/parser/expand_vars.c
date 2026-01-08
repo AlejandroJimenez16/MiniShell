@@ -6,13 +6,13 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/22 21:42:30 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/08 13:28:35 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/08 19:28:49 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/mini.h"
 
-static char	*expand_vars_in_token(t_mini *mini, char *arg)
+char	*expand_vars_in_token(t_mini *mini, char *arg)
 {
 	char	*result;
 	int		i;
