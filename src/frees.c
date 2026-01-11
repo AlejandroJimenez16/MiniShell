@@ -49,6 +49,8 @@ void	free_cmd_node(void *context)
 		return ;
 	if (node->cmd)
 		ft_free_wa(node->cmd);
+	if (node->cmd_quotes)
+		free(node->cmd_quotes);
 	if (node->redirs)
 		ft_lstclear(&node->redirs, free_redir);
 	free(node);

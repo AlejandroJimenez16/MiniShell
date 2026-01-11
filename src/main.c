@@ -82,7 +82,10 @@ static void	handle_line(t_mini *mini)
 		return ;
 	tokens = split_tokens(mini->line, &t_info);
 	if (!tokens)
+	{
+		free(t_info);
 		return ;
+	}
 	is_bonus = 0;
 	if (check_invalid_tokens(t_info, mini, &invalid, &is_bonus))
 	{

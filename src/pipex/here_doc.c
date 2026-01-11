@@ -12,6 +12,16 @@
 
 #include "../../includes/mini.h"
 
+static char	*expand_line(t_mini *mini, char *line)
+{
+	char	*temp;
+
+	temp = line;
+	line = expand_vars_in_token(mini, line);
+	free(temp);
+	return (line);
+}
+
 static void	manage_line(char *delimiter, char *line, int n_line)
 {
 	if (line)
@@ -44,7 +54,7 @@ int	here_doc(t_mini *mini, char *delimiter, int type_quote)
 					&& line[ft_strlen(line) - 1] == '\n'))))
 	{
 		if (type_quote == NO_QUOTES)
-			line = expand_vars_in_token(mini, line);
+			line = expand_line(mini, line);
 		write(pipe_fd[1], line, ft_strlen(line));
 		free(line);
 		n_line++;
