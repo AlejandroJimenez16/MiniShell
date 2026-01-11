@@ -26,7 +26,7 @@ static void	execute_absolute_path(char **cmd, t_mini *mini)
 {
 	if (access(cmd[0], F_OK) != 0)
 	{
-		print_cmd_error(cmd[0], ": command not found");
+		print_cmd_error(cmd[0], ": No such file or directory");
 		exit(127);
 	}
 	else if (access(cmd[0], X_OK) != 0)
