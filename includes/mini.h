@@ -195,5 +195,6 @@ int		here_doc(t_mini *mini, char *delimiter, int type_quote);
 void	*ft_free_wa(char **word_arr);
 void	free_redir(void *content);
 void	free_cmd_node(void *context);
+void	free_mini(t_mini *mini);
 
 #endif

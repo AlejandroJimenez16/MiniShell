@@ -44,6 +44,9 @@ static void	init_mini(char **argv, char **env, t_mini *mini)
 	}
 	mini->exit_code = 0;
 	mini->last_command = ft_strdup("./minishell");
+	mini->arr_path = NULL;
+	mini->prompt = NULL;
+	mini->line = NULL;
 	init_signals();
 }
 
@@ -110,11 +113,14 @@ int	main(int argc, char **argv, char **env)
 		}
 		mini.prompt = get_prompt(mini.has_env, mini.env);
 		mini.line = readline(mini.prompt);
+		free(mini.prompt);
+		mini.prompt = NULL;
 		if (!mini.line)
-			return (ft_printf("exit\n"), 0);
+			return (ft_printf("exit\n"), free_mini(&mini), 0);
 		add_history(mini.line);
 		handle_line(&mini);
 		free(mini.line);
+		mini.line = NULL;
 	}
-	return (free(mini.prompt), 0);
+	return (0);
 }

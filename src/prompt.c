@@ -69,7 +69,9 @@ char	*get_prompt(int has_env, char **env)
 	if (!has_env)
 	{
 		pwd = getcwd(NULL, 0);
-		return (prompt_without_env(pwd));
+		prompt = prompt_without_env(pwd);
+		free(pwd);
+		return (prompt);
 	}
 	home = get_env("HOME", env);
 	pwd = getcwd(NULL, 0);

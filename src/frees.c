@@ -12,6 +12,21 @@
 
 #include "../includes/mini.h"
 
+void	free_mini(t_mini *mini)
+{
+	if (mini->env)
+		ft_free_wa(mini->env);
+	if (mini->last_command)
+		free(mini->last_command);
+	if (mini->prompt)
+		free(mini->prompt);
+	if (mini->line)
+		free(mini->line);
+	if (mini->arr_path)
+		ft_free_wa(mini->arr_path);
+	rl_clear_history();
+}
+
 void	free_redir(void *content)
 {
 	t_redir	*redir;

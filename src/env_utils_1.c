@@ -84,10 +84,12 @@ static char	**add_var(char *var, char *value, char **env)
 	return (new_env);
 }
 
+// TODO Normi
 void	set_env(t_mini *mini, char *var, char *value)
 {
 	int		i;
 	int		found;
+	char	**old_env;
 
 	found = 0;
 	i = 0;
@@ -107,5 +109,9 @@ void	set_env(t_mini *mini, char *var, char *value)
 		i++;
 	}
 	if (!found)
+	{
+		old_env = mini->env;
 		mini->env = add_var(var, value, mini->env);
+		ft_free_wa(old_env);
+	}
 }
