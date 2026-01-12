@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 14:27:04 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/24 19:19:04 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/09 12:23:13 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@ static void	execute_absolute_path(char **cmd, t_mini *mini)
 	else
 	{
 		execve(cmd[0], cmd, mini->env);
-		print_cmd_error(cmd[0], ": Exec format error");
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd[0], 2);
+		ft_putstr_fd(": ", 2);
+		ft_putendl_fd(strerror(errno), 2);
 		exit(126);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/22 21:42:30 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/08 19:28:49 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/12 21:57:28 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,47 @@ static void	expand_redir(t_cmd *node, t_mini *mini)
 	}
 }
 
+static int	token_has_expansion(char *token)
+{
+	int	i;
+
+	i = 0;
+	while (token[i])
+	{
+		if (token[i] == '$')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static int	process_expansion(t_cmd *node, t_mini *mini, int i)
+{
+	char	*result;
+	int		n_insert;
+
+	if (node->cmd_quotes[i] == SINGLE_QUOTES)
+		return (1);
+	if (!token_has_expansion(node->cmd[i]))
+		return (1);
+	result = expand_vars_in_token(mini, node->cmd[i]);
+	if (!result)
+		return (0);
+	free(node->cmd[i]);
+	node->cmd[i] = result;
+	if (node->cmd_quotes[i] == NO_QUOTES && has_separators(result))
+	{
+		n_insert = word_splitting(node, result, i);
+		if (n_insert > 0)
+			return (n_insert);
+	}
+	return (1);
+}
+
 void	expand_vars(t_cmd *node, t_mini *mini)
 {
 	int		i;
-	char	*temp;
+	int		step;
 
 	if (!node->cmd || !node->cmd[0] || !node->cmd[0][0])
 		return ;
@@ -74,12 +111,9 @@ void	expand_vars(t_cmd *node, t_mini *mini)
 	i = 0;
 	while (node->cmd[i])
 	{
-		if (node->cmd_quotes[i] != SINGLE_QUOTES)
-		{
-			temp = node->cmd[i];
-			node->cmd[i] = expand_vars_in_token(mini, node->cmd[i]);
-			free(temp);
-		}
-		i++;
+		step = process_expansion(node, mini, i);
+		if (step == 0)
+			return ;
+		i += step;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/08 21:14:26 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/12 14:17:53 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,10 @@ int		get_len_expand_var(char *str);
 char	*get_env_value(char *env_entry);
 int		get_len_token(t_mini *mini, char *arg);
 char	*expand_vars_in_token(t_mini *mini, char *arg);
+// Word splitting
+int		has_separators(char *tokens);
+int		word_splitting(t_cmd *node, char *result, int i);
+
 void	expand_vars(t_cmd *node, t_mini *mini);
 
 // Create cmd list
