@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/07 14:01:22 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/13 19:17:05 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	init_mini(char **argv, char **env, t_mini *mini)
 	init_signals();
 }
 
-static void	expand_cmd_list(t_list *cmd_list, t_mini *mini)
+static int	expand_cmd_list(t_list *cmd_list, t_mini *mini)
 {
 	t_list	*current;
 	t_cmd	*node;
@@ -59,9 +59,11 @@ static void	expand_cmd_list(t_list *cmd_list, t_mini *mini)
 	while (current)
 	{
 		node = current->content;
-		expand_vars(node, mini);
+		if (expand_vars(node, mini))
+			return (1);
 		current = current->next;
 	}
+	return (0);
 }
 
 static void	handle_line(t_mini *mini)
@@ -93,7 +95,8 @@ static void	handle_line(t_mini *mini)
 		return ;
 	}
 	cmd_list = create_cmd_list(mini->line, tokens, t_info);
-	expand_cmd_list(cmd_list, mini);
+	if (expand_cmd_list(cmd_list, mini))
+		return ;
 	execute_commands(cmd_list, mini);
 	ft_lstclear(&cmd_list, free_cmd_node);
 	free(t_info);

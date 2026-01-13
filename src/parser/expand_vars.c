@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/22 21:42:30 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/12 21:57:28 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/13 19:15:49 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*expand_vars_in_token(t_mini *mini, char *arg)
 	return (result);
 }
 
-static void	expand_redir(t_cmd *node, t_mini *mini)
+static int	expand_redir(t_cmd *node, t_mini *mini)
 {
 	t_list	*redir_lst;
 	t_redir	*redir;
@@ -57,10 +57,17 @@ static void	expand_redir(t_cmd *node, t_mini *mini)
 		{
 			temp = redir->file;
 			redir->file = expand_vars_in_token(mini, redir->file);
+			if (redir->quote == NO_QUOTES && has_separators(redir->file))
+			{
+				print_cmd_error(temp, ": ambiguous redirect");
+				mini->exit_code = 1;
+				return (free(temp), 1);
+			}
 			free(temp);
 		}
 		redir_lst = redir_lst->next;
 	}
+	return (0);
 }
 
 static int	token_has_expansion(char *token)
@@ -100,20 +107,22 @@ static int	process_expansion(t_cmd *node, t_mini *mini, int i)
 	return (1);
 }
 
-void	expand_vars(t_cmd *node, t_mini *mini)
+int	expand_vars(t_cmd *node, t_mini *mini)
 {
 	int		i;
 	int		step;
 
 	if (!node->cmd || !node->cmd[0] || !node->cmd[0][0])
-		return ;
-	expand_redir(node, mini);
+		return (1);
+	if (expand_redir(node, mini))
+		return (1);
 	i = 0;
 	while (node->cmd[i])
 	{
 		step = process_expansion(node, mini, i);
 		if (step == 0)
-			return ;
+			return (1);
 		i += step;
 	}
+	return (0);
 }
