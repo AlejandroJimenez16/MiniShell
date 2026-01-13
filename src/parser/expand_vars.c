@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/22 21:42:30 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/13 19:15:49 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/13 21:03:16 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static int	expand_redir(t_cmd *node, t_mini *mini)
 			{
 				print_cmd_error(temp, ": ambiguous redirect");
 				mini->exit_code = 1;
-				return (free(temp), 1);
+				return (free(temp), -1);
 			}
 			free(temp);
 		}
@@ -95,7 +95,7 @@ static int	process_expansion(t_cmd *node, t_mini *mini, int i)
 		return (1);
 	result = expand_vars_in_token(mini, node->cmd[i]);
 	if (!result)
-		return (0);
+		return (-1);
 	free(node->cmd[i]);
 	node->cmd[i] = result;
 	if (node->cmd_quotes[i] == NO_QUOTES && has_separators(result))
@@ -114,14 +114,14 @@ int	expand_vars(t_cmd *node, t_mini *mini)
 
 	if (!node->cmd || !node->cmd[0] || !node->cmd[0][0])
 		return (1);
-	if (expand_redir(node, mini))
-		return (1);
+	if (expand_redir(node, mini) == -1)
+		return (-1);
 	i = 0;
 	while (node->cmd[i])
 	{
 		step = process_expansion(node, mini, i);
-		if (step == 0)
-			return (1);
+		if (step <= 0)
+			return (-1);
 		i += step;
 	}
 	return (0);

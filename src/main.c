@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/13 19:17:05 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/13 20:41:47 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	expand_cmd_list(t_list *cmd_list, t_mini *mini)
 	while (current)
 	{
 		node = current->content;
-		if (expand_vars(node, mini))
+		if (expand_vars(node, mini) == -1)
 			return (1);
 		current = current->next;
 	}
