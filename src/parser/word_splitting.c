@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 13:27:48 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/12 21:43:14 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/13 16:36:41 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,32 +39,52 @@ static void	normalize_split(char *str)
 	}
 }
 
-static char	**create_fill_new_cmd(t_cmd *node, char **arr, int n_cmds, int i)
+static int	copy_arr_to_cmd(char **arr, t_fill_cmds *f_cmds, int old_i, int i)
 {
-	char	**new_cmd;
-	int		old_i;
-	int		new_i;
-	int		index_arr;
+	int	index_arr;
 
-	new_cmd = malloc((n_cmds + 1) * sizeof(char *));
-	if (!new_cmd)
-		return (NULL);
+	if (old_i == i)
+	{
+		index_arr = 0;
+		while (arr[index_arr])
+		{
+			f_cmds->new_cmd[f_cmds->new_i] = ft_strdup(arr[index_arr]);
+			f_cmds->new_cmd_quotes[f_cmds->new_i] = NO_QUOTES;
+			index_arr++;
+			f_cmds->new_i++;
+		}
+		return (1);
+	}
+	return (0);
+}
+
+static int	create_fill_new_cmd(t_cmd *node, char **arr, int n_cmds, int i)
+{
+	t_fill_cmds		f_cmds;
+	int				old_i;
+
+	f_cmds.new_cmd = malloc((n_cmds + 1) * sizeof(char *));
+	if (!f_cmds.new_cmd)
+		return (1);
+	f_cmds.new_cmd_quotes = malloc((n_cmds + 1) * sizeof(t_quote_type));
+	if (!f_cmds.new_cmd_quotes)
+		return (free(f_cmds.new_cmd), 1);
 	old_i = 0;
-	new_i = 0;
+	f_cmds.new_i = 0;
 	while (old_i < node->cmd_size)
 	{
-		if (old_i == i)
-		{
-			index_arr = 0;
-			while (arr[index_arr])
-				new_cmd[new_i++] = ft_strdup(arr[index_arr++]);
+		if (copy_arr_to_cmd(arr, &f_cmds, old_i, i))
 			old_i++;
-		}
 		else
-			new_cmd[new_i++] = node->cmd[old_i++];
+		{
+			f_cmds.new_cmd[f_cmds.new_i] = node->cmd[old_i];
+			f_cmds.new_cmd_quotes[f_cmds.new_i++] = node->cmd_quotes[old_i++];
+		}
 	}
-	new_cmd[new_i] = NULL;
-	return (new_cmd);
+	f_cmds.new_cmd[f_cmds.new_i] = NULL;
+	node->cmd_size = n_cmds;
+	node->cmd = f_cmds.new_cmd;
+	return (node->cmd_quotes = f_cmds.new_cmd_quotes, 0);
 }
 
 int	word_splitting(t_cmd *node, char *result, int i)
@@ -72,7 +92,6 @@ int	word_splitting(t_cmd *node, char *result, int i)
 	char	**arr;
 	int		n_arr;
 	int		n_cmds;
-	char	**new_cmd;
 
 	normalize_split(result);
 	arr = ft_split(result, ' ');
@@ -82,11 +101,8 @@ int	word_splitting(t_cmd *node, char *result, int i)
 	while (arr[n_arr])
 		n_arr++;
 	n_cmds = n_arr + (node->cmd_size - 1);
-	new_cmd = create_fill_new_cmd(node, arr, n_cmds, i);
-	if (!new_cmd)
+	if (create_fill_new_cmd(node, arr, n_cmds, i))
 		return (-1);
-	node->cmd_size = n_cmds;
 	ft_free_wa(arr);
-	node->cmd = new_cmd;
 	return (n_arr);
 }

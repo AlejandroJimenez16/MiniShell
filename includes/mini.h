@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/12 14:17:53 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/13 14:08:44 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,13 @@ typedef struct s_pipex
 	int		fd_out;
 	pid_t	pid;
 }			t_pipex;
+
+typedef struct s_fill_cmds
+{
+	char			**new_cmd;
+	t_quote_type	*new_cmd_quotes;
+	int				new_i;
+}					t_fill_cmds;
 
 // Obtain prompt
 char	*get_prompt(int has_env, char **env);
