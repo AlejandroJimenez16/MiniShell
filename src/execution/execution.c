@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 13:38:17 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/07 13:08:09 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/14 14:02:26 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	handle_child(t_cmd *node, t_mini *mini, t_pipex *pipex)
 {
 	setup_child_signals();
 	if (handle_redirections(node, pipex, mini))
-		return (1);
+		return (mini->exit_code);
 	if (is_builtin(node->cmd))
 		return (exec_builtins(node->cmd, mini));
 	else

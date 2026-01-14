@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:43:51 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/26 20:46:21 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/14 13:30:12 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	print_unexpected_error(t_mini *mini, int is_bonus, char *invalid)
 		ft_putstr_fd(invalid, 2);
 		ft_putendl_fd("'", 2);
 	}
-	mini->exit_code = 258;
+	mini->exit_code = 2;
 }
 
 int	get_cmd_arr_size(char **tokens, t_token_info *t_info, int start)

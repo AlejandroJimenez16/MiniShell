@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 18:01:10 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/27 22:45:56 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/14 15:09:39 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	is_builtin(char **cmd)
 int	exec_builtins(char **cmd, t_mini *mini)
 {
 	if (ft_strncmp(cmd[0], "echo", 4) == 0)
-		ft_echo(cmd);
+		ft_echo(mini, cmd);
 	else if (ft_strncmp(cmd[0], "cd", 3) == 0)
 		ft_cd(cmd, mini);
 	else if (ft_strncmp(cmd[0], "pwd", 3) == 0)

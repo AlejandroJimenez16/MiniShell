@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/13 19:14:34 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/14 15:09:23 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ int		is_builtin(char **cmd);
 int		exec_env_builtins_parent(t_cmd *node, t_mini *mini, t_pipex *pipex);
 void	exec_env_builtins(char **cmd, t_mini *mini);
 int		exec_builtins(char **cmd, t_mini *mini);
-void	ft_echo(char **cmd);
+void	ft_echo(t_mini *mini, char **cmd);
 int		ft_cd(char **cmd, t_mini *mini);
 void	ft_pwd(t_mini *mini);
 void	ft_export(char **cmd, t_mini *mini);

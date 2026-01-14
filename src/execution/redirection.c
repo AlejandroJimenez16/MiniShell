@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:46:22 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/08 20:20:09 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/14 13:59:39 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,12 @@
 static void	check_errno_error(t_redir *redir, t_mini *mini)
 {
 	if (errno == ENOENT)
-	{
 		print_cmd_error(redir->file, ": No such file or directory");
-		mini->exit_code = 127;
-	}
 	else if (errno == EACCES)
-	{
 		print_cmd_error(redir->file, ": Permission denied");
-		mini->exit_code = 126;
-	}
 	else
-	{
 		perror(redir->file);
-		mini->exit_code = 1;
-	}
+	mini->exit_code = 1;
 }
 
 static int	handle_infile(t_redir *redir, int *fd_in, t_mini *mini)
