@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 20:06:52 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/14 15:09:53 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/14 16:26:05 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,11 @@ int	has_n(char *arg)
 	return (1);
 }
 
-void	ft_echo(t_mini *mini, char **cmd)
+void	ft_echo(char **cmd)
 {
 	int	i;
 	int	newline;
 
-	mini->exit_code = 0;
 	i = 1;
 	newline = 1;
 	if (!cmd[i])

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 18:01:10 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/14 15:09:39 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/14 16:25:01 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	is_env_builtin(char **cmd)
 
 void	exec_env_builtins(char **cmd, t_mini *mini)
 {
+	mini->exit_code = 0;
 	if (ft_strncmp(cmd[0], "export", 6) == 0)
 		ft_export(cmd, mini);
 	else if (ft_strncmp(cmd[0], "unset", 5) == 0)
@@ -86,8 +87,9 @@ int	is_builtin(char **cmd)
 
 int	exec_builtins(char **cmd, t_mini *mini)
 {
+	mini->exit_code = 0;
 	if (ft_strncmp(cmd[0], "echo", 4) == 0)
-		ft_echo(mini, cmd);
+		ft_echo(cmd);
 	else if (ft_strncmp(cmd[0], "cd", 3) == 0)
 		ft_cd(cmd, mini);
 	else if (ft_strncmp(cmd[0], "pwd", 3) == 0)
