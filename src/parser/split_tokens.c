@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 13:45:09 by alejandj          #+#    #+#             */
-/*   Updated: 2025/12/17 21:56:27 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/15 16:53:56 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,13 @@ static char	*handle_operators(char *str, int *i)
 
 static char	*handle_words(char *str, int *i, t_token_info *t_info)
 {
-	char	buffer[1024];
+	char	*token;
 	char	quote;
 	int		j;
 
+	token = malloc((get_len_word(str, *i) + 1) * sizeof(char));
+	if (!token)
+		return (NULL);
 	j = 0;
 	while (str[*i] && str[*i] != ' ' && str[*i] != '\t'
 		&& str[*i] != '|' && str[*i] != '<' && str[*i] != '>')
@@ -66,15 +69,14 @@ static char	*handle_words(char *str, int *i, t_token_info *t_info)
 			set_quote_type(quote, t_info);
 			(*i)++;
 			while (str[*i] && (str[*i] != quote))
-				buffer[j++] = str[(*i)++];
+				token[j++] = str[(*i)++];
 			if (str[*i] == quote)
 				(*i)++;
 		}
 		else
-			buffer[j++] = str[(*i)++];
+			token[j++] = str[(*i)++];
 	}
-	buffer[j] = '\0';
-	return (ft_strdup(buffer));
+	return (token[j] = '\0', token);
 }
 
 static	char	*build_token(char *str, int *i, t_token_info *t_info)
@@ -108,6 +110,8 @@ char	**split_tokens(char *str, t_token_info **t_info)
 	while (index < n_tokens)
 	{
 		arr[index] = build_token(str, &i, &(*t_info)[index]);
+		if (!arr[index])
+			return (NULL);
 		set_token_type(arr[index], &(*t_info)[index]);
 		index++;
 	}
