@@ -28,7 +28,7 @@ static void	manage_line(char *delimiter, char *line, int n_line)
 		free(line);
 	else
 	{
-		write(2, "\nminishell: warning: here-document at line ", 43);
+		write(2, "minishell: warning: here-document at line ", 42);
 		ft_putnbr_fd(n_line, 2);
 		write(2, " delimited by end-of-file (wanted «", 36);
 		write(2, delimiter, ft_strlen(delimiter));
@@ -45,22 +45,21 @@ int	here_doc(t_mini *mini, char *delimiter, int type_quote)
 	if (pipe(pipe_fd) == -1)
 		return (-1);
 	n_line = 1;
-	ft_printf("> ");
-	line = get_next_line(STDIN_FILENO);
-	while (line && !(ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0
-			&& ((ft_strlen(line) == ft_strlen(delimiter)
-					&& line[ft_strlen(line) - 1] != '\n')
-				|| (ft_strlen(line) - 1 == ft_strlen(delimiter)
-					&& line[ft_strlen(line) - 1] == '\n'))))
+	line = readline("> ");
+	while (line && g_sig_status == 0
+		&& ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) != 0)
 	{
 		if (type_quote == NO_QUOTES)
 			line = expand_line(mini, line);
 		write(pipe_fd[1], line, ft_strlen(line));
+		write(pipe_fd[1], "\n", 1);
 		free(line);
 		n_line++;
-		ft_printf("> ");
-		line = get_next_line(STDIN_FILENO);
+		line = readline("> ");
 	}
-	manage_line(delimiter, line, n_line);
+	if (g_sig_status != 0 && line)
+		free(line);
+	else
+		manage_line(delimiter, line, n_line);
 	return (close(pipe_fd[1]), pipe_fd[0]);
 }

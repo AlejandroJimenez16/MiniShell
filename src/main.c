@@ -123,15 +123,15 @@ int	main(int argc, char **argv, char **env)
 	init_mini(argv, env, &mini);
 	while (1)
 	{
+		mini.prompt = get_prompt(mini.has_env, mini.env);
+		mini.line = readline(mini.prompt);
+		free(mini.prompt);
+		mini.prompt = NULL;
 		if (g_sig_status != 0)
 		{
 			mini.exit_code = g_sig_status;
 			g_sig_status = 0;
 		}
-		mini.prompt = get_prompt(mini.has_env, mini.env);
-		mini.line = readline(mini.prompt);
-		free(mini.prompt);
-		mini.prompt = NULL;
 		if (!mini.line)
 			return (ft_printf("exit\n"), rl_clear_history(), free_mini(&mini), 0);
 		if (mini.line[0] == '\0')

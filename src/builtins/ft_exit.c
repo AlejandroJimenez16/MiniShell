@@ -48,7 +48,7 @@ void	ft_exit(char **cmd, t_mini *mini)
 	else if (cmd[1] && is_numeric(cmd[1]) && !cmd[2])
 	{
 		ft_putendl_fd("exit", 1);
-		exit(ft_atoi(cmd[1]));
+		exit(ft_atol(cmd[1]));
 	}
 	else if (cmd[1] && !is_numeric(cmd[1]) && !cmd[2])
 	{
