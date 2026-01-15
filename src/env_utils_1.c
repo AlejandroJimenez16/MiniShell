@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 13:00:08 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/08 21:14:05 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/15 13:31:59 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,11 @@ static char	**add_var(char *var, char *value, char **env)
 	return (new_env);
 }
 
-// TODO Normi
 void	set_env(t_mini *mini, char *var, char *value)
 {
 	int		i;
-	int		found;
 	char	**old_env;
 
-	found = 0;
 	i = 0;
 	while (mini->env[i])
 	{
@@ -102,16 +99,12 @@ void	set_env(t_mini *mini, char *var, char *value)
 			{
 				free(mini->env[i]);
 				mini->env[i] = build_normal_var(var, value);
-				found = 1;
 			}
 			return ;
 		}
 		i++;
 	}
-	if (!found)
-	{
-		old_env = mini->env;
-		mini->env = add_var(var, value, mini->env);
-		ft_free_wa(old_env);
-	}
+	old_env = mini->env;
+	mini->env = add_var(var, value, mini->env);
+	ft_free_wa(old_env);
 }
