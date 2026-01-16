@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/15 17:43:22 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/16 20:33:00 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,7 @@ static int	expand_cmd_list(t_list *cmd_list, t_mini *mini)
 
 static void	handle_line(t_mini *mini)
 {
-	char			**tokens;
-	t_token_info	*t_info;
-	t_list			*cmd_list;
+	//t_list			*cmd_list;
 	char			*invalid;
 	int				is_bonus;
 
@@ -81,37 +79,37 @@ static void	handle_line(t_mini *mini)
 	}
 	if (count_tokens(mini->line) == 0)
 		return ;
-	t_info = malloc(count_tokens(mini->line) * sizeof(t_token_info));
-	if (!t_info)
+	mini->t_info = malloc(count_tokens(mini->line) * sizeof(t_token_info));
+	if (!mini->t_info)
 		return ;
-	tokens = split_tokens(mini->line, &t_info);
-	if (!tokens)
+	mini->tokens = split_tokens(mini->line, &mini->t_info);
+	if (!mini->tokens)
 	{
-		free(t_info);
+		free(mini->t_info);
 		return ;
 	}
 	is_bonus = 0;
-	if (check_invalid_tokens(t_info, mini, &invalid, &is_bonus))
+	if (check_invalid_tokens(mini->t_info, mini, &invalid, &is_bonus))
 	{
-		free(t_info);
-        ft_free_wa(tokens);
+		free(mini->t_info);
+        ft_free_wa(mini->tokens);
 		print_unexpected_error(mini, is_bonus, invalid);
 		return ;
 	}
-	cmd_list = create_cmd_list(mini->line, tokens, t_info);
-	if (expand_cmd_list(cmd_list, mini))
+	mini->cmd_list = create_cmd_list(mini->line, mini->tokens, mini->t_info);
+	if (expand_cmd_list(mini->cmd_list, mini))
 	{
-		ft_lstclear(&cmd_list, free_cmd_node);
-		free(t_info);
-        ft_free_wa(tokens);
+		ft_lstclear(&mini->cmd_list, free_cmd_node);
+		free(mini->t_info);
+        ft_free_wa(mini->tokens);
 		return ;
 	}
-	execute_commands(cmd_list, mini);
+	execute_commands(mini->cmd_list, mini);
 	
 	// frees
-	free(t_info);
-	ft_free_wa(tokens);
-	ft_lstclear(&cmd_list, free_cmd_node);
+	free(mini->t_info);
+	ft_free_wa(mini->tokens);
+	ft_lstclear(&mini->cmd_list, free_cmd_node);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -127,17 +125,17 @@ int	main(int argc, char **argv, char **env)
 		mini.line = readline(mini.prompt);
 		free(mini.prompt);
 		mini.prompt = NULL;
-		if (g_sig_status != 0)
-		{
-			mini.exit_code = g_sig_status;
-			g_sig_status = 0;
-		}
 		if (!mini.line)
-			return (ft_printf("exit\n"), rl_clear_history(), free_mini(&mini), 0);
+			return (ft_printf("exit\n"), free_mini(&mini), 0);
 		if (mini.line[0] == '\0')
 		{
     		free(mini.line);
     		continue;
+		}
+		if (g_sig_status != 0)
+		{
+			mini.exit_code = g_sig_status;
+			g_sig_status = 0;
 		}
 		add_history(mini.line);
 		handle_line(&mini);

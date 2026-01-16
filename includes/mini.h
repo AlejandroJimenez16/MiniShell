@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/15 16:46:15 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/16 19:47:25 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,6 @@
 
 extern int	g_sig_status;
 
-// Main structure
-typedef struct s_mini
-{
-	char	**env;
-	char	*line;
-	char	*prompt;
-	char	**arr_path;
-	int		exit_code;
-	char	*last_command;
-	int		has_env;
-}			t_mini;
-
-// Environment structure
-typedef struct s_env
-{
-	char	*var;
-	char	*value;
-	char	*full;
-}			t_env;
-
 // Cmd structure
 typedef enum e_token_type
 {
@@ -75,6 +55,39 @@ typedef enum e_quote_type
 	SINGLE_QUOTES,
 	DOUBLE_QUOTES
 }	t_quote_type;
+
+typedef struct s_token_info
+{
+	t_quote_type	type_quote;
+	t_token_type	type_token;
+}					t_token_info;
+
+// Main structure
+typedef struct s_mini
+{
+	char			**env;
+	char			*line;
+	char			*prompt;
+	char			**arr_path;
+	t_token_info	*t_info;
+	char			**tokens;
+	t_list			*cmd_list;
+	int				exit_code;
+	char			*last_command;
+	int				has_env;
+}					t_mini;
+
+// Environment structure
+typedef struct s_env
+{
+	char	*var;
+	char	*value;
+	char	*full;
+}			t_env;
+
+//----------------
+// AQUI TYPES
+//----------------
 
 // List of redirections for s_cmd
 // @param type number from e_token_type (REDIR_IN, REDIR_OUT...)
@@ -96,11 +109,7 @@ typedef struct s_cmd
 	t_list			*redirs;
 }			t_cmd;
 
-typedef struct s_token_info
-{
-	t_quote_type	type_quote;
-	t_token_type	type_token;
-}					t_token_info;
+// AQUI T_TOKEN_INFO
 
 typedef struct s_pipex
 {
