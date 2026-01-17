@@ -6,39 +6,11 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 18:01:10 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/14 16:25:01 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/17 18:35:33 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/mini.h"
-
-int	is_env_builtin(char **cmd)
-{
-	if (!cmd || !cmd[0])
-		return (0);
-	if ((ft_strncmp(cmd[0], "export", 6) == 0) && cmd[1])
-		return (1);
-	else if (ft_strncmp(cmd[0], "unset", 5) == 0)
-		return (1);
-	else if (ft_strncmp(cmd[0], "cd", 3) == 0)
-		return (1);
-	else if (ft_strncmp(cmd[0], "exit", 4) == 0)
-		return (1);
-	return (0);
-}
-
-void	exec_env_builtins(char **cmd, t_mini *mini)
-{
-	mini->exit_code = 0;
-	if (ft_strncmp(cmd[0], "export", 6) == 0)
-		ft_export(cmd, mini);
-	else if (ft_strncmp(cmd[0], "unset", 5) == 0)
-		ft_unset(cmd, mini);
-	else if (ft_strncmp(cmd[0], "cd", 3) == 0)
-		ft_cd(cmd, mini);
-	else if (ft_strncmp(cmd[0], "exit", 4) == 0)
-		ft_exit(cmd, mini);
-}
 
 int	exec_env_builtins_parent(t_cmd *node, t_mini *mini, t_pipex *pipex)
 {
@@ -49,7 +21,7 @@ int	exec_env_builtins_parent(t_cmd *node, t_mini *mini, t_pipex *pipex)
 	save_stdout = dup(STDOUT_FILENO);
 	if (handle_redirections(node, pipex, mini))
 		return (1);
-	exec_env_builtins(node->cmd, mini);
+	exec_builtins(node->cmd, mini);
 	if (mini->last_command)
 	{
 		free(mini->last_command);

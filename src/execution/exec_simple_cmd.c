@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 14:27:04 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/09 12:23:13 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/17 19:19:09 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,7 @@ static void	execute_absolute_path(char **cmd, t_mini *mini)
 		ft_putendl_fd(strerror(errno), 2);
 		exit_code = 126;
 	}
-	if (mini->arr_path)
-	{
-		ft_free_wa(mini->arr_path);
-		mini->arr_path = NULL;
-	}
 	free_mini(mini);
-	ft_lstclear(&mini->cmd_list, free_cmd_node);
 	exit(exit_code);
 }
 
@@ -63,13 +57,7 @@ static void	handle_cmd_error(char **cmd, t_mini *mini, int permission)
 		print_cmd_error(cmd[0], ": Permission denied");
 	else
 		print_cmd_error(cmd[0], ": command not found");
-	if (mini->arr_path)
-	{
-		ft_free_wa(mini->arr_path);
-		mini->arr_path = NULL;
-	}
 	free_mini(mini);
-	ft_lstclear(&mini->cmd_list, free_cmd_node);
 	if (permission)
 		exit(126);
 	exit(127);

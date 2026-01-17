@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:26:11 by alejandj          #+#    #+#             */
-/*   Updated: 2025/01/23 13:25:59 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/17 18:56:20 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*ft_itoa(int n)
 	if (n == -2147483648)
 		return (ft_strdup("-2147483648"));
 	len = obtain_num_digits(n);
-	str = (char *)malloc((len + 1) * sizeof(char));
+	str = ft_calloc(len + 1, sizeof(char));
 	if (!str)
 		return (NULL);
 	str[len] = '\0';

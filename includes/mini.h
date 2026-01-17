@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/16 19:47:25 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/17 18:34:13 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,10 +139,8 @@ char	**copy_env(char **env);
 void	sort_env(char **cpy_env);
 
 // Built-ins
-int		is_env_builtin(char **cmd);
 int		is_builtin(char **cmd);
 int		exec_env_builtins_parent(t_cmd *node, t_mini *mini, t_pipex *pipex);
-void	exec_env_builtins(char **cmd, t_mini *mini);
 int		exec_builtins(char **cmd, t_mini *mini);
 void	ft_echo(char **cmd);
 int		ft_cd(char **cmd, t_mini *mini);
