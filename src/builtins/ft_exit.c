@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 12:39:55 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/17 19:57:12 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/17 21:16:09 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static int	is_numeric(char *str)
 
 void	ft_exit(char **cmd, t_mini *mini)
 {
+	int	exit_num;
+	
 	if (cmd[1] && cmd[2])
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
@@ -51,8 +53,13 @@ void	ft_exit(char **cmd, t_mini *mini)
 	}
 	else if (cmd[1] && is_numeric(cmd[1]) && !cmd[2])
 	{
+		exit_num = ft_atoi(cmd[1]);
 		ft_putendl_fd("exit", 1);
-		exit(ft_atol(cmd[1]));
+		free_mini(mini);
+		free(mini->t_info);
+		ft_free_wa(mini->tokens);
+		ft_lstclear(&mini->cmd_list, free_cmd_node);
+		exit(exit_num);
 	}
 	else if (cmd[1] && !is_numeric(cmd[1]) && !cmd[2])
 	{
@@ -60,6 +67,10 @@ void	ft_exit(char **cmd, t_mini *mini)
 		ft_putstr_fd(cmd[1], 2);
 		ft_putendl_fd(": numeric argument required", 2);
 		ft_putendl_fd("exit", 1);
+		free_mini(mini);
+		free(mini->t_info);
+		ft_free_wa(mini->tokens);
+		ft_lstclear(&mini->cmd_list, free_cmd_node);
 		exit(255);
 	}
 }

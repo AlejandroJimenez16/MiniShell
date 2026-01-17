@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 13:38:17 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/17 19:59:23 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/17 21:05:00 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,11 @@ void	execute_commands(t_list *cmd_list, t_mini *mini)
 		node = current->content;
 		init_pipex(&pipex);
 		if (current->next && create_pipe(&pipex, mini))
-			return ;
+		{
+			if (pipex.prev_pipe_in != -1)
+				close(pipex.prev_pipe_in);
+			return ;	
+		}
 		if (manage_execution(node, &pipex, mini, current))
 			return ;
 		if (pipex.pid != -1)

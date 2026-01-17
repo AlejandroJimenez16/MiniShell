@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 18:01:10 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/17 18:35:33 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/17 21:03:24 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	exec_env_builtins_parent(t_cmd *node, t_mini *mini, t_pipex *pipex)
 	save_stdin = dup(STDIN_FILENO);
 	save_stdout = dup(STDOUT_FILENO);
 	if (handle_redirections(node, pipex, mini))
-		return (1);
+		return (close(save_stdin), close(save_stdout), 1);
 	exec_builtins(node->cmd, mini);
 	if (mini->last_command)
 	{
