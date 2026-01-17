@@ -28,6 +28,8 @@ static int	update_pwd(t_mini *mini)
 	{
 		perror("minishell: getcwd");
 		mini->exit_code = 1;
+		if (oldpwd)
+			free(oldpwd);
 		return (1);
 	}
 	if (oldpwd)

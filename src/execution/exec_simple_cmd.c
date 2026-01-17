@@ -24,15 +24,17 @@ static void	create_path(char **s1, char *s2)
 
 static void	execute_absolute_path(char **cmd, t_mini *mini)
 {
+	int	exit_code;
+
 	if (access(cmd[0], F_OK) != 0)
 	{
 		print_cmd_error(cmd[0], ": No such file or directory");
-		exit(127);
+		exit_code = 127;
 	}
 	else if (access(cmd[0], X_OK) != 0)
 	{
 		print_cmd_error(cmd[0], ": Permission denied");
-		exit(126);
+		exit_code = 126;
 	}
 	else
 	{
@@ -41,27 +43,36 @@ static void	execute_absolute_path(char **cmd, t_mini *mini)
 		ft_putstr_fd(cmd[0], 2);
 		ft_putstr_fd(": ", 2);
 		ft_putendl_fd(strerror(errno), 2);
-		exit(126);
+		exit_code = 126;
 	}
+	if (mini->arr_path)
+	{
+		ft_free_wa(mini->arr_path);
+		mini->arr_path = NULL;
+	}
+	free_mini(mini);
+	ft_lstclear(&mini->cmd_list, free_cmd_node);
+	exit(exit_code);
 }
 
 static void	handle_cmd_error(char **cmd, t_mini *mini, int permission)
 {
 	if (!mini->arr_path || mini->arr_path[0] == NULL)
-	{
 		print_cmd_error(cmd[0], ": No such file or directory");
-		exit(127);
-	}
 	else if (permission)
-	{
 		print_cmd_error(cmd[0], ": Permission denied");
-		exit(126);
-	}
 	else
-	{
 		print_cmd_error(cmd[0], ": command not found");
-		exit(127);
+	if (mini->arr_path)
+	{
+		ft_free_wa(mini->arr_path);
+		mini->arr_path = NULL;
 	}
+	free_mini(mini);
+	ft_lstclear(&mini->cmd_list, free_cmd_node);
+	if (permission)
+		exit(126);
+	exit(127);
 }
 
 static void	execute_from_path(char **cmd, t_mini *mini)

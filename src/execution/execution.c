@@ -71,6 +71,7 @@ static int	manage_execution(t_cmd *node, t_pipex *pipex,
 		t_mini *mini, t_list *current)
 {
 	int	status;
+
 	if (is_env_builtin(node->cmd) && pipex->prev_pipe_in == -1
 		&& !current->next)
 		return (exec_env_builtins_parent(node, mini, pipex));
@@ -88,7 +89,7 @@ static int	manage_execution(t_cmd *node, t_pipex *pipex,
 		ft_lstclear(&mini->cmd_list, free_cmd_node);
 		ft_free_wa(mini->env);
 		rl_clear_history();
-		exit(status);	
+		exit(status);
 	}
 	else
 		handle_parent(pipex, mini, node);
