@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 13:00:08 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/15 13:31:59 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/17 19:50:55 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ static char	**add_var(char *var, char *value, char **env)
 
 	i = 0;
 	new_env = dup_env_add(env, &i);
+	if (!new_env)
+		return (NULL);
 	if (value)
 		new_env[i] = build_normal_var(var, value);
 	else
@@ -88,6 +90,7 @@ void	set_env(t_mini *mini, char *var, char *value)
 {
 	int		i;
 	char	**old_env;
+	char	**new_env;
 
 	i = 0;
 	while (mini->env[i])
@@ -105,6 +108,8 @@ void	set_env(t_mini *mini, char *var, char *value)
 		i++;
 	}
 	old_env = mini->env;
-	mini->env = add_var(var, value, mini->env);
+	new_env = add_var(var, value, mini->env);
+	if (new_env)
+		mini->env = new_env;
 	ft_free_wa(old_env);
 }

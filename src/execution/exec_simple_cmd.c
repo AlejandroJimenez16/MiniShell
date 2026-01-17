@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 14:27:04 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/17 19:19:09 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/17 19:58:27 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ static void	execute_absolute_path(char **cmd, t_mini *mini)
 		exit_code = 126;
 	}
 	free_mini(mini);
+	free(mini->t_info);
+	ft_free_wa(mini->tokens);
+	ft_lstclear(&mini->cmd_list, free_cmd_node);
 	exit(exit_code);
 }
 
@@ -58,6 +61,7 @@ static void	handle_cmd_error(char **cmd, t_mini *mini, int permission)
 	else
 		print_cmd_error(cmd[0], ": command not found");
 	free_mini(mini);
+	ft_lstclear(&mini->cmd_list, free_cmd_node);
 	if (permission)
 		exit(126);
 	exit(127);

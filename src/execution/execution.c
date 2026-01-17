@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 13:38:17 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/17 19:16:23 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/17 19:59:23 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,21 @@ static int	manage_execution(t_cmd *node, t_pipex *pipex,
 	pipex->pid = fork();
 	signal(SIGINT, SIG_IGN);
 	if (pipex->pid < 0)
+	{
+		if (pipex->pipefd[0] != -1)
+			close(pipex->pipefd[0]);
+		if (pipex->pipefd[1] != -1)
+			close(pipex->pipefd[1]);
 		return (ft_putstr_fd("minishell: fork: Error creating process", 2),
-			mini->exit_code = 1, 1);
+			mini->exit_code = 1, 1);	
+	}
 	else if (pipex->pid == 0)
 	{
 		status = handle_child(node, mini, pipex);
-		free(mini);
+		free_mini(mini);
+		free(mini->t_info);
+		ft_free_wa(mini->tokens);
+		ft_lstclear(&mini->cmd_list, free_cmd_node);
 		exit(status);
 	}
 	else
@@ -114,6 +123,8 @@ void	execute_commands(t_list *cmd_list, t_mini *mini)
 		pipex.prev_pipe_in = pipex.pipefd[0];
 		current = current->next;
 	}
+	if (pipex.prev_pipe_in != -1)
+		close(pipex.prev_pipe_in);
 	if (last_pid != -1)
 		mini->exit_code = wait_for_children(last_pid);
 	init_signals();

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 12:39:55 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/17 19:19:16 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/17 19:57:12 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ void	ft_exit(char **cmd, t_mini *mini)
 	{
 		ft_putendl_fd("exit", 1);
 		free_mini(mini);
+		free(mini->t_info);
+		ft_free_wa(mini->tokens);
+		ft_lstclear(&mini->cmd_list, free_cmd_node);
 		exit(mini->exit_code);
 	}
 	else if (cmd[1] && is_numeric(cmd[1]) && !cmd[2])
