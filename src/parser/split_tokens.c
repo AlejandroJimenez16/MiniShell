@@ -111,7 +111,11 @@ char	**split_tokens(char *str, t_token_info **t_info)
 	{
 		arr[index] = build_token(str, &i, &(*t_info)[index]);
 		if (!arr[index])
+		{
+			if (arr)
+				ft_free_wa(arr);
 			return (NULL);
+		}
 		set_token_type(arr[index], &(*t_info)[index]);
 		index++;
 	}

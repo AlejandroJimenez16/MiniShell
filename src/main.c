@@ -91,9 +91,9 @@ static void	handle_line(t_mini *mini)
 	is_bonus = 0;
 	if (check_invalid_tokens(mini->t_info, mini, &invalid, &is_bonus))
 	{
-		free(mini->t_info);
-        ft_free_wa(mini->tokens);
 		print_unexpected_error(mini, is_bonus, invalid);
+		free(mini->t_info);
+		ft_free_wa(mini->tokens);
 		return ;
 	}
 	mini->cmd_list = create_cmd_list(mini->line, mini->tokens, mini->t_info);
@@ -101,11 +101,10 @@ static void	handle_line(t_mini *mini)
 	{
 		ft_lstclear(&mini->cmd_list, free_cmd_node);
 		free(mini->t_info);
-        ft_free_wa(mini->tokens);
+		ft_free_wa(mini->tokens);
 		return ;
 	}
 	execute_commands(mini->cmd_list, mini);
-	
 	// frees
 	free(mini->t_info);
 	ft_free_wa(mini->tokens);
@@ -129,8 +128,8 @@ int	main(int argc, char **argv, char **env)
 			return (ft_printf("exit\n"), free_mini(&mini), 0);
 		if (mini.line[0] == '\0')
 		{
-    		free(mini.line);
-    		continue;
+			free(mini.line);
+			continue;
 		}
 		if (g_sig_status != 0)
 		{
