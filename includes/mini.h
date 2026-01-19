@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/17 18:34:13 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/19 18:41:40 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ int		ft_cd(char **cmd, t_mini *mini);
 void	ft_pwd(t_mini *mini);
 void	ft_export(char **cmd, t_mini *mini);
 void	ft_unset(char **cmd, t_mini *mini);
-void	ft_env(char **env);
+void	ft_env(t_mini *mini, char **cmd, char **env);
 void	ft_exit(char **cmd, t_mini *mini);
 
 // Parser

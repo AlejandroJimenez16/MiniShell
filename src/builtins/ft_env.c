@@ -6,28 +6,29 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 14:07:26 by alejandj          #+#    #+#             */
-/*   Updated: 2025/11/07 15:18:58 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/19 18:42:11 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/mini.h"
 
-void	ft_env(char **env)
+void	ft_env(t_mini *mini, char **cmd, char **env)
 {
-	char	**arr;
 	int		i;
 
 	if (!env || !env[0])
 		return ;
+	if (cmd[1])
+	{
+		print_cmd_error("env:", " Args not allowed");
+		mini->exit_code = 1;
+		return ;
+	}
 	i = 0;
 	while (env[i] != NULL)
 	{
-		arr = ft_split(env[i], '=');
-		if (!arr)
-			return ;
-		if (arr[1] != NULL)
+		if (ft_strchr(env[i], '='))
 			printf("%s\n", env[i]);
-		ft_free_wa(arr);
 		i++;
 	}
 }

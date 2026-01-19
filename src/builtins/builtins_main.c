@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 18:01:10 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/17 21:03:24 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/19 18:41:30 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	exec_builtins(char **cmd, t_mini *mini)
 	else if (ft_strncmp(cmd[0], "unset", 5) == 0)
 		ft_unset(cmd, mini);
 	else if (ft_strncmp(cmd[0], "env", 3) == 0)
-		ft_env(mini->env);
+		ft_env(mini, cmd, mini->env);
 	else if (ft_strncmp(cmd[0], "exit", 4) == 0)
 		ft_exit(cmd, mini);
 	return (mini->exit_code);
