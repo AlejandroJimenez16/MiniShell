@@ -51,7 +51,6 @@ static int	parse_exit_number(char *str, long long *out)
 
 static void	exit_clean(t_mini *mini)
 {
-	ft_putendl_fd("exit", 1);
 	free_mini(mini);
 	free(mini->t_info);
 	ft_free_wa(mini->tokens);
@@ -62,12 +61,7 @@ void	ft_exit(char **cmd, t_mini *mini)
 {
 	long long	exit_num;
 
-	if (cmd[1] && cmd[2])
-	{
-		ft_putendl_fd("minishell: exit: too many arguments", 2);
-		mini->exit_code = 1;
-		return ;
-	}
+	ft_putendl_fd("exit", 1);
 	if (!cmd[1])
 	{
 		exit_clean(mini);
@@ -75,11 +69,16 @@ void	ft_exit(char **cmd, t_mini *mini)
 	}
 	if (!parse_exit_number(cmd[1], &exit_num))
 	{
-		ft_putendl_fd("exit", 1);
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(cmd[1], 2);
 		ft_putendl_fd(": numeric argument required", 2);
 		mini->exit_code = 255;
+		return ;
+	}
+	if (cmd[1] && cmd[2])
+	{
+		ft_putendl_fd("minishell: exit: too many arguments", 2);
+		mini->exit_code = 1;
 		return ;
 	}
 	exit_clean(mini);
