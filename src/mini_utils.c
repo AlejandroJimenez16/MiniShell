@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:43:51 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/20 13:25:40 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/20 21:35:19 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	print_cmd_error(char *cmd, char *target, char *error)
 	if (target)
 	{
 		ft_putstr_fd("'", 2);
-        ft_putstr_fd(target, 2);
-        ft_putstr_fd("': ", 2);
+		ft_putstr_fd(target, 2);
+		ft_putstr_fd("': ", 2);
 	}
 	ft_putendl_fd(error, 2);
 }

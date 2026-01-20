@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 21:28:24 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/17 19:55:43 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/20 21:34:57 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,3 @@ void	free_cmd_node(void *context)
 		ft_lstclear(&node->redirs, free_redir);
 	free(node);
 }
-
-

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 14:11:36 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/20 13:01:28 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/20 21:35:45 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static void	manage_env_vars(t_mini *mini, char *var_value)
 	if (!var)
 		return ;
 	if (value && ((value[0] == '"' && value[ft_strlen(value) - 1] == '"')
-		|| (value[0] == '\'' && value[ft_strlen(value) - 1] == '\'')))
+			|| (value[0] == '\'' && value[ft_strlen(value) - 1] == '\'')))
 	{
 		temp = remove_quotes(value, ft_strlen(value));
 		free(value);
