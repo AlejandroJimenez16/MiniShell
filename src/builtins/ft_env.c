@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 14:07:26 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/19 18:42:11 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/20 13:02:42 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_env(t_mini *mini, char **cmd, char **env)
 		return ;
 	if (cmd[1])
 	{
-		print_cmd_error("env:", " Args not allowed");
+		print_cmd_error("env: ", NULL, "arguments not allowed");
 		mini->exit_code = 1;
 		return ;
 	}

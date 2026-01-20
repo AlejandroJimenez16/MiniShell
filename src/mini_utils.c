@@ -6,16 +6,23 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:43:51 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/14 13:30:12 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/20 13:25:40 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/mini.h"
 
-void	print_cmd_error(char *cmd, char *error)
+void	print_cmd_error(char *cmd, char *target, char *error)
 {
 	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd, 2);
+	if (cmd)
+		ft_putstr_fd(cmd, 2);
+	if (target)
+	{
+		ft_putstr_fd("'", 2);
+        ft_putstr_fd(target, 2);
+        ft_putstr_fd("': ", 2);
+	}
 	ft_putendl_fd(error, 2);
 }
 

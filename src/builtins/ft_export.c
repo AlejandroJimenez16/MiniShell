@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 14:11:36 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/19 19:09:56 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/20 13:01:28 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,7 @@ static void	manage_env_vars(t_mini *mini, char *var_value)
 	}
 	if (!validate_vars(var))
 	{
-		ft_putstr_fd("minishell: export: '", 2);
-		ft_putstr_fd(var_value, 2);
-		ft_putendl_fd("': not a valid identifier", 2);
+		print_cmd_error("export: ", var_value, "not a valid identifier");
 		mini->exit_code = 1;
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/22 21:42:30 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/13 21:03:16 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/20 14:13:30 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	expand_redir(t_cmd *node, t_mini *mini)
 			redir->file = expand_vars_in_token(mini, redir->file);
 			if (redir->quote == NO_QUOTES && has_separators(redir->file))
 			{
-				print_cmd_error(temp, ": ambiguous redirect");
+				print_cmd_error(temp, NULL, ": ambiguous redirect");
 				mini->exit_code = 1;
 				return (free(temp), -1);
 			}

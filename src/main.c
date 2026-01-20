@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/18 19:42:29 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/19 19:54:26 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void	handle_line(t_mini *mini)
 
 	if (check_unclosed_quotes(mini->line))
 	{
-		print_cmd_error("syntax error", ": unclosed quotes");
+		print_cmd_error(NULL, NULL, "syntax error: unclosed quotes");
 		return ;
 	}
 	if (count_tokens(mini->line) == 0)

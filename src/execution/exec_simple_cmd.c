@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 14:27:04 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/17 19:58:27 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/20 13:56:39 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,25 @@ static void	create_path(char **s1, char *s2)
 
 static void	execute_absolute_path(char **cmd, t_mini *mini)
 {
-	int	exit_code;
+	int		exit_code;
+	char	*prefix;
 
 	if (access(cmd[0], F_OK) != 0)
 	{
-		print_cmd_error(cmd[0], ": No such file or directory");
+		print_cmd_error(cmd[0], NULL, ": No such file or directory");
 		exit_code = 127;
 	}
 	else if (access(cmd[0], X_OK) != 0)
 	{
-		print_cmd_error(cmd[0], ": Permission denied");
+		print_cmd_error(cmd[0], NULL, ": Permission denied");
 		exit_code = 126;
 	}
 	else
 	{
 		execve(cmd[0], cmd, mini->env);
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd[0], 2);
-		ft_putstr_fd(": ", 2);
-		ft_putendl_fd(strerror(errno), 2);
+		prefix = ft_strjoin(cmd[0], ": ");
+		print_cmd_error(prefix, NULL, strerror(errno));
+		free(prefix);
 		exit_code = 126;
 	}
 	free_mini(mini);
@@ -55,11 +55,11 @@ static void	execute_absolute_path(char **cmd, t_mini *mini)
 static void	handle_cmd_error(char **cmd, t_mini *mini, int permission)
 {
 	if (!mini->arr_path || mini->arr_path[0] == NULL)
-		print_cmd_error(cmd[0], ": No such file or directory");
+		print_cmd_error(cmd[0], NULL, ": No such file or directory");
 	else if (permission)
-		print_cmd_error(cmd[0], ": Permission denied");
+		print_cmd_error(cmd[0], NULL, ": Permission denied");
 	else
-		print_cmd_error(cmd[0], ": command not found");
+		print_cmd_error(cmd[0], NULL, ": command not found");
 	free_mini(mini);
 	ft_lstclear(&mini->cmd_list, free_cmd_node);
 	if (permission)

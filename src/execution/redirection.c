@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:46:22 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/14 13:59:39 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/20 14:10:01 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 static void	check_errno_error(t_redir *redir, t_mini *mini)
 {
 	if (errno == ENOENT)
-		print_cmd_error(redir->file, ": No such file or directory");
+		print_cmd_error(redir->file, NULL, ": No such file or directory");
 	else if (errno == EACCES)
-		print_cmd_error(redir->file, ": Permission denied");
+		print_cmd_error(redir->file, NULL, ": Permission denied");
 	else
 		perror(redir->file);
 	mini->exit_code = 1;
