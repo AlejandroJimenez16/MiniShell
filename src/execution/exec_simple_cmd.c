@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 14:27:04 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/20 13:56:39 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/20 23:42:26 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,10 @@ static void	handle_cmd_error(char **cmd, t_mini *mini, int permission)
 		print_cmd_error(cmd[0], NULL, ": Permission denied");
 	else
 		print_cmd_error(cmd[0], NULL, ": command not found");
-	free_mini(mini);
-	ft_lstclear(&mini->cmd_list, free_cmd_node);
 	if (permission)
-		exit(126);
-	exit(127);
+		mini->exit_code = 126;
+	else
+		mini->exit_code = 127;
 }
 
 static void	execute_from_path(char **cmd, t_mini *mini)
@@ -90,8 +89,6 @@ static void	execute_from_path(char **cmd, t_mini *mini)
 		free(path);
 	}
 	handle_cmd_error(cmd, mini, permission);
-	ft_free_wa(mini->arr_path);
-	mini->arr_path = NULL;
 }
 
 void	execute_simple_commands(char **cmd, t_mini *mini)
