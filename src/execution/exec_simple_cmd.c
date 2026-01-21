@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 14:27:04 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/21 18:30:32 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/22 00:11:15 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,6 @@ static void	execute_absolute_path(char **cmd, t_mini *mini)
 		execve(cmd[0], cmd, mini->env);
 		print_exec_error(mini, cmd, NULL);
 	}
-	free_mini(mini);
-	free(mini->t_info);
-	ft_free_wa(mini->tokens);
-	ft_lstclear(&mini->cmd_list, free_cmd_node);
-	exit(mini->exit_code);
 }
 
 static int	try_execve(char *path, char **cmd, t_mini *mini)
