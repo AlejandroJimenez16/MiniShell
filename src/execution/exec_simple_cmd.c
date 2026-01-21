@@ -6,64 +6,46 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 14:27:04 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/20 23:42:26 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/21 18:30:32 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/mini.h"
 
-static void	create_path(char **s1, char *s2)
-{
-	char	*new_string;
-
-	new_string = ft_strjoin(*s1, "/");
-	free(*s1);
-	*s1 = ft_strjoin(new_string, s2);
-	free(new_string);
-}
-
 static void	execute_absolute_path(char **cmd, t_mini *mini)
 {
-	int		exit_code;
-	char	*prefix;
-
 	if (access(cmd[0], F_OK) != 0)
 	{
 		print_cmd_error(cmd[0], NULL, ": No such file or directory");
-		exit_code = 127;
+		mini->exit_code = 127;
 	}
 	else if (access(cmd[0], X_OK) != 0)
 	{
 		print_cmd_error(cmd[0], NULL, ": Permission denied");
-		exit_code = 126;
+		mini->exit_code = 126;
 	}
 	else
 	{
 		execve(cmd[0], cmd, mini->env);
-		prefix = ft_strjoin(cmd[0], ": ");
-		print_cmd_error(prefix, NULL, strerror(errno));
-		free(prefix);
-		exit_code = 126;
+		print_exec_error(mini, cmd, NULL);
 	}
 	free_mini(mini);
 	free(mini->t_info);
 	ft_free_wa(mini->tokens);
 	ft_lstclear(&mini->cmd_list, free_cmd_node);
-	exit(exit_code);
+	exit(mini->exit_code);
 }
 
-static void	handle_cmd_error(char **cmd, t_mini *mini, int permission)
+static int	try_execve(char *path, char **cmd, t_mini *mini)
 {
-	if (!mini->arr_path || mini->arr_path[0] == NULL)
-		print_cmd_error(cmd[0], NULL, ": No such file or directory");
-	else if (permission)
-		print_cmd_error(cmd[0], NULL, ": Permission denied");
-	else
-		print_cmd_error(cmd[0], NULL, ": command not found");
-	if (permission)
-		mini->exit_code = 126;
-	else
-		mini->exit_code = 127;
+	if (access(path, X_OK) == 0)
+	{
+		execve(path, cmd, mini->env);
+		print_exec_error(mini, cmd, path);
+		free(path);
+		return (1);
+	}
+	return (0);
 }
 
 static void	execute_from_path(char **cmd, t_mini *mini)
@@ -71,9 +53,11 @@ static void	execute_from_path(char **cmd, t_mini *mini)
 	int		permission;
 	int		i;
 	char	*path;
+	char	*path_permission;
 
 	i = 0;
 	permission = 0;
+	path_permission = NULL;
 	mini->arr_path = get_path_cmd(mini->env);
 	while (mini->arr_path && (mini->arr_path[i] != NULL))
 	{
@@ -81,20 +65,21 @@ static void	execute_from_path(char **cmd, t_mini *mini)
 		create_path(&path, cmd[0]);
 		if (access(path, F_OK) == 0)
 		{
-			if (access(path, X_OK) == 0)
-				execve(path, cmd, mini->env);
-			else
-				permission = 1;
+			if (try_execve(path, cmd, mini))
+				return ;
+			if (!path_permission)
+				path_permission = ft_strdup(path);
+			permission = 1;
 		}
 		free(path);
 	}
-	handle_cmd_error(cmd, mini, permission);
+	handle_cmd_error(cmd, mini, permission, path_permission);
 }
 
 void	execute_simple_commands(char **cmd, t_mini *mini)
 {
 	if (!cmd || !cmd[0] || !cmd[0][0])
-		exit(0);
+		return ;
 	else if (cmd[0][0] == '.' || cmd[0][0] == '/')
 		execute_absolute_path(cmd, mini);
 	else

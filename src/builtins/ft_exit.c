@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 12:39:55 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/17 21:16:09 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/21 19:44:51 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,9 @@ void	ft_exit(char **cmd, t_mini *mini)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(cmd[1], 2);
 		ft_putendl_fd(": numeric argument required", 2);
-		mini->exit_code = 255;
-		return ;
+		mini->exit_code = 2;
+		exit_clean(mini);
+		exit(mini->exit_code);
 	}
 	if (cmd[1] && cmd[2])
 	{

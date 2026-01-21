@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2026/01/15 14:03:12 by alejandj         ###   ########.fr        #
+#    Updated: 2026/01/21 14:59:16 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SRC =	src/main.c							\
 		src/builtins/ft_env.c				\
 		src/builtins/ft_exit.c				\
 		src/execution/exec_simple_cmd.c		\
+		src/execution/execution_utils.c		\
 		src/execution/redirection.c			\
 		src/execution/execution.c			\
 		src/parser/count_tokens.c			\
