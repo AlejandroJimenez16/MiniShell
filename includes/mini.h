@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/22 16:05:20 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/22 18:07:50 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,9 +176,9 @@ int		expand_vars(t_cmd *node, t_mini *mini);
 
 // Create cmd list
 t_cmd	*init_node(int n_words);
-void	add_redir_to_node(t_cmd *node, int prev_token,
+int		add_redir_to_node(t_cmd *node, int prev_token,
 			char *token, t_quote_type type_quote);
-void	assign_token_to_node(t_cmd *node, char *token,
+int		assign_token_to_node(t_cmd *node, char *token,
 			t_token_info *t_info, int *i);
 int		get_prev_token(t_token_info *t_info, int i);
 t_list	*create_cmd_list(char *line, char **tokens, t_token_info *t_info);

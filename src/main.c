@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/22 14:36:29 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/22 18:07:07 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,12 @@ static void	handle_line(t_mini *mini)
 		return ;
 	}
 	mini->cmd_list = create_cmd_list(mini->line, mini->tokens, mini->t_info);
+	if (!mini->cmd_list)
+	{
+		free(mini->t_info);
+		ft_free_wa(mini->tokens);
+		return ;
+	}
 	if (expand_cmd_list(mini->cmd_list, mini))
 	{
 		ft_lstclear(&mini->cmd_list, free_cmd_node);

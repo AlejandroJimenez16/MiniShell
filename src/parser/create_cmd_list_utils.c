@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 14:35:06 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/07 15:00:11 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/22 18:14:12 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_cmd	*init_node(int n_words)
 	return (node);
 }
 
-void	add_redir_to_node(t_cmd *node, int prev_token,
+int	add_redir_to_node(t_cmd *node, int prev_token,
 		char *token, t_quote_type type_quote)
 {
 	t_redir	*redir;
@@ -60,7 +60,7 @@ void	add_redir_to_node(t_cmd *node, int prev_token,
 
 	redir = malloc(sizeof(t_redir));
 	if (!redir)
-		return ;
+		return (1);
 	redir->type = prev_token;
 	redir->file = ft_strdup(token);
 	redir->quote = type_quote;
@@ -69,19 +69,23 @@ void	add_redir_to_node(t_cmd *node, int prev_token,
 	{
 		free(redir->file);
 		free(redir);
-		return ;
+		return (1);
 	}
 	ft_lstadd_back(&node->redirs, new_node);
+	return (0);
 }
 
-void	assign_token_to_node(t_cmd *node, char *token,
+int	assign_token_to_node(t_cmd *node, char *token,
 		t_token_info *t_info, int *i)
 {
 	int		prev_token;
 
 	prev_token = get_prev_token(t_info, *i);
 	if (is_redir(prev_token))
-		add_redir_to_node(node, prev_token, token, t_info[*i].type_quote);
+	{
+		if (add_redir_to_node(node, prev_token, token, t_info[*i].type_quote))
+			return (1);
+	}
 	else
 	{
 		node->cmd[node->cmd_index] = ft_strdup(token);
@@ -89,6 +93,7 @@ void	assign_token_to_node(t_cmd *node, char *token,
 		node->cmd_index++;
 		node->cmd[node->cmd_index] = NULL;
 	}
+	return (0);
 }
 
 int	get_prev_token(t_token_info *t_info, int i)
