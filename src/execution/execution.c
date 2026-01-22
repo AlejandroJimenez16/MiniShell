@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 13:38:17 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/17 21:05:00 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/22 18:36:16 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,18 @@ int	wait_for_children(pid_t last_pid)
 	pid_t	pid;
 	int		status;
 	int		exit_code;
+	int		sig_int;
 
 	exit_code = 0;
+	sig_int = 0;
 	pid = wait(&status);
 	while (pid > 0)
 	{
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT && !sig_int)
+		{
+			sig_int = 1;
+			write(1, "\n", 1);
+		}
 		if (pid == last_pid)
 		{
 			if (WIFEXITED(status))
@@ -31,8 +38,6 @@ int	wait_for_children(pid_t last_pid)
 				exit_code = 128 + WTERMSIG(status);
 				if (WTERMSIG(status) == SIGQUIT)
 					ft_putendl_fd("Quit (core dumped)", 2);
-				if (WTERMSIG(status) == SIGINT)
-					write(1, "\n", 1);
 			}
 		}
 		pid = wait(&status);
