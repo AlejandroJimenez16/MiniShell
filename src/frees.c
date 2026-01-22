@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 21:28:24 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/22 14:07:53 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/22 19:10:53 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	free_mini(t_mini *mini)
 		free(mini->line);
 	if (mini->arr_path)
 		ft_free_wa(mini->arr_path);
-	close(mini->history_fd);
 	rl_clear_history();
 }
 

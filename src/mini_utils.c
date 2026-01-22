@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:43:51 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/20 21:35:19 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/22 19:37:34 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,11 @@ void	print_cmd_error(char *cmd, char *target, char *error)
 	ft_putendl_fd(error, 2);
 }
 
-void	print_unexpected_error(t_mini *mini, int is_bonus, char *invalid)
+void	print_unexpected_error(t_mini *mini, char *invalid)
 {
-	if (is_bonus)
-	{
-		ft_putstr_fd("minishell: operator '", 2);
-		ft_putstr_fd(invalid, 2);
-		ft_putendl_fd("' is not supported in this part", 2);
-	}
-	else
-	{
-		ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
-		ft_putstr_fd(invalid, 2);
-		ft_putendl_fd("'", 2);
-	}
+	ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
+	ft_putstr_fd(invalid, 2);
+	ft_putendl_fd("'", 2);
 	mini->exit_code = 2;
 }
 

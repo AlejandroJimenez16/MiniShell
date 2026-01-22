@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/24 20:14:22 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/07 18:05:47 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/22 19:34:54 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,28 +34,6 @@ int	check_unclosed_quotes(char *line)
 	return (0);
 }
 
-static int	check_bonus_tokens(char *line, char **invalid)
-{
-	int		i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == '|' && line[i + 1] == '|')
-		{
-			*invalid = "||";
-			return (1);
-		}
-		if (line[i] == '&' && line[i + 1] == '&')
-		{
-			*invalid = "&&";
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-
 static void	choose_redir(int redir, char **invalid)
 {
 	if (redir == REDIR_IN)
@@ -69,7 +47,7 @@ static void	choose_redir(int redir, char **invalid)
 }
 
 static int	check_multiple_tokens(t_token_info *t_info, t_mini *mini,
-		char **invalid, int *is_bonus)
+		char **invalid)
 {
 	int	i;
 	int	n_tokens;
@@ -80,8 +58,6 @@ static int	check_multiple_tokens(t_token_info *t_info, t_mini *mini,
 	i = 0;
 	while (i < last)
 	{
-		if (check_bonus_tokens(mini->line, invalid))
-			return (*is_bonus = 1, 1);
 		if (t_info[i + 1].type_token == PIPE && is_redir(t_info[i].type_token))
 			return (*invalid = "newline", 1);
 		if (t_info[i].type_token == PIPE && is_redir(t_info[i + 1].type_token))
@@ -97,7 +73,7 @@ static int	check_multiple_tokens(t_token_info *t_info, t_mini *mini,
 }
 
 int	check_invalid_tokens(t_token_info *t_info, t_mini *mini,
-		char **invalid, int *is_bonus)
+		char **invalid)
 {
 	int	n_tokens;
 	int	last;
@@ -106,7 +82,7 @@ int	check_invalid_tokens(t_token_info *t_info, t_mini *mini,
 	last = n_tokens - 1;
 	if (last < 0)
 		return (0);
-	if (check_multiple_tokens(t_info, mini, invalid, is_bonus))
+	if (check_multiple_tokens(t_info, mini, invalid))
 		return (1);
 	if (t_info[0].type_token == PIPE)
 		return (*invalid = "|", 1);

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/22 18:07:07 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/22 19:35:49 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ static int	expand_cmd_list(t_list *cmd_list, t_mini *mini)
 static void	handle_line(t_mini *mini)
 {
 	char			*invalid;
-	int				is_bonus;
 
 	if (check_unclosed_quotes(mini->line))
 	{
@@ -88,10 +87,9 @@ static void	handle_line(t_mini *mini)
 		free(mini->t_info);
 		return ;
 	}
-	is_bonus = 0;
-	if (check_invalid_tokens(mini->t_info, mini, &invalid, &is_bonus))
+	if (check_invalid_tokens(mini->t_info, mini, &invalid))
 	{
-		print_unexpected_error(mini, is_bonus, invalid);
+		print_unexpected_error(mini, invalid);
 		free(mini->t_info);
 		ft_free_wa(mini->tokens);
 		return ;
