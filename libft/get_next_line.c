@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 15:23:31 by alejandj          #+#    #+#             */
-/*   Updated: 2025/03/10 14:21:41 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/22 15:50:48 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static char	*n_in_buffer(char *buffer, char *line)
 	{
 		temp = add_char(line, buffer[i]);
 		return (free(line), line = temp, ft_memset(buffer, '\0', BUFFER_SIZE),
-			ft_strlcpy(buffer, after_n, ft_strlen(after_n)), free(after_n),
+			ft_strlcpy(buffer, after_n, BUFFER_SIZE), free(after_n),
 			line);
 	}
 	return (line);

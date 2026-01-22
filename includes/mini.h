@@ -6,18 +6,16 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/21 17:34:16 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/22 16:05:20 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINI_H
 # define MINI_H
 
-// Colors
-# define RED   "\033[0;31m"
-# define GREEN "\033[0;32m"
-# define BLUE  "\033[0;34m"
-# define RESET "\033[0m"
+# ifndef FILENAME
+#  define FILENAME ".mini_history"
+# endif
 
 # include "../libft/libft.h"
 # include <readline/readline.h>
@@ -67,6 +65,7 @@ typedef struct s_mini
 {
 	char			**env;
 	char			*line;
+	int				history_fd;
 	char			*prompt;
 	char			**arr_path;
 	t_token_info	*t_info;
@@ -218,5 +217,8 @@ void	*ft_free_wa(char **word_arr);
 void	free_redir(void *content);
 void	free_cmd_node(void *context);
 void	free_mini(t_mini *mini);
+
+// History
+void	ft_init_history(t_mini *mini);
 
 #endif

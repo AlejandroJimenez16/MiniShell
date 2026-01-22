@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:27:28 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/19 19:54:26 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/22 14:36:29 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static void	init_mini(char **argv, char **env, t_mini *mini)
 	mini->prompt = NULL;
 	mini->line = NULL;
 	init_signals();
+	ft_init_history(mini);
 }
 
 static int	expand_cmd_list(t_list *cmd_list, t_mini *mini)
@@ -136,6 +137,8 @@ int	main(int argc, char **argv, char **env)
 			g_sig_status = 0;
 		}
 		add_history(mini.line);
+		ft_putstr_fd(mini.line, mini.history_fd);
+		ft_putchar_fd('\n', mini.history_fd);
 		handle_line(&mini);
 		free(mini.line);
 		mini.line = NULL;
