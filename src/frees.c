@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 21:28:24 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/22 19:10:53 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/23 09:59:23 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,15 @@ void	free_cmd_node(void *context)
 	if (node->redirs)
 		ft_lstclear(&node->redirs, free_redir);
 	free(node);
+}
+
+void	clean_all(t_mini *mini)
+{
+	free_mini(mini);
+	if (mini->t_info)
+		free(mini->t_info);
+	if (mini->tokens)
+		ft_free_wa(mini->tokens);
+	if (mini->cmd_list)
+		ft_lstclear(&mini->cmd_list, free_cmd_node);
 }

@@ -6,11 +6,39 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 14:58:34 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/21 17:59:33 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/23 12:19:49 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/mini.h"
+
+int	handle_child(t_cmd *node, t_mini *mini, t_pipex *pipex)
+{
+	close(mini->history_fd);
+	setup_child_signals();
+	if (handle_redirections(node, pipex, mini))
+		return (mini->exit_code);
+	if (is_builtin(node->cmd))
+		return (exec_builtins(node->cmd, mini));
+	else
+		execute_simple_commands(node->cmd, mini);
+	return (mini->exit_code);
+}
+
+void	handle_parent(t_pipex *pipex, t_mini *mini, t_cmd *node)
+{
+	if (pipex->prev_pipe_in != -1)
+		close(pipex->prev_pipe_in);
+	if (pipex->pipefd[1] != -1)
+		close(pipex->pipefd[1]);
+	if (mini->last_command)
+	{
+		free(mini->last_command);
+		mini->last_command = NULL;
+	}
+	if (node->cmd_size > 0)
+		mini->last_command = ft_strdup(node->cmd[node->cmd_size - 1]);
+}
 
 void	create_path(char **s1, char *s2)
 {

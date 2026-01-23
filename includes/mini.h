@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/22 19:37:12 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/23 12:11:09 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,16 +187,18 @@ t_list	*create_cmd_list(char *line, char **tokens, t_token_info *t_info);
 int		handle_redirections(t_cmd *node, t_pipex *pipex, t_mini *mini);
 
 // Execution
+int		handle_child(t_cmd *node, t_mini *mini, t_pipex *pipex);
+void	handle_parent(t_pipex *pipex, t_mini *mini, t_cmd *node);
 void	create_path(char **s1, char *s2);
 void	handle_cmd_error(char **cmd, t_mini *mini, int permission, char *path);
 void	print_exec_error(t_mini *mini, char **cmd, char *path);
-int		wait_for_children(pid_t last_pid);
 void	execute_simple_commands(char **cmd, t_mini *mini);
-void	execute_commands(t_list *cmd_list, t_mini *mini);
+void	execute_commands(t_mini *mini);
 
 // Pipex utils
 void	init_pipex(t_pipex *pipex);
-int		create_pipe(t_pipex *pipex, t_mini *mini);
+int		create_pipe(t_pipex *pipex);
+void	close_pipex_error(t_pipex *pipex);
 
 // Mini utils
 void	print_cmd_error(char *cmd, char *target, char *error);
@@ -217,6 +219,7 @@ void	*ft_free_wa(char **word_arr);
 void	free_redir(void *content);
 void	free_cmd_node(void *context);
 void	free_mini(t_mini *mini);
+void	clean_all(t_mini *mini);
 
 // History
 void	ft_init_history(t_mini *mini);
