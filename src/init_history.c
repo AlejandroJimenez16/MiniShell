@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 12:50:27 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/22 15:57:28 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/24 02:11:49 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,11 @@ void	ft_init_history(t_mini *mini)
 		free(line);
 		line = get_next_line(mini->history_fd);
 	}
+}
+
+void	ft_add_to_history(t_mini *mini)
+{
+	add_history(mini->line);
+	ft_putstr_fd(mini->line, mini->history_fd);
+	ft_putchar_fd('\n', mini->history_fd);
 }

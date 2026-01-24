@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/23 12:11:09 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/24 02:12:00 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,8 +201,8 @@ int		create_pipe(t_pipex *pipex);
 void	close_pipex_error(t_pipex *pipex);
 
 // Mini utils
-void	print_cmd_error(char *cmd, char *target, char *error);
-void	print_unexpected_error(t_mini *mini, char *invalid);
+void	create_min_env(t_mini *mini);
+void	init_mini(char **argv, char **env, t_mini *mini);
 int		get_cmd_arr_size(char **tokens, t_token_info *t_info, int start);
 int		get_num_nodes(char *line, t_token_info *t_info);
 int		is_redir(int type);
@@ -223,5 +223,10 @@ void	clean_all(t_mini *mini);
 
 // History
 void	ft_init_history(t_mini *mini);
+void	ft_add_to_history(t_mini *mini);
+
+// Print errors
+void	print_cmd_error(char *cmd, char *target, char *error);
+void	print_unexpected_error(t_mini *mini, char *invalid);
 
 #endif
