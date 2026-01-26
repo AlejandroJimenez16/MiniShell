@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 18:01:10 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/19 18:41:30 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/26 14:20:02 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 
 int	exec_env_builtins_parent(t_cmd *node, t_mini *mini, t_pipex *pipex)
 {
-	int	save_stdin;
-	int	save_stdout;
-
-	save_stdin = dup(STDIN_FILENO);
-	save_stdout = dup(STDOUT_FILENO);
+	mini->save_stdin = dup(STDIN_FILENO);
+	mini->save_stdout = dup(STDOUT_FILENO);
 	if (handle_redirections(node, pipex, mini))
-		return (close(save_stdin), close(save_stdout), 1);
+	{
+		close(mini->save_stdin);
+		close(mini->save_stdout);
+		mini->save_stdin = -1;
+		mini->save_stdout = -1;
+		return (1);
+	}
 	exec_builtins(node->cmd, mini);
 	if (mini->last_command)
 	{
@@ -29,10 +32,12 @@ int	exec_env_builtins_parent(t_cmd *node, t_mini *mini, t_pipex *pipex)
 	}
 	if (node->cmd_size > 0)
 		mini->last_command = ft_strdup(node->cmd[node->cmd_size - 1]);
-	dup2(save_stdin, STDIN_FILENO);
-	dup2(save_stdout, STDOUT_FILENO);
-	close(save_stdin);
-	close(save_stdout);
+	dup2(mini->save_stdin, STDIN_FILENO);
+	dup2(mini->save_stdout, STDOUT_FILENO);
+	close(mini->save_stdin);
+	close(mini->save_stdout);
+	mini->save_stdin = -1;
+	mini->save_stdout = -1;
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 12:39:55 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/21 19:44:51 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/26 22:31:15 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,10 @@ static void	exit_clean(t_mini *mini)
 	free(mini->t_info);
 	ft_free_wa(mini->tokens);
 	ft_lstclear(&mini->cmd_list, free_cmd_node);
+	if (mini->save_stdin != -1)
+		close(mini->save_stdin);
+	if (mini->save_stdout != -1)
+		close(mini->save_stdout);
 }
 
 void	ft_exit(char **cmd, t_mini *mini)

@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 14:58:34 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/23 12:19:49 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/26 21:59:23 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@ int	handle_child(t_cmd *node, t_mini *mini, t_pipex *pipex)
 	setup_child_signals();
 	if (handle_redirections(node, pipex, mini))
 		return (mini->exit_code);
+	if (pipex->pipefd[0] != -1)
+		close(pipex->pipefd[0]);
+	if (pipex->pipefd[1] != -1)
+		close(pipex->pipefd[1]);
+	if (pipex->prev_pipe_in != -1)
+		close(pipex->prev_pipe_in);
 	if (is_builtin(node->cmd))
 		return (exec_builtins(node->cmd, mini));
 	else
@@ -28,7 +34,10 @@ int	handle_child(t_cmd *node, t_mini *mini, t_pipex *pipex)
 void	handle_parent(t_pipex *pipex, t_mini *mini, t_cmd *node)
 {
 	if (pipex->prev_pipe_in != -1)
+	{
 		close(pipex->prev_pipe_in);
+		pipex->prev_pipe_in = -1;
+	}
 	if (pipex->pipefd[1] != -1)
 		close(pipex->pipefd[1]);
 	if (mini->last_command)

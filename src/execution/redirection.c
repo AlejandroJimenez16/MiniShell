@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:46:22 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/20 14:10:01 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/26 22:04:36 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static void	handle_dup2(int *fd_in, int *fd_out, t_pipex *pipex)
 	{
 		dup2(pipex->prev_pipe_in, STDIN_FILENO);
 		close(pipex->prev_pipe_in);
+		pipex->prev_pipe_in = -1;
 	}
 	if (*fd_out != -1)
 	{
@@ -78,6 +79,7 @@ static void	handle_dup2(int *fd_in, int *fd_out, t_pipex *pipex)
 	{
 		dup2(pipex->pipefd[1], STDOUT_FILENO);
 		close(pipex->pipefd[1]);
+		pipex->pipefd[1] = -1;
 	}
 }
 

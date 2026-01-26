@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/24 02:12:00 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/26 14:09:06 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ typedef struct s_mini
 	int				exit_code;
 	char			*last_command;
 	int				has_env;
+	int				save_stdin;
+	int				save_stdout;
 }					t_mini;
 
 // Environment structure

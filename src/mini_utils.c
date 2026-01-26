@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:43:51 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/23 13:13:00 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/26 14:09:51 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	init_mini(char **argv, char **env, t_mini *mini)
 	mini->arr_path = NULL;
 	mini->prompt = NULL;
 	mini->line = NULL;
+	mini->save_stdin = -1;
+	mini->save_stdout = -1;
 	init_signals();
 	ft_init_history(mini);
 }
