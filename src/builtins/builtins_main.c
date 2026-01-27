@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 18:01:10 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/26 14:20:02 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/27 14:38:02 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,19 @@ int	is_builtin(char **cmd)
 {
 	if (!cmd || !cmd[0])
 		return (0);
-	if (ft_strncmp(cmd[0], "echo", 4) == 0)
+	if (ft_strncmp(cmd[0], "echo", 5) == 0)
 		return (1);
 	else if (ft_strncmp(cmd[0], "cd", 3) == 0)
 		return (1);
-	else if (ft_strncmp(cmd[0], "pwd", 3) == 0)
+	else if (ft_strncmp(cmd[0], "pwd", 4) == 0)
 		return (1);
-	else if (ft_strncmp(cmd[0], "export", 6) == 0)
+	else if (ft_strncmp(cmd[0], "export", 7) == 0)
 		return (1);
-	else if (ft_strncmp(cmd[0], "unset", 5) == 0)
+	else if (ft_strncmp(cmd[0], "unset", 6) == 0)
 		return (1);
-	else if (ft_strncmp(cmd[0], "env", 3) == 0)
+	else if (ft_strncmp(cmd[0], "env", 4) == 0)
 		return (1);
-	else if (ft_strncmp(cmd[0], "exit", 4) == 0)
+	else if (ft_strncmp(cmd[0], "exit", 5) == 0)
 		return (1);
 	return (0);
 }
