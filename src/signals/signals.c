@@ -24,7 +24,7 @@ int	g_sig_status = 0;
 ** 3. Replace the actual buffer with an empty one.
 ** 4. Prints the prompt again.
 */
-void	handle_sigint(int sig)
+static void	handle_sigint(int sig)
 {
 	(void)sig;
 	g_sig_status = 130;
@@ -52,4 +52,12 @@ void	setup_child_signals(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+}
+
+void	heredoc_sigint_handler(int sig)
+{
+	(void)sig;
+	g_sig_status = 130;
+	write(1, "\n", 1);
+	close(STDIN_FILENO);
 }

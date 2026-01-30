@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:46:39 by aleconst          #+#    #+#             */
-/*   Updated: 2026/01/08 20:49:40 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/30 12:44:15 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,30 +36,52 @@ static void	manage_line(char *delimiter, char *line, int n_line)
 	}
 }
 
+void	read_heredoc_loop(t_mini *mini, t_heredoc *hd)
+{
+	hd->n_line = 1;
+	write(1, "> ", 2);
+	hd->line = get_next_line(STDIN_FILENO);
+	while (hd->line && g_sig_status == 0)
+	{
+		if ((ft_strncmp(hd->line, hd->delimiter, ft_strlen(hd->delimiter)) == 0
+				&& ((ft_strlen(hd->line) == ft_strlen(hd->delimiter)
+						&& hd->line[ft_strlen(hd->line) - 1] != '\n')
+					|| (ft_strlen(hd->line) - 1 == ft_strlen(hd->delimiter)
+						&& hd->line[ft_strlen(hd->line) - 1] == '\n'))))
+		{
+			break ;
+		}
+		if (hd->type_quote == NO_QUOTES)
+			hd->line = expand_line(mini, hd->line);
+		write(hd->pipe_fd[1], hd->line, ft_strlen(hd->line));
+		free(hd->line);
+		hd->n_line++;
+		write(1, "> ", 2);
+		hd->line = get_next_line(STDIN_FILENO);
+	}
+}
+
 int	here_doc(t_mini *mini, char *delimiter, int type_quote)
 {
-	int		pipe_fd[2];
-	int		n_line;
-	char	*line;
+	t_heredoc	hd;
 
-	if (pipe(pipe_fd) == -1)
+	hd.delimiter = delimiter;
+	hd.type_quote = type_quote;
+	if (pipe(hd.pipe_fd) == -1)
 		return (-1);
-	n_line = 1;
-	line = readline("> ");
-	while (line && g_sig_status == 0
-		&& ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) != 0)
+	hd.stdin_backup = dup(STDIN_FILENO);
+	signal(SIGINT, heredoc_sigint_handler);
+	read_heredoc_loop(mini, &hd);
+	if (g_sig_status != 0)
 	{
-		if (type_quote == NO_QUOTES)
-			line = expand_line(mini, line);
-		write(pipe_fd[1], line, ft_strlen(line));
-		write(pipe_fd[1], "\n", 1);
-		free(line);
-		n_line++;
-		line = readline("> ");
+		dup2(hd.stdin_backup, STDIN_FILENO);
+		close(hd.stdin_backup);
+		if (hd.line)
+			free(hd.line);
+		return (close(hd.pipe_fd[0]), close(hd.pipe_fd[1]), -1);
 	}
-	if (g_sig_status != 0 && line)
-		free(line);
-	else
-		manage_line(delimiter, line, n_line);
-	return (close(pipe_fd[1]), pipe_fd[0]);
+	close(hd.stdin_backup);
+	setup_child_signals();
+	manage_line(hd.delimiter, hd.line, hd.n_line);
+	return (close(hd.pipe_fd[1]), hd.pipe_fd[0]);
 }

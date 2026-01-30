@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/26 14:09:06 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/30 12:52:32 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,6 @@ typedef struct s_env
 	char	*full;
 }			t_env;
 
-//----------------
-// AQUI TYPES
-//----------------
-
 // List of redirections for s_cmd
 // @param type number from e_token_type (REDIR_IN, REDIR_OUT...)
 // @param file name of the file or the delimiter
@@ -110,8 +106,6 @@ typedef struct s_cmd
 	t_list			*redirs;
 }			t_cmd;
 
-// AQUI T_TOKEN_INFO
-
 typedef struct s_pipex
 {
 	int		pipefd[2];
@@ -127,6 +121,16 @@ typedef struct s_fill_cmds
 	t_quote_type	*new_cmd_quotes;
 	int				new_i;
 }					t_fill_cmds;
+
+typedef struct s_heredoc
+{
+	int		pipe_fd[2];
+	int		n_line;
+	char	*line;
+	int		stdin_backup;
+	char	*delimiter;
+	int		type_quote;
+}			t_heredoc;
 
 // Obtain prompt
 char	*get_prompt(int has_env, char **env);
@@ -212,6 +216,7 @@ int		is_redir(int type);
 // Signals
 void	init_signals(void);
 void	setup_child_signals(void);
+void	heredoc_sigint_handler(int sig);
 
 // Heredoc
 int		here_doc(t_mini *mini, char *delimiter, int type_quote);
