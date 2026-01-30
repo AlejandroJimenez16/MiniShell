@@ -1,62 +1,62 @@
 # Minishell - 42
 
-*Este proyecto ha sido creado como parte del currículo de 42 por **aleconst** y **alejandj**.*
+*This project was created as part of the 42 curriculum by **aleconst** and **alejandj**.*
 
-## 📝 Descripción
+## 📝 Description
 
-**Minishell** es un proyecto que consiste en la creación de una shell básica, una interfaz de línea de comandos que actúa como intermediaria entre el usuario y el sistema operativo. El objetivo principal es replicar el comportamiento básico de **Bash**, permitiendo al usuario interactuar con el sistema mediante una interfaz de línea de comandos robusta y funcional.
+**Minishell** is a project that consists of creating a basic shell, a command-line interface that acts as an intermediary between the user and the operating system. The main goal is to replicate the basic behavior of **Bash**, allowing the user to interact with the system through a robust and functional command-line interface.
 
-### ⚙️ Funcionalidades principales
-* **Prompt interactivo:** Muestra una línea de espera lista para recibir comandos.
-* **Ejecución de binarios:** Busca y ejecuta programas mediante la variable `PATH` o rutas específicas.
-* **Built-ins:** Implementación propia de comandos esenciales: `echo`, `cd`, `pwd`, `export`, `unset`, `env` y `exit`.
-* **Pipelines (`|`):** Redirección de la salida de un comando a la entrada del siguiente.
-* **Redirecciones:** Manejo de entrada/salida mediante `<`, `>`, `>>` y el modo `<<` (here-doc).
-* **Variables de Entorno:** Gestión y expansión de variables (incluyendo `$?` para el estado de salida).
-* **Señales:** Gestión correcta de interrupciones como `Ctrl-C`, `Ctrl-D` y `Ctrl-\`.
+### ⚙️ Main features
+* **Interactive prompt:** Displays a prompt ready to receive commands.
+* **Binary execution:** Searches for and executes programs using the `PATH` environment variable or specific paths.
+* **Built-ins:** Custom implementation of essential commands: `echo`, `cd`, `pwd`, `export`, `unset`, `env`, and `exit`.
+* **Pipelines (`|`):** Redirects the output of one command to the input of the next.
+* **Redirections:** Input/output handling using `<`, `>`, `>>`, and the `<<` (here-doc) mode.
+* **Environment variables:** Management and expansion of variables (including `$?` for the exit status).
+* **Signals:** Proper handling of interrupts such as `Ctrl-C`, `Ctrl-D`, and `Ctrl-\`.
 
 ---
 
-## 🚀 Instrucciones
+## 🚀 Instructions
 
-### 📋 Requisitos previos
-El proyecto utiliza la librería **GNU Readline**. Asegúrate de tenerla instalada en tu sistema (en sistemas basados en Debian/Ubuntu se instala así):
+### 📋 Prerequisites
+The project uses the **GNU Readline** library. Make sure it is installed on your system (on Debian/Ubuntu-based systems, install it as follows):
 
 ```bash
 sudo apt-get install libreadline-dev
 ```
 
-### 🛠️ Compilación e Instalación
-1. #### Clona este repositorio:
+### 🛠️ Build and Installation
+1. #### Clone this repository:
 ```bash
 git clone https://github.com/AlejandroJimenez16/MiniShell.git
 ```
 
-2. #### Compila el proyecto usando el Makefile:
+2. #### Compile the project using Makefile:
 ```bash
 make
 ```
 
-### ⌨️ Ejecución
-Una vez compilado el binario, puedes iniciar la shell ejecutando:
+### ⌨️ Execution
+Once the binary is compiled, you can start the shell by running:
 ```bash
 ./minishell
 ```
-Para salir de la shell, puedes usar el comando *exit* o presionar *Ctrl-D*.
+To exit the shell, you can use the *`exit`* command or press *`Ctrl-D`*.
 
 ---
 
-## 📚 Recursos
-### 📒 Referencias
-Para el desarrollo de este proyecto se han consultado las siguientes fuentes clásicas:
+## 📚 Resources
+### 📒 References
+The following sources were consulted during the development of this project:
 
-* [GNU Bash Manual](https://www.gnu.org/software/bash/manual/): Referencia principal para replicar el comportamiento estándar.
+* [GNU Bash Manual](https://www.gnu.org/software/bash/manual/): Main reference for replicating standard behavior.
 
-* [Man pages (Linux Programmer's Manual)](https://www.man7.org/linux/man-pages/man1/man.1.html): Documentación técnica de funciones clave como `fork`, `execve`, `waitpid`, `pipe`, `dup2` y `signal`.
+* [Man pages (Linux Programmer's Manual)](https://www.man7.org/linux/man-pages/man1/man.1.html): Technical documentation for key functions such as `fork`, `execve`, `waitpid`, `pipe`, `dup2` and `signal`.
 
-### 🤖 Uso de Inteligencia Artificial (IA)
-En el desarrollo de este proyecto, se ha utilizado Inteligencia Artificial de la siguiente manera:
+### 🤖 Use of Artificial Intelligence (AI)
+During the development of this project, Artificial Intelligence was used in the following ways:
 
-* **Depuración de memoria**: Se utilizó IA para analizar trazas complejas de Valgrind e identificar el origen de fugas de memoria (*leaks*).
-* **Generación de casos de prueba**: La IA fue utilizada para generar casos de prueba con casos extremos (*edge cases*), combinaciones inusuales de *tokens*, y sintaxis inválida para asegurar la robustez del código.
+* **Memory debugging**: AI was used to analyze complex Valgrind traces and identify the source of memory leaks.
+* **Test case generation**: AI was used to generate test cases, including edge cases, unusual token combinations, and invalid syntax to ensure the robustness of the code.
 ---
