@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mini_utils.c                                       :+:      :+:    :+:   */
+/*   mini_utils_1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:43:51 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/30 14:45:00 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/30 15:36:43 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	init_mini(char **argv, char **env, t_mini *mini)
 	mini->line = NULL;
 	mini->save_stdin = -1;
 	mini->save_stdout = -1;
+	mini->history_fd = -1;
 	init_signals();
 	ft_init_history(mini);
 }

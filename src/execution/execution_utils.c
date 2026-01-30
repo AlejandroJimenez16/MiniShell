@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 14:58:34 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/26 21:59:23 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/30 15:36:43 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	handle_child(t_cmd *node, t_mini *mini, t_pipex *pipex)
 {
-	close(mini->history_fd);
+	if (mini->history_fd != -1)
+		close(mini->history_fd);
 	setup_child_signals();
 	if (handle_redirections(node, pipex, mini))
 		return (mini->exit_code);
