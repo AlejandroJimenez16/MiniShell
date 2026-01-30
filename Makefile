@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2026/01/24 02:18:57 by alejandj         ###   ########.fr        #
+#    Updated: 2026/01/30 15:22:37 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = minishell
 
 # Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -Iincludes
+CFLAGS = -Wall -Wextra -Werror -Iincludes
 
 # Directories
 LIBDIR = libft/
@@ -26,7 +26,8 @@ SRC =	src/main.c							\
 		src/env_utils_2.c					\
 		src/prompt.c						\
 		src/frees.c							\
-		src/mini_utils.c					\
+		src/mini_utils_1.c					\
+		src/mini_utils_2.c					\
 		src/init_history.c					\
 		src/print_errors.c					\
 		src/builtins/builtins_main.c		\

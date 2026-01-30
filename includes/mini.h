@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:15:37 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/30 12:52:32 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/30 14:44:33 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,7 @@ void	init_mini(char **argv, char **env, t_mini *mini);
 int		get_cmd_arr_size(char **tokens, t_token_info *t_info, int start);
 int		get_num_nodes(char *line, t_token_info *t_info);
 int		is_redir(int type);
+void	update_shlvl(t_mini *mini);
 
 // Signals
 void	init_signals(void);

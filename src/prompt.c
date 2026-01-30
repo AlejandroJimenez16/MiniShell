@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 19:46:35 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/04 20:59:53 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/01/30 15:20:44 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,10 @@ char	*get_prompt(int has_env, char **env)
 	}
 	home = get_env("HOME", env);
 	pwd = getcwd(NULL, 0);
-	if (ft_strncmp(home, pwd, ft_strlen(home)) == 0
+	if (home && ft_strncmp(home, pwd, ft_strlen(home)) == 0
 		&& (ft_strlen(pwd) == ft_strlen(home)))
 		prompt = ft_strdup("alejandj@aleconst:~$ ");
-	else if (ft_strncmp(home, pwd, ft_strlen(home)) == 0
+	else if (home && ft_strncmp(home, pwd, ft_strlen(home)) == 0
 		&& (ft_strlen(pwd) > ft_strlen(home)))
 		prompt = prompt_inside_home(home, pwd);
 	else
