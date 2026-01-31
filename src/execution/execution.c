@@ -16,6 +16,7 @@ static int	get_exit_code(int status)
 {
 	int	exit_code;
 
+	exit code = 0;
 	if (WIFEXITED(status))
 		exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
