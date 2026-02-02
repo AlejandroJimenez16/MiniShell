@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:43:51 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/30 15:36:43 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/02/02 16:34:49 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	create_min_env(t_mini *mini)
 void	init_mini(char **argv, char **env, t_mini *mini)
 {
 	(void)argv;
+	mini->env = NULL;
 	if (!env || !env[0])
 		create_min_env(mini);
 	else

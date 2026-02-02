@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:46:39 by aleconst          #+#    #+#             */
-/*   Updated: 2026/01/30 12:44:15 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/02/02 16:48:24 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	manage_line(char *delimiter, char *line, int n_line)
 		free(line);
 	else
 	{
+		write(1, "\n", 1);
 		write(2, "minishell: warning: here-document at line ", 42);
 		ft_putnbr_fd(n_line, 2);
 		write(2, " delimited by end-of-file (wanted «", 36);
