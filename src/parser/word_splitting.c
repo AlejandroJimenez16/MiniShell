@@ -6,38 +6,11 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 13:27:48 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/13 16:36:41 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/02/03 13:59:34 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/mini.h"
-
-int	has_separators(char *tokens)
-{
-	int	i;
-
-	i = 0;
-	while (tokens[i])
-	{
-		if (tokens[i] == ' ' || tokens[i] == '\t' || tokens[i] == '\n')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-static void	normalize_split(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\t' || str[i] == '\n')
-			str[i] = ' ';
-		i++;
-	}
-}
 
 static int	copy_arr_to_cmd(char **arr, t_fill_cmds *f_cmds, int old_i, int i)
 {
@@ -56,6 +29,17 @@ static int	copy_arr_to_cmd(char **arr, t_fill_cmds *f_cmds, int old_i, int i)
 		return (1);
 	}
 	return (0);
+}
+
+static void	update_node(t_cmd *node, t_fill_cmds *f_cmds, int i, int n_cmds)
+{
+	f_cmds->new_cmd[f_cmds->new_i] = NULL;
+	free(node->cmd[i]);
+	free(node->cmd);
+	free(node->cmd_quotes);
+	node->cmd_size = n_cmds;
+	node->cmd = f_cmds->new_cmd;
+	node->cmd_quotes = f_cmds->new_cmd_quotes;
 }
 
 static int	create_fill_new_cmd(t_cmd *node, char **arr, int n_cmds, int i)
@@ -81,10 +65,8 @@ static int	create_fill_new_cmd(t_cmd *node, char **arr, int n_cmds, int i)
 			f_cmds.new_cmd_quotes[f_cmds.new_i++] = node->cmd_quotes[old_i++];
 		}
 	}
-	f_cmds.new_cmd[f_cmds.new_i] = NULL;
-	node->cmd_size = n_cmds;
-	node->cmd = f_cmds.new_cmd;
-	return (node->cmd_quotes = f_cmds.new_cmd_quotes, 0);
+	update_node(node, &f_cmds, i, n_cmds);
+	return (0);
 }
 
 int	word_splitting(t_cmd *node, char *result, int i)
