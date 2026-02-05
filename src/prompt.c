@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 19:46:35 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/30 15:20:44 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/02/05 14:05:36 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,12 @@ static	char	*prompt_without_env(char *pwd)
 	int		full_size;
 	char	*temp;
 
-	full_size = ft_strlen("alejandj@aleconst:~") + ft_strlen(pwd) + 3;
+	full_size = ft_strlen("alejandj@aleconst:") + ft_strlen(pwd) + 3;
 	temp = malloc(full_size);
 	if (!temp)
 		return (NULL);
-	ft_strlcpy(temp, "alejandj@aleconst:~",
-		ft_strlen("alejandj@aleconst:~") + 1);
+	ft_strlcpy(temp, "alejandj@aleconst:",
+		ft_strlen("alejandj@aleconst:") + 1);
 	ft_strlcat(temp, pwd, full_size);
 	ft_strlcat(temp, "$ ", full_size);
 	return (temp);
