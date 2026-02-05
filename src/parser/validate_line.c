@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/24 20:14:22 by alejandj          #+#    #+#             */
-/*   Updated: 2026/01/22 19:34:54 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/02/05 21:02:53 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	check_multiple_tokens(t_token_info *t_info, t_mini *mini,
 	while (i < last)
 	{
 		if (t_info[i + 1].type_token == PIPE && is_redir(t_info[i].type_token))
-			return (*invalid = "newline", 1);
+			return (*invalid = "|", 1);
 		if (t_info[i].type_token == PIPE && is_redir(t_info[i + 1].type_token))
 			return (choose_redir(t_info[i + 1].type_token, invalid), 1);
 		if (t_info[i].type_token == PIPE && t_info[i + 1].type_token == PIPE)
