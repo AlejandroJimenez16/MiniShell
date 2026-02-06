@@ -6,7 +6,7 @@
 #    By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/17 13:58:48 by alejandj          #+#    #+#              #
-#    Updated: 2026/02/03 14:01:02 by alejandj         ###   ########.fr        #
+#    Updated: 2026/02/06 14:28:41 by alejandj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = minishell
 
 # Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Iincludes
+CFLAGS = -Wall -Wextra -Werror -g3 -Iincludes
 
 # Directories
 LIBDIR = libft/

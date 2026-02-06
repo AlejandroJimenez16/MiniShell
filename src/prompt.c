@@ -6,7 +6,7 @@
 /*   By: alejandj <alejandj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 19:46:35 by alejandj          #+#    #+#             */
-/*   Updated: 2026/02/05 14:05:36 by alejandj         ###   ########.fr       */
+/*   Updated: 2026/02/06 15:32:08 by alejandj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,18 @@ static	char	*prompt_without_env(char *pwd)
 	return (temp);
 }
 
+static void	choose_prompt(char **prompt, char *home, char *pwd)
+{
+	if (home && ft_strncmp(home, pwd, ft_strlen(home)) == 0
+		&& (ft_strlen(pwd) == ft_strlen(home)))
+		*prompt = ft_strdup("alejandj@aleconst:~$ ");
+	else if (home && ft_strncmp(home, pwd, ft_strlen(home)) == 0
+		&& (ft_strlen(pwd) > ft_strlen(home)))
+		*prompt = prompt_inside_home(home, pwd);
+	else
+		*prompt = prompt_outside_home(pwd);
+}
+
 char	*get_prompt(int has_env, char **env)
 {
 	char	*prompt;
@@ -69,20 +81,21 @@ char	*get_prompt(int has_env, char **env)
 	if (!has_env)
 	{
 		pwd = getcwd(NULL, 0);
-		prompt = prompt_without_env(pwd);
-		free(pwd);
-		return (prompt);
+		if (!pwd)
+			pwd = ft_strdup("/");
+		return (prompt = prompt_without_env(pwd), free(pwd), prompt);
 	}
 	home = get_env("HOME", env);
 	pwd = getcwd(NULL, 0);
-	if (home && ft_strncmp(home, pwd, ft_strlen(home)) == 0
-		&& (ft_strlen(pwd) == ft_strlen(home)))
-		prompt = ft_strdup("alejandj@aleconst:~$ ");
-	else if (home && ft_strncmp(home, pwd, ft_strlen(home)) == 0
-		&& (ft_strlen(pwd) > ft_strlen(home)))
-		prompt = prompt_inside_home(home, pwd);
-	else
-		prompt = prompt_outside_home(pwd);
-	free(pwd);
-	return (prompt);
+	if (!pwd)
+	{
+		if (get_env("PWD", env))
+			pwd = ft_strdup(get_env("PWD", env));
+		else
+			pwd = ft_strdup("/");
+	}
+	if (!pwd)
+		return (NULL);
+	choose_prompt(&prompt, home, pwd);
+	return (free(pwd), prompt);
 }
